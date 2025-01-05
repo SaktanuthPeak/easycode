@@ -1,6 +1,7 @@
 import "./App.css";
 import HomePage from "./ClientPage/HomePage";
 import Login from "./ClientPage/LoginPage";
+import SignUp from "./ClientPage/SignUpPage";
 import Nav from "./Component/NavbarPreview";
 import {
   BrowserRouter as Router,
@@ -14,8 +15,9 @@ function App() {
     <Router>
       <Nav />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/Home" element={<HomePage />} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/SignUp" element={<SignUp />} />
       </Routes>
     </Router>
   );
