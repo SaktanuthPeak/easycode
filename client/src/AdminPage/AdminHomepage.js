@@ -1,10 +1,10 @@
 import React from 'react';
 
 
-function HomePage() {
+function AdminHomePage() {
 
     return (
-        <div className="App">
+        <div >
 
             <body >
                 <h1>Welcome to homepage</h1>
@@ -14,4 +14,4 @@ function HomePage() {
     );
 }
 
-export default HomePage;
+export default AdminHomePage;

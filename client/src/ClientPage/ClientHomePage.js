@@ -1,8 +1,8 @@
 import React from "react";
 
-function HomePage() {
+function ClientHomePage() {
   return (
-    <div className="App">
+    <div >
       <body>
         <h1>Welcome to homepage</h1>
       </body>
@@ -10,4 +10,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default ClientHomePage;
