@@ -16,6 +16,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,6 +57,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -78,6 +81,13 @@ export default function PrimarySearchAppBar() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+  const handleLogin = () => {
+    navigate('/Login')
+  };
+  const handleSignUp = () => {
+    navigate('/SignUp')
+  }
+
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -197,6 +207,7 @@ export default function PrimarySearchAppBar() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex", color: "black" } }}>
             <Button
+              onClick={handleLogin}
               sx={{
                 my: 2,
                 color: "black",
@@ -209,6 +220,7 @@ export default function PrimarySearchAppBar() {
               login
             </Button>
             <Button
+              onClick={handleSignUp}
               sx={{
                 my: 2,
                 color: "white",
