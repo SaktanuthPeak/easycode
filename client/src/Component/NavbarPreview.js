@@ -230,7 +230,7 @@ export default function PrimarySearchAppBar() {
                 borderRadius: 2,
               }}
             >
-              sign in
+              sign up
             </Button>
             {/* <IconButton
               size="large"

@@ -1,7 +1,14 @@
 import React from 'react';
 import { TextField, Button, Box, Typography, Link } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 
-function SignUp({ onSwitchToSignIn }) {
+function SignUp() {
+    const navigate = useNavigate();
+    const handleLogin = () => {
+        navigate('/Login')
+    };
+
+
     return (
         <Box
             sx={{
@@ -82,13 +89,12 @@ function SignUp({ onSwitchToSignIn }) {
                         required
                         fullWidth
                         name="dob"
-                        label="Date of Birth"
                         type="date"
                         id="dob"
 
                     />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                        <Link href="#" variant="body2" onClick={onSwitchToSignIn}>
+                        <Link href="#" variant="body2" onClick={handleLogin}>
                             Already have an account? Sign In
                         </Link>
                     </Box>

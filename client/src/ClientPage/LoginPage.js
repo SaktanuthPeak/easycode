@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Link, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useNavigate } from "react-router-dom";
 
 function Login({ onSwitchToSignUp }) {
+
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
-
+    const handleSignUp = () => {
+        navigate('/SignUp')
+    }
     return (
         <Box
             sx={{
@@ -71,7 +76,7 @@ function Login({ onSwitchToSignUp }) {
                         }}
                     />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                        <Link href="#" variant="body2" onClick={onSwitchToSignUp}>
+                        <Link href="#" variant="body2" onClick={handleSignUp}>
                             Don't have an account? Sign Up
                         </Link>
                     </Box>
