@@ -87,7 +87,9 @@ export default function PrimarySearchAppBar() {
   const handleSignUp = () => {
     navigate('/SignUp')
   }
-
+  const handleHome = () => {
+    navigate('/ClientHome')
+  }
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -192,6 +194,9 @@ export default function PrimarySearchAppBar() {
             EasyCode
           </Typography>
 
+          <Button sx={{ my: 2, color: "black", display: "block", ml: 2 }} onClick={handleHome}>
+            Home
+          </Button>
           <Button sx={{ my: 2, color: "black", display: "block", ml: 2 }}>
             Categories
           </Button>
