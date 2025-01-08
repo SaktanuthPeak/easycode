@@ -24,7 +24,6 @@ function App() {
     setIsAuthenticated(false);
     console.log('User has logged out');
     window.location.href = '/';
-    navigate('/Login');
     localStorage.clear();
   };
 
@@ -46,7 +45,7 @@ function App() {
           <Route path="/AdminHome" element={<AdminHomePage />} />
           <Route path="/Login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
           <Route path="/SignUp" element={<SignUp />} />
-          <Route path="*" element={<Navigate to="/ClientHome" />} />
+          <Route path="*" element={<Navigate to="/ClientHome" />} />cd ..
         </Routes>
         <webFooter />
       </main>
