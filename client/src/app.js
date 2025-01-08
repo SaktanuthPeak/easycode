@@ -1,11 +1,11 @@
 import { Routes, Route, Navigate, BrowserRouter, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import ClientHomePage from "./ClientPage/ClientHomePage";
-import AdminHomePage from "./AdminPage/AdminHomepage";
-import Login from "./ClientPage/LoginPage";
-import SignUp from "./ClientPage/SignUpPage";
-import Nav from "./Component/NavbarPreview";
-import NavbarLogin from "./Component/navbarLogin";
+import ClientHomePage from "./clientPage/clientHomePage";
+import AdminHomePage from "./adminPage/AdminHomepage";
+import Login from "./clientPage/loginPage";
+import SignUp from "./clientPage/signUpPage";
+import Nav from "./component/navbarPreview";
+import NavbarLogin from "./component/navbarLogin";
 import axios from 'axios';
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:1337";
@@ -20,9 +20,11 @@ function App() {
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    navigate('/Login');
-    console.log('User has logged out');
+    // setIsAuthenticated(false);
+    // navigate('/Login');
+    // console.log('User has logged out');
+    localStorage.clear();
+    window.location.href = '/';
   };
 
   return (
