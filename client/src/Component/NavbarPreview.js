@@ -17,7 +17,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import image from './Logo2.png'
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: "12px",
@@ -190,6 +190,7 @@ export default function PrimarySearchAppBar() {
                 color: "black",
               },
             }}
+            icon="image"
           >
             EasyCode
           </Typography>

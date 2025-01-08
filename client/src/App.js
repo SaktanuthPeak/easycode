@@ -20,6 +20,7 @@ function App() {
     console.log('User has logged out');
   }
 
+
   return (
     <BrowserRouter>
       <div>
@@ -36,3 +37,4 @@ function App() {
   );
 }
 export default App;
+

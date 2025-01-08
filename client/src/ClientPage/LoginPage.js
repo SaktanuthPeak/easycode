@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Link, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import EmailIcon from '@mui/icons-material/Email';
 import { useNavigate } from "react-router-dom";
+
 
 function Login({ onSwitchToSignUp }) {
 
@@ -44,6 +46,7 @@ function Login({ onSwitchToSignUp }) {
                 </Typography>
                 <Box component="form" sx={{ mt: 1, width: '100%' }}>
                     <TextField
+
                         margin="normal"
                         required
                         fullWidth
