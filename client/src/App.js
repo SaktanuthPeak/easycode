@@ -4,6 +4,7 @@ import AdminHomePage from "./AdminPage/AdminHomepage";
 import Login from "./ClientPage/LoginPage";
 import SignUp from "./ClientPage/SignUpPage";
 import Nav from "./Component/NavbarPreview";
+import NavbarLogin from "./Component/navbarLogin"
 import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom';
 import axios from 'axios'
 import { useState } from 'react';
@@ -24,6 +25,7 @@ function App() {
   return (
     <BrowserRouter>
       <div>
+        <NavbarLogin />
         <Nav />
       </div>
       <Routes>
