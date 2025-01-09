@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 const navigation = [
   { name: "Home", path: "/clienthome", current: true },
-  { name: "Categories", path: "/categoryPage", current: false },
+  { name: "Categories", path: "/category-page", current: false },
 ];
 
 function classNames(...classes) {
