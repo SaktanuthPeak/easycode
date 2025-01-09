@@ -27,6 +27,9 @@ export default function NavbarLogin({ onLogout }) {
   const handleOpenCart = () => {
     navigate("/Cart");
   };
+  const handlehome = () => {
+    navigate("/ClientHome")
+  }
 
   return (
     <Disclosure as="nav" className="bg-white-800">
@@ -159,6 +162,15 @@ export default function NavbarLogin({ onLogout }) {
                     Sign Out
                   </button>
                 </MenuItem>
+                <MenuItem>
+                  <button
+                    onClick={handlehome}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Home
+                  </button>
+                </MenuItem>
+
               </MenuItems>
             </Menu>
           </div>

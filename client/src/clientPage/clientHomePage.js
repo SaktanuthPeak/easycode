@@ -1,15 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const CategoryCard = ({ icon: Icon, title, courses, path, onNavigate }) => {
-  const handleClick = () => {
-    if (onNavigate) {
-      onNavigate(path);
-    }
-  };
-
+const CategoryCard = ({ icon: Icon, title, courses, onClick }) => {
   return (
     <div
-      onClick={handleClick}
+      onClick={onClick}
       className="h-full flex flex-col items-center p-6 bg-white rounded-lg shadow-md cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
     >
       <div className="bg-blue-100 rounded-full p-4 mb-4">
@@ -36,8 +31,7 @@ const CourseCard = ({ image, title, author, rating, ratingCount, duration, lectu
           {[...Array(5)].map((_, i) => (
             <svg
               key={i}
-              className={`w-5 h-5 ${i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'
-                }`}
+              className={`w-5 h-5 ${i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'}`}
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -52,64 +46,79 @@ const CourseCard = ({ image, title, author, rating, ratingCount, duration, lectu
     </div>
   </div>
 );
+const ClientHomePage = () => {
+  const navigate = useNavigate();
 
-const AdminHomePage = ({ onNavigate = (path) => console.log('Navigate to:', path) }) => {
+
+  const handleCategoryWebDev = () => navigate("/clienthome/web-dev");
+  const handleCategoryDataScience = () => navigate("/clienthome/data-sci");
+  const handleCategoryCyberSecurity = () => navigate("/clienthome/cyber-security");
+  const handleCategoryAI = () => navigate("/clienthome/ai");
+  const handleCategoryIoT = () => navigate("/clienthome/internet-of-things");
+  const handleCategoryGameDev = () => navigate("/clienthome/game-dev");
+
+  const handleSeeAllCourses = () => navigate("/courses");
+
   const categories = [
     {
       icon: () => (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
         </svg>
-      ), title: 'Web Development', courses: 15, path: '/category/web-dev'
+      ),
+      title: 'Web Development',
+      courses: 15,
+      onClick: handleCategoryWebDev,
     },
     {
       icon: () => (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
         </svg>
-      ), title: 'Data Science', courses: 12, path: '/category/data-science'
+      ),
+      title: 'Data Science',
+      courses: 12,
+      onClick: handleCategoryDataScience,
     },
     {
       icon: () => (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
         </svg>
-      ), title: 'Cyber Security', courses: 10, path: '/category/cyber-security'
+      ),
+      title: 'Cyber Security',
+      courses: 10,
+      onClick: handleCategoryCyberSecurity,
     },
     {
       icon: () => (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
         </svg>
-      ), title: 'Artificial Intelligence', courses: 14, path: '/category/ai'
+      ),
+      title: 'Artificial Intelligence',
+      courses: 14,
+      onClick: handleCategoryAI,
     },
     {
       icon: () => (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
         </svg>
-      ), title: 'Internet of Things', courses: 8, path: '/category/iot'
+      ),
+      title: 'Internet of Things',
+      courses: 8,
+      onClick: handleCategoryIoT,
     },
     {
       icon: () => (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
         </svg>
-      ), title: 'Game Development', courses: 11, path: '/category/game-dev'
-    },
-  ];
-
-  const courses = [
-    {
-      image: '/api/placeholder/400/200',
-      title: "Complete Web Development Bootcamp",
-      author: "John Smith",
-      rating: 4.8,
-      ratingCount: "1,200",
-      duration: "22 Total Hours",
-      lectures: "155 Lectures",
-      level: "Beginner",
-      price: "149.90"
+      ),
+      title: 'Game Development',
+      courses: 11,
+      onClick: handleCategoryGameDev,
     },
   ];
 
@@ -122,25 +131,7 @@ const AdminHomePage = ({ onNavigate = (path) => console.log('Navigate to:', path
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {categories.map((category, index) => (
-            <CategoryCard key={index} {...category} onNavigate={onNavigate} />
-          ))}
-        </div>
-      </div>
-
-      {/* Courses Section */}
-      <div>
-        <div className="flex justify-between mb-6">
-          <h1 className="text-3xl font-bold">Top Courses</h1>
-          <button
-            onClick={() => onNavigate('/courses')}
-            className="px-4 py-2 text-blue-600 hover:text-blue-700 font-semibold"
-          >
-            See All
-          </button>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {courses.map((course, index) => (
-            <CourseCard key={index} {...course} />
+            <CategoryCard key={index} {...category} />
           ))}
         </div>
       </div>
@@ -148,4 +139,4 @@ const AdminHomePage = ({ onNavigate = (path) => console.log('Navigate to:', path
   );
 };
 
-export default AdminHomePage;
+export default ClientHomePage;

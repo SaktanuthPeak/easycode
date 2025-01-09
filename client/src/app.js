@@ -7,9 +7,7 @@ import {
 } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-
 import AdminHomePage from "./adminPage/adminHomepage";
-
 import Login from "./clientPage/loginPage";
 import SignUp from "./clientPage/signUpPage";
 import ClientHomePage from "./clientPage/clientHomePage";
@@ -17,10 +15,17 @@ import categoryPage from "./clientPage/categoryPage";
 import cartPage from "./clientPage/cartPage";
 import profilePage from "./clientPage/profilePage";
 import learningPage from "./clientPage/learningPage";
-
 import Nav from "./component/navbarPreview";
 import NavbarLogin from "./component/navbarLogin";
 import webFooter from "./component/webFooter";
+import webDevPage from "./coursePage/webdevPage"
+import iotPage from "./coursePage/iotPage";
+import dataSciPage from "./coursePage/dataSciPage";
+import cyberSecPage from "./coursePage/cyberSecPage";
+import gameDevPage from "./coursePage/gameDevPage";
+import aiPage from "./coursePage/aiPage";
+
+
 axios.defaults.baseURL =
   process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 
@@ -49,12 +54,18 @@ function App() {
       {/* Main Content */}
       <main className="flex-grow">
         <Routes>
-          <Route path="/AdminHome" element={<AdminHomePage />} />
-          <Route path="/ClientHome" element={<ClientHomePage />} />
-          <Route path="/CategoryPage" element={<categoryPage />} />
-          <Route path="/My-learning" element={<learningPage />} />
-          <Route path="/Cart" element={<cartPage />} />
-          <Route path="/Profile" element={<profilePage />} />
+          <Route path="/adminhome" element={<AdminHomePage />} />
+          <Route path="/clienthome" element={<ClientHomePage />} />
+          <Route path="/category-page" element={<categoryPage />} />
+          <Route path="/my-learning" element={<learningPage />} />
+          <Route path="/cart" element={<cartPage />} />
+          <Route path="/profile" element={<profilePage />} />
+          <Route path="/clienthome/web-dev" element={<webDevPage />} />
+          <Route path="/clienthome/data-sci" element={<dataSciPage />} />
+          <Route path="/clienthome/cyber-security" element={<cyberSecPage />} />
+          <Route path="/clienthome/ai" element={<aiPage />} />
+          <Route path="/clienthome/internet-of-things" element={<iotPage />} />
+          <Route path="/clienthome/game-dev" element={<gameDevPage />} />
           <Route
             path="/Login"
             element={<Login onLoginSuccess={handleLoginSuccess} />}
@@ -63,7 +74,7 @@ function App() {
           <Route path="*" element={<Navigate to="/ClientHome" />} />
           cd ..
         </Routes>
-        <webFooter />
+
       </main>
       <footer class="bg-white dark:bg-gray-900">
         <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
