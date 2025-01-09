@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { TextField, Button, Box, Typography, Link, InputAdornment, IconButton } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import React from 'react';
+import { TextField, Button, Box, Typography, Link } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 
-function Login({ onSwitchToSignUp }) {
-    const [showPassword, setShowPassword] = useState(false);
-
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
+function SignUp() {
+    const navigate = useNavigate();
+    const handleLogin = () => {
+        navigate('/Login')
     };
+
 
     return (
         <Box
@@ -35,9 +35,28 @@ function Login({ onSwitchToSignUp }) {
                 }}
             >
                 <Typography component="h1" variant="h4" gutterBottom>
-                    Sign in to your account
+                    Create your account
                 </Typography>
                 <Box component="form" sx={{ mt: 1, width: '100%' }}>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="first-name"
+                        label="First Name"
+                        name="first-name"
+                        autoComplete="given-name"
+                        autoFocus
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="last-name"
+                        label="Last Name"
+                        name="last-name"
+                        autoComplete="family-name"
+                    />
                     <TextField
                         margin="normal"
                         required
@@ -46,7 +65,14 @@ function Login({ onSwitchToSignUp }) {
                         label="Email Address"
                         name="email"
                         autoComplete="email"
-                        autoFocus
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="username"
+                        label="Username"
+                        id="username"
                     />
                     <TextField
                         margin="normal"
@@ -54,25 +80,22 @@ function Login({ onSwitchToSignUp }) {
                         fullWidth
                         name="password"
                         label="Password"
-                        type={showPassword ? 'text' : 'password'}
+                        type="password"
                         id="password"
                         autoComplete="current-password"
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        onClick={handleClickShowPassword}
-                                        edge="end"
-                                    >
-                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="dob"
+                        type="date"
+                        id="dob"
+
                     />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                        <Link href="#" variant="body2" onClick={onSwitchToSignUp}>
-                            Don't have an account? Sign Up
+                        <Link href="#" variant="body2" onClick={handleLogin}>
+                            Already have an account? Sign In
                         </Link>
                     </Box>
                     <Button
@@ -81,7 +104,7 @@ function Login({ onSwitchToSignUp }) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Sign In
+                        Sign Up
                     </Button>
                 </Box>
             </Box>
@@ -89,4 +112,4 @@ function Login({ onSwitchToSignUp }) {
     );
 }
 
-export default Login;
+export default SignUp;
