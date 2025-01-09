@@ -14,7 +14,7 @@ import SignUp from "./clientPage/signUpPage";
 import ClientHomePage from "./clientPage/clientHomePage";
 import categoryPage from "./clientPage/categoryPage";
 import cartPage from "./clientPage/cartPage";
-import profilePage from "./clientPage/profilePage";
+import ProfilePage from "./clientPage/profilePage";
 import learningPage from "./clientPage/learningPage";
 import Nav from "./component/navbarPreview";
 import NavbarLogin from "./component/navbarLogin";
@@ -25,7 +25,7 @@ import dataSciPage from "./coursePage/dataSciPage";
 import cyberSecPage from "./coursePage/cyberSecPage";
 import gameDevPage from "./coursePage/gameDevPage";
 import aiPage from "./coursePage/aiPage";
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 axios.defaults.baseURL =
   process.env.REACT_APP_BASE_URL || "http://localhost:1337";
@@ -48,9 +48,7 @@ function App() {
     localStorage.clear();
   };
 
-
   return (
-
     <div className="flex flex-col min-h-screen">
       {/* Navbar */}
       <header>
@@ -73,12 +71,18 @@ function App() {
                 <Route path="/category-page" element={<categoryPage />} />
                 <Route path="/my-learning" element={<learningPage />} />
                 <Route path="/cart" element={<cartPage />} />
-                <Route path="/profile" element={<profilePage />} />
+                <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/clienthome/web-dev" element={<WebDevPage />} />
                 <Route path="/clienthome/data-sci" element={<dataSciPage />} />
-                <Route path="/clienthome/cyber-security" element={<cyberSecPage />} />
+                <Route
+                  path="/clienthome/cyber-security"
+                  element={<cyberSecPage />}
+                />
                 <Route path="/clienthome/ai" element={<aiPage />} />
-                <Route path="/clienthome/internet-of-things" element={<iotPage />} />
+                <Route
+                  path="/clienthome/internet-of-things"
+                  element={<iotPage />}
+                />
                 <Route path="/clienthome/game-dev" element={<gameDevPage />} />
                 <Route
                   path="/login"
@@ -95,10 +99,7 @@ function App() {
       <WebFooter />
     </div>
   );
-
 }
-
-
 
 export default function AppWithRouter() {
   return (
