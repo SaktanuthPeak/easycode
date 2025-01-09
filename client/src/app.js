@@ -45,9 +45,7 @@ function App() {
       {/* Navbar */}
       <header>
         {isAuthenticated ? <NavbarLogin onLogout={handleLogout} /> : <Nav />}
-        <NavbarLogin />
       </header>
-
       {/* Main Content */}
       <main className="flex-grow">
         <Routes>
