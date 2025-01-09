@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "muhahahas",
+  "info": {
+    "singularName": "muhahaha",
+    "pluralName": "muhahahas",
+    "displayName": "muhahaha"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "aaaa": {
+      "type": "string"
+    }
+  }
+}
