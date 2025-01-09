@@ -4,8 +4,9 @@ import {
   Navigate,
   BrowserRouter,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 import AdminHomePage from "./adminPage/adminHomepage";
 import Login from "./clientPage/loginPage";
@@ -24,7 +25,7 @@ import dataSciPage from "./coursePage/dataSciPage";
 import cyberSecPage from "./coursePage/cyberSecPage";
 import gameDevPage from "./coursePage/gameDevPage";
 import aiPage from "./coursePage/aiPage";
-
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 axios.defaults.baseURL =
   process.env.REACT_APP_BASE_URL || "http://localhost:1337";
@@ -32,6 +33,8 @@ axios.defaults.baseURL =
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const nodeRef = useRef(null);
 
   const handleLoginSuccess = () => {
     setIsAuthenticated(true);
@@ -45,7 +48,9 @@ function App() {
     localStorage.clear();
   };
 
+
   return (
+
     <div className="flex flex-col min-h-screen">
       {/* Navbar */}
       <header>
@@ -53,27 +58,41 @@ function App() {
       </header>
       {/* Main Content */}
       <main className="flex-grow">
-        <Routes>
-          <Route path="/adminhome" element={<AdminHomePage />} />
-          <Route path="/clienthome" element={<ClientHomePage />} />
-          <Route path="/category-page" element={<categoryPage />} />
-          <Route path="/my-learning" element={<learningPage />} />
-          <Route path="/cart" element={<cartPage />} />
-          <Route path="/profile" element={<profilePage />} />
-          <Route path="/clienthome/web-dev" element={<webDevPage />} />
-          <Route path="/clienthome/data-sci" element={<dataSciPage />} />
-          <Route path="/clienthome/cyber-security" element={<cyberSecPage />} />
-          <Route path="/clienthome/ai" element={<aiPage />} />
-          <Route path="/clienthome/internet-of-things" element={<iotPage />} />
-          <Route path="/clienthome/game-dev" element={<gameDevPage />} />
-          <Route
-            path="/login"
-            element={<Login onLoginSuccess={handleLoginSuccess} />}
-          />
-          <Route path="/signUp" element={<SignUp />} />
-          <Route path="*" element={<Navigate to="/clienthome" />} />
-          cd ..
-        </Routes>
+        <TransitionGroup>
+          <CSSTransition
+            in={true}
+            timeout={500}
+            classNames="fade"
+            unmountOnExit
+            nodeRef={nodeRef}
+          >
+            <div ref={nodeRef}>
+              <Routes>
+                <Route path="/adminhome" element={<AdminHomePage />} />
+                <Route path="/clienthome" element={<ClientHomePage />} />
+                <Route path="/category-page" element={<categoryPage />} />
+                <Route path="/my-learning" element={<learningPage />} />
+                <Route path="/cart" element={<cartPage />} />
+                <Route path="/profile" element={<profilePage />} />
+                <Route path="/clienthome/web-dev" element={<webDevPage />} />
+                <Route path="/clienthome/data-sci" element={<dataSciPage />} />
+                <Route path="/clienthome/cyber-security" element={<cyberSecPage />} />
+                <Route path="/clienthome/ai" element={<aiPage />} />
+                <Route path="/clienthome/internet-of-things" element={<iotPage />} />
+                <Route path="/clienthome/game-dev" element={<gameDevPage />} />
+                <Route
+                  path="/login"
+                  element={<Login onLoginSuccess={handleLoginSuccess} />}
+                />
+                <Route path="/signUp" element={<SignUp />} />
+                <Route path="*" element={<Navigate to="/clienthome" />} />
+                cd ..
+              </Routes>
+            </div>
+
+          </CSSTransition>
+        </TransitionGroup>
+
 
       </main>
       <footer class="bg-white dark:bg-gray-900">
@@ -258,7 +277,10 @@ function App() {
       </footer>
     </div>
   );
+
 }
+
+
 
 export default function AppWithRouter() {
   return (
