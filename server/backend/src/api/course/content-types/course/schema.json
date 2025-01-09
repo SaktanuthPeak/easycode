@@ -17,15 +17,29 @@
       "max": "1000",
       "min": "1"
     },
-    "booked_date": {
-      "type": "date"
-    },
-    "expiry_date": {
-      "type": "date"
-    },
-    "payment_status": {
+    "title": {
       "type": "string",
-      "maxLength": 30,
+      "maxLength": 20,
+      "minLength": 1
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 200,
+      "minLength": 1
+    },
+    "Price": {
+      "type": "float",
+      "max": 10000,
+      "min": 0
+    },
+    "amoutn": {
+      "type": "integer",
+      "max": 2000,
+      "min": 1
+    },
+    "type": {
+      "type": "string",
+      "maxLength": 100,
       "minLength": 1
     }
   }

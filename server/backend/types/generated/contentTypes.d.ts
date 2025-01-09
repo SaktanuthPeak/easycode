@@ -381,7 +381,14 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    booked_date: Schema.Attribute.Date;
+    amoutn: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 2000;
+          min: 1;
+        },
+        number
+      >;
     courese_id: Schema.Attribute.BigInteger &
       Schema.Attribute.SetMinMax<
         {
@@ -393,19 +400,36 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    expiry_date: Schema.Attribute.Date;
+    description: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 200;
+        minLength: 1;
+      }>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::course.course'
     > &
       Schema.Attribute.Private;
-    payment_status: Schema.Attribute.String &
+    Price: Schema.Attribute.Float &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 10000;
+          min: 0;
+        },
+        number
+      >;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
-        maxLength: 30;
+        maxLength: 20;
         minLength: 1;
       }>;
-    publishedAt: Schema.Attribute.DateTime;
+    type: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+        minLength: 1;
+      }>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
