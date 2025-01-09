@@ -12,9 +12,9 @@ import { useNavigate } from "react-router-dom";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "Home", href: "/clienthome", current: true },
-  { name: "Categories", href: "/categorypage", current: false },
-  { name: "My learning", href: "/my-learning", current: false },
+  { name: "Home", path: "/clienthome", current: true },
+  { name: "Categories", path: "/categorypage", current: false },
+  { name: "My learning", path: "/my-learning", current: false },
 ];
 
 function classNames(...classes) {
@@ -27,9 +27,6 @@ export default function NavbarLogin({ onLogout }) {
   const handleOpenCart = () => {
     navigate("/cart");
   };
-  const handlehome = () => {
-    navigate("/clienthome")
-  }
 
   return (
     <Disclosure as="nav" className="bg-white-800">
@@ -63,10 +60,10 @@ export default function NavbarLogin({ onLogout }) {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
-                  <a
+                  <button
                     key={item.name}
-                    href={item.href}
                     aria-current={item.current ? "page" : undefined}
+                    onClick={() => navigate(item.path)}
                     className={classNames(
                       (item.current = () =>
                         "text-black rounded-md px-3 py-2 text-sm font-medium")
@@ -76,7 +73,7 @@ export default function NavbarLogin({ onLogout }) {
                     )}
                   >
                     {item.name}
-                  </a>
+                  </button>
                 ))}
                 <div class="relative flex items-center hidden md:inline-flex">
                   <input
@@ -162,15 +159,6 @@ export default function NavbarLogin({ onLogout }) {
                     Sign Out
                   </button>
                 </MenuItem>
-                <MenuItem>
-                  <button
-                    onClick={handlehome}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Home
-                  </button>
-                </MenuItem>
-
               </MenuItems>
             </Menu>
           </div>

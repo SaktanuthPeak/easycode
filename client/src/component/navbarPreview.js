@@ -11,8 +11,8 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 
 const navigation = [
-  { name: "Home", href: "/clienthome", current: true },
-  { name: "Categories", href: "/categoryPage", current: false },
+  { name: "Home", path: "/clienthome", current: true },
+  { name: "Categories", path: "/categoryPage", current: false },
 ];
 
 function classNames(...classes) {
@@ -61,9 +61,9 @@ export default function NavbarPreview({ onLogout }) {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
-                  <a
+                  <button
                     key={item.name}
-                    href={item.href}
+                    onClick={() => navigate(item.path)}
                     aria-current={item.current ? "page" : undefined}
                     className={classNames(
                       (item.current = () =>
@@ -74,7 +74,7 @@ export default function NavbarPreview({ onLogout }) {
                     )}
                   >
                     {item.name}
-                  </a>
+                  </button>
                 ))}
                 <div class="relative flex items-center hidden md:inline-flex">
                   <input
