@@ -11,7 +11,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 
 const navigation = [
-  { name: "Home", href: "/ClientHome", current: true },
+  { name: "Home", href: "/clienthome", current: true },
   { name: "Categories", href: "/categoryPage", current: false },
 ];
 
@@ -23,11 +23,12 @@ export default function NavbarPreview({ onLogout }) {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    navigate("/Login");
+    navigate("/login");
   };
   const handleSignUp = () => {
-    navigate("/SignUp");
+    navigate("/signUp");
   };
+
   return (
     <Disclosure as="nav" className="bg-white-800">
       <div className="mx-auto max-w-1xl px-2 sm:px-6 lg:px-8">

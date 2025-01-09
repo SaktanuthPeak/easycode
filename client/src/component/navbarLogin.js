@@ -12,9 +12,9 @@ import { useNavigate } from "react-router-dom";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "Home", href: "/ClientHome", current: true },
-  { name: "Categories", href: "/CategoryPage", current: false },
-  { name: "My learning", href: "/My-learning", current: false },
+  { name: "Home", href: "/clienthome", current: true },
+  { name: "Categories", href: "/categorypage", current: false },
+  { name: "My learning", href: "/my-learning", current: false },
 ];
 
 function classNames(...classes) {
@@ -25,10 +25,10 @@ export default function NavbarLogin({ onLogout }) {
   const navigate = useNavigate();
 
   const handleOpenCart = () => {
-    navigate("/Cart");
+    navigate("/cart");
   };
   const handlehome = () => {
-    navigate("/ClientHome")
+    navigate("/clienthome")
   }
 
   return (

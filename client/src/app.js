@@ -35,7 +35,7 @@ function App() {
 
   const handleLoginSuccess = () => {
     setIsAuthenticated(true);
-    navigate("/ClientHome");
+    navigate("/clienthome");
   };
 
   const handleLogout = () => {
@@ -67,11 +67,11 @@ function App() {
           <Route path="/clienthome/internet-of-things" element={<iotPage />} />
           <Route path="/clienthome/game-dev" element={<gameDevPage />} />
           <Route
-            path="/Login"
+            path="/login"
             element={<Login onLoginSuccess={handleLoginSuccess} />}
           />
-          <Route path="/SignUp" element={<SignUp />} />
-          <Route path="*" element={<Navigate to="/ClientHome" />} />
+          <Route path="/signUp" element={<SignUp />} />
+          <Route path="*" element={<Navigate to="/clienthome" />} />
           cd ..
         </Routes>
 
