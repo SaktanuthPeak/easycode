@@ -6,15 +6,21 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { useState } from "react";
-import ClientHomePage from "./clientPage/clientHomePage";
+import axios from "axios";
+
 import AdminHomePage from "./adminPage/adminHomepage";
+
 import Login from "./clientPage/loginPage";
 import SignUp from "./clientPage/signUpPage";
+import ClientHomePage from "./clientPage/clientHomePage";
+import categoryPage from "./clientPage/categoryPage";
+import cartPage from "./clientPage/cartPage";
+import profilePage from "./clientPage/profilePage";
+import learningPage from "./clientPage/learningPage";
+
 import Nav from "./component/navbarPreview";
 import NavbarLogin from "./component/navbarLogin";
 import webFooter from "./component/webFooter";
-import axios from "axios";
-import categoryPage from "./clientPage/categoryPage";
 axios.defaults.baseURL =
   process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 
@@ -39,14 +45,18 @@ function App() {
       {/* Navbar */}
       <header>
         {isAuthenticated ? <NavbarLogin onLogout={handleLogout} /> : <Nav />}
+        <NavbarLogin />
       </header>
 
       {/* Main Content */}
       <main className="flex-grow">
         <Routes>
-          <Route path="/ClientHome" element={<ClientHomePage />} />
           <Route path="/AdminHome" element={<AdminHomePage />} />
-          <Route path="CategoryPage" element={<categoryPage />} />
+          <Route path="/ClientHome" element={<ClientHomePage />} />
+          <Route path="/CategoryPage" element={<categoryPage />} />
+          <Route path="/My-learning" element={<learningPage />} />
+          <Route path="/Cart" element={<cartPage />} />
+          <Route path="/Profile" element={<profilePage />} />
           <Route
             path="/Login"
             element={<Login onLoginSuccess={handleLoginSuccess} />}
