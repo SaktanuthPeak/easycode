@@ -1,67 +1,63 @@
 import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { ChevronDown, HomeIcon, Code, Database, Shield, Brain, Wifi, Gamepad } from "lucide-react";
 
+const CategorySidebar = ({ onNavigate = () => { } }) => {
+    const [isOpen, setIsOpen] = React.useState(false);
 
-
-const CategorySidebar = () => {
-    const navigate = useNavigate();
-    const handleCategoryWebDev = () => navigate("/clienthome/web-dev");
-    const handleCategoryDataScience = () => navigate("/clienthome/data-sci");
-    const handleCategoryCyberSecurity = () => navigate("/clienthome/cyber-security");
-    const handleCategoryAI = () => navigate("/clienthome/ai");
-    const handleCategoryIoT = () => navigate("/clienthome/internet-of-things");
-    const handleCategoryGameDev = () => navigate("/clienthome/game-dev");
-
+    const categories = [
+        { name: "Web Development", path: "/clienthome/web-dev", icon: Code },
+        { name: "Data Science", path: "/clienthome/data-sci", icon: Database },
+        { name: "Cyber Security", path: "/clienthome/cyber-security", icon: Shield },
+        { name: "Artificial Intelligence", path: "/clienthome/ai", icon: Brain },
+        { name: "Internet of Things", path: "/clienthome/internet-of-things", icon: Wifi },
+        { name: "Game Development", path: "/clienthome/game-dev", icon: Gamepad },
+    ];
 
     return (
-        <div className="bg-white shadow-md rounded-lg p-4">
-            <h2 className="text-lg font-bold mb-4">Number of Chapters</h2>
-            <ul className="space-y-2">
-                <li>
-                    <label className="flex items-center">
-                        <input type="checkbox" className="mr-2" /> 1-10
-                    </label>
-                </li>
-                <li>
-                    <label className="flex items-center">
-                        <input type="checkbox" className="mr-2" /> 10-15
-                    </label>
-                </li>
-                <li>
-                    <label className="flex items-center">
-                        <input type="checkbox" className="mr-2" /> 15-20
-                    </label>
-                </li>
-                <li>
-                    <label className="flex items-center">
-                        <input type="checkbox" className="mr-2" /> 20-25
-                    </label>
-                </li>
-            </ul>
-            <h2 className="text-lg font-bold mt-6 mb-4">Category</h2>
-            <ul className="space-y-2">
-                <li>
-                    <button onClick={handleCategoryWebDev} className="text-blue-500 hover:underline">Web Development</button>
+        <div className="w-64 bg-white rounded-lg shadow-md p-4">
+            <div className="pb-3 border-b border-gray-200">
+                <button
+                    onClick={() => onNavigate("/clienthome")}
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors mb-4"
+                >
+                    <HomeIcon className="w-4 h-4" />
+                    <span>Back to Home</span>
+                </button>
+                <h2 className="text-lg font-semibold">Categories</h2>
+            </div>
 
-                </li>
-                <li>
-                    <button onClick={handleCategoryDataScience} className="text-blue-500 hover:underline">Data Science</button>
+            <div className="mt-4 relative">
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium bg-gray-50 hover:bg-gray-100 rounded-md border border-gray-200 transition-colors"
+                >
+                    <span>Select a Category</span>
+                    <ChevronDown className={`w-4 h-4 transform transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                </button>
 
-                </li>
-                <li>
-                    <button onClick={handleCategoryCyberSecurity} className="text-blue-500 hover:underline">Cyber Security</button>
-                </li>
-                <li>
-                    <button onClick={handleCategoryAI} className="text-blue-500 hover:underline">Artificial Inteligence</button>
-                </li>
-                <li>
-                    <button onClick={handleCategoryIoT} className="text-blue-500 hover:underline">Internet of things</button>
-                </li>
-                <li>
-                    <button onClick={handleCategoryGameDev} className="text-blue-500 hover:underline">Game Development</button>
-                </li>
-            </ul>
+                {isOpen && (
+                    <div className="absolute z-10 w-full mt-2 bg-white rounded-md shadow-lg border border-gray-200">
+                        {categories.map((category) => {
+                            const Icon = category.icon;
+                            return (
+                                <button
+                                    key={category.path}
+                                    onClick={() => {
+                                        onNavigate(category.path);
+                                        setIsOpen(false);
+                                    }}
+                                    className="flex items-center gap-2 w-full px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors first:rounded-t-md last:rounded-b-md"
+                                >
+                                    <Icon className="w-4 h-4" />
+                                    <span>{category.name}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
-export default CategorySidebar
+
+export default CategorySidebar;
