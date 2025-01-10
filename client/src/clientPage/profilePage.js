@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import dayjs from "dayjs";
+
 const ProfilePage = () => {
   const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -41,8 +43,8 @@ const ProfilePage = () => {
             <p className="text-xl   mb-6">First name : {user.firstname}</p>
             <p className="text-xl   mb-6">Last name : {user.lastname}</p>
             <p className="text-xl   mb-6">Username: {user.username}</p>
-            <p className="text-xl   mb-6">Birth date : {user.birth_date}</p>
-            <p className="text-xl   mb-6">Phone number : {user.phone}</p>
+            <p className="text-xl   mb-6">Birth date : {dayjs(user.birth_date).format('DD/MM/YYYY')}</p>
+            <p className="text-xl   mb-6">Phone number : 0{user.phone}</p>
           </div>
         </div>
       </div>
