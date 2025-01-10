@@ -69,6 +69,15 @@
       "type": "biginteger",
       "max": "10",
       "min": "4"
+    },
+    "firstname": {
+      "type": "string"
+    },
+    "lastname": {
+      "type": "string"
+    },
+    "birth_date": {
+      "type": "date"
     }
   }
 }
