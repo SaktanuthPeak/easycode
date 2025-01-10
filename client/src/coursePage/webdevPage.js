@@ -24,14 +24,14 @@ const HtmlAndCssCard = () => {
             />
             <div className="p-4">
                 <h3 className="text-lg font-bold">Front-End development with HTML and CSS</h3>
-                <p className="text-sm text-gray-600">By Ronald Richards</p>
+                <p className="text-sm text-gray-600">Created By Me :)</p>
                 <p className="text-sm text-gray-600">
                     ⭐⭐⭐⭐⭐ (2300 Ratings)
                 </p>
                 <p className="text-sm text-gray-600">
                     22 Total Hours, 155 Lectures, Beginner
                 </p>
-                <p className="text-lg font-bold mt-2">$149.9</p>
+                <p className="text-lg font-bold mt-2">฿99.99</p>
             </div>
         </div>
     );
@@ -47,14 +47,14 @@ const ReactWithNextjsCard = () => {
             />
             <div className="p-4">
                 <h3 className="text-lg font-bold">Developing website with React and Next.js</h3>
-                <p className="text-sm text-gray-600">By Ronald Richards</p>
+                <p className="text-sm text-gray-600">Created By Me :)</p>
                 <p className="text-sm text-gray-600">
                     ⭐⭐⭐⭐⭐ (2300 Ratings)
                 </p>
                 <p className="text-sm text-gray-600">
                     22 Total Hours, 155 Lectures, Beginner
                 </p>
-                <p className="text-lg font-bold mt-2">$149.9</p>
+                <p className="text-lg font-bold mt-2">฿99.99</p>
             </div>
         </div>
     );
@@ -77,14 +77,14 @@ const JavascriptsCard = () => {
             <div className="p-4">
                 <h3 className="text-lg font-bold">Zero to Hero:</h3>
                 <h3 className="text-lg font-bold">Javascripts</h3>
-                <p className="text-sm text-gray-600">By Ronald Richards</p>
+                <p className="text-sm text-gray-600">Created By Me :)</p>
                 <p className="text-sm text-gray-600">
                     ⭐⭐⭐⭐⭐ (2300 Ratings)
                 </p>
                 <p className="text-sm text-gray-600">
                     22 Total Hours, 155 Lectures, Beginner
                 </p>
-                <p className="text-lg font-bold mt-2">$149.9</p>
+                <p className="text-lg font-bold mt-2">฿99.99</p>
             </div>
         </div>
     );
@@ -100,14 +100,14 @@ const TailwindcssCard = () => {
             />
             <div className="p-4">
                 <h3 className="text-lg font-bold">Designing website with Tailwind CSS </h3>
-                <p className="text-sm text-gray-600">By Ronald Richards</p>
+                <p className="text-sm text-gray-600">Created By Me :)</p>
                 <p className="text-sm text-gray-600">
                     ⭐⭐⭐⭐⭐ (2300 Ratings)
                 </p>
                 <p className="text-sm text-gray-600">
                     22 Total Hours, 155 Lectures, Beginner
                 </p>
-                <p className="text-lg font-bold mt-2">$149.9</p>
+                <p className="text-lg font-bold mt-2">฿99.99</p>
             </div>
         </div>
     );
@@ -123,14 +123,14 @@ const StrapiCard = () => {
             />
             <div className="p-4">
                 <h3 className="text-lg font-bold">Back-End development with Strapi</h3>
-                <p className="text-sm text-gray-600">By Ronald Richards</p>
+                <p className="text-sm text-gray-600">Created By Me :)</p>
                 <p className="text-sm text-gray-600">
                     ⭐⭐⭐⭐⭐ (2300 Ratings)
                 </p>
                 <p className="text-sm text-gray-600">
                     22 Total Hours, 155 Lectures, Beginner
                 </p>
-                <p className="text-lg font-bold mt-2">$149.9</p>
+                <p className="text-lg font-bold mt-2">฿99.99</p>
             </div>
         </div>
     );
@@ -146,14 +146,14 @@ const MysqlCard = () => {
             />
             <div className="p-4">
                 <h3 className="text-lg font-bold">Developing Back-End with MySql</h3>
-                <p className="text-sm text-gray-600">By Ronald Richards</p>
+                <p className="text-sm text-gray-600">Created By Me :)</p>
                 <p className="text-sm text-gray-600">
                     ⭐⭐⭐⭐⭐ (2300 Ratings)
                 </p>
                 <p className="text-sm text-gray-600">
                     22 Total Hours, 155 Lectures, Beginner
                 </p>
-                <p className="text-lg font-bold mt-2">$149.9</p>
+                <p className="text-lg font-bold mt-2">฿99.99</p>
             </div>
         </div>
     );
@@ -169,14 +169,14 @@ const DjangoCard = () => {
             />
             <div className="p-4">
                 <h3 className="text-lg font-bold">Developing website with Django framework</h3>
-                <p className="text-sm text-gray-600">By Ronald Richards</p>
+                <p className="text-sm text-gray-600">Created By Me :)</p>
                 <p className="text-sm text-gray-600">
                     ⭐⭐⭐⭐⭐ (2300 Ratings)
                 </p>
                 <p className="text-sm text-gray-600">
                     22 Total Hours, 155 Lectures, Beginner
                 </p>
-                <p className="text-lg font-bold mt-2">$149.9</p>
+                <p className="text-lg font-bold mt-2">฿99.99</p>
             </div>
         </div>
     );

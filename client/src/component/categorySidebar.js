@@ -1,23 +1,37 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
 import { ChevronDown, HomeIcon, Code, Database, Shield, Brain, Wifi, Gamepad } from "lucide-react";
 
-const CategorySidebar = ({ onNavigate = () => { } }) => {
+const CategorySidebar = () => {
     const [isOpen, setIsOpen] = React.useState(false);
+    const navigate = useNavigate();
+    const handleCategoryWebDev = () => navigate("/clienthome/web-dev");
+    const handleCategoryDataScience = () => navigate("/clienthome/data-sci");
+    const handleCategoryCyberSecurity = () => navigate("/clienthome/cyber-security");
+    const handleCategoryAI = () => navigate("/clienthome/ai");
+    const handleCategoryIoT = () => navigate("/clienthome/internet-of-things");
+    const handleCategoryGameDev = () => navigate("/clienthome/game-dev");
+    const handlehomebutton = () => navigate("/clienthome");
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    }
 
     const categories = [
-        { name: "Web Development", path: "/clienthome/web-dev", icon: Code },
-        { name: "Data Science", path: "/clienthome/data-sci", icon: Database },
-        { name: "Cyber Security", path: "/clienthome/cyber-security", icon: Shield },
-        { name: "Artificial Intelligence", path: "/clienthome/ai", icon: Brain },
-        { name: "Internet of Things", path: "/clienthome/internet-of-things", icon: Wifi },
-        { name: "Game Development", path: "/clienthome/game-dev", icon: Gamepad },
+        { icon: Code, name: "Web Development", onClick: handleCategoryWebDev },
+        { icon: Database, name: "Data Science", onClick: handleCategoryDataScience },
+        { icon: Shield, name: "Cyber Security", onClick: handleCategoryCyberSecurity },
+        { icon: Brain, name: "Artificial Intelligence", onClick: handleCategoryAI },
+        { icon: Wifi, name: "Internet of Things", onClick: handleCategoryIoT },
+        { icon: Gamepad, name: "Game Development", onClick: handleCategoryGameDev },
     ];
 
     return (
         <div className="w-64 bg-white rounded-lg shadow-md p-4">
             <div className="pb-3 border-b border-gray-200">
                 <button
-                    onClick={() => onNavigate("/clienthome")}
+                    onClick={handlehomebutton}
                     className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors mb-4"
                 >
                     <HomeIcon className="w-4 h-4" />
@@ -42,10 +56,7 @@ const CategorySidebar = ({ onNavigate = () => { } }) => {
                             return (
                                 <button
                                     key={category.path}
-                                    onClick={() => {
-                                        onNavigate(category.path);
-                                        setIsOpen(false);
-                                    }}
+                                    onClick={category.onClick}
                                     className="flex items-center gap-2 w-full px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors first:rounded-t-md last:rounded-b-md"
                                 >
                                     <Icon className="w-4 h-4" />
