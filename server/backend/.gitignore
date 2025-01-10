@@ -10,13 +10,11 @@ Icon
 .Trashes
 ._*
 
-
 ############################
 # Linux
 ############################
 
 *~
-
 
 ############################
 # Windows
@@ -30,7 +28,6 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
-
 
 ############################
 # Packages
@@ -60,14 +57,12 @@ $RECYCLE.BIN/
 *.out
 *.pid
 
-
 ############################
 # Logs and databases
 ############################
 
 .tmp
 *.log
-
 
 ############################
 # Misc.
@@ -122,7 +117,12 @@ coverage
 license.txt
 exports
 .strapi
-dist
-build
 .strapi-updater.json
 .strapi-cloud.json
+
+############################
+# Ensure Strapi schema files are included
+############################
+
+!src/**
+!src/api/**
