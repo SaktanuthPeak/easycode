@@ -1,6 +1,25 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 const ProfilePage = () => {
+  const [user, setUser] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const fetchItems = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get("api/users/me");
+      setUser(response.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  console.log(user);
+  console.log(user.firstname);
+  useEffect(() => {
+    fetchItems();
+  }, []);
   return (
     <div className="bg-gradient-to-b from-indigo-950 to-blue-900 min-h-screen flex items-center justify-center p-4">
       <div className="font-std mb-10 w-full rounded-2xl bg-white p-10 font-normal leading-relaxed text-gray-900 shadow-xl">
@@ -19,61 +38,11 @@ const ProfilePage = () => {
 
           {/* User Information */}
           <div className="md:w-2/3 md:pl-8">
-            <h1 className="text-2xl font-bold text-indigo-800 mb-2">
-              John Doe
-            </h1>
-            <p className="text-gray-600 mb-6">Software Developer</p>
-
-            <h2 className="text-xl font-semibold text-indigo-800 mb-4">
-              Organization Information
-            </h2>
-            <p className="text-gray-700 mb-6">
-              Estep Bilişim / Software Developer
-            </p>
-
-            <h2 className="text-xl font-semibold text-indigo-800 mb-4">
-              Contact Information
-            </h2>
-            <ul className="space-y-2 text-gray-700">
-              <li className="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2 text-indigo-800"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                </svg>
-                john.doe@example.com
-              </li>
-              <li className="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2 text-indigo-800"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                </svg>
-                +1 (555) 123-4567
-              </li>
-              <li className="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2 text-indigo-800"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                San Francisco, CA
-              </li>
-            </ul>
+            <p className="text-xl   mb-6">First name : {user.firstname}</p>
+            <p className="text-xl   mb-6">Last name : {user.lastname}</p>
+            <p className="text-xl   mb-6">Username: {user.username}</p>
+            <p className="text-xl   mb-6">Birth date : {user.birth_date}</p>
+            <p className="text-xl   mb-6">Phone number : {user.phone}</p>
           </div>
         </div>
       </div>
