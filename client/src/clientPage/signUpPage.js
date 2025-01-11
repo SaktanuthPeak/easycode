@@ -1,52 +1,76 @@
 import { useState } from "react";
 import signUpImage from "./signup.jpg";
+import { Toast, } from "reactstrap";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const SignUpScreen = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [errMsg, setErrMsg] = useState(null);
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [dob, setDob] = useState("");
 
-    const handleSignUp = async (formData) => {
+
+const storeUser = (data) => {
+    localStorage.setItem(
+        "user",
+        JSON.stringify({
+            username: data.username,
+            jwt: data.jwt,
+        })
+    )
+};
+
+
+
+
+function Register(props) {
+    const initialUser = { identifier: "", password: "", email: "" };
+    const [errMsg, setErrMsg] = useState(null)
+    const [user, setUser] = useState(initialUser)
+    const [isLoading, setIsLoading] = useState(false)
+    const navigate = useNavigate()
+
+    const signup = async (formData) => {
         try {
             setIsLoading(true);
-            setErrMsg(null);
-            // Replace with your API call
-            console.log("Signup data:", formData);
-            alert("Account created successfully!");
-        } catch (err) {
-            console.log(err);
-            setErrMsg("An error occurred. Please try again.");
+            const url = "http://localhost:1337/api/auth/local/register";
+            const payload = {
+                username: formData.username,
+                email: formData.email,
+                password: formData.password,
+                // firstname: formData.firstname,
+                // lastname: formData.lastname,
+                // birth_date: formData.birth_date,
+            };
+            const { data } = await axios.post(url, payload);
+            if (data.jwt) {
+                storeUser(data);
+                Toast.success("Registered successfully!", { hideProgressBar: true });
+                setUser(initialUser);
+
+            }
+        } catch (error) {
+            setErrMsg(error.response?.data?.error?.message || "An unexpected error occurred.");
         } finally {
             setIsLoading(false);
+            navigate("/login");
         }
     };
 
-    const onFinish = () => {
-        handleSignUp({
-            firstName,
-            lastName,
-            email,
-            username,
-            password,
-            dob,
-        });
+
+    const handleUserChange = ({ target }) => {
+        const { name, value } = target;
+        setUser((currentUser) => ({
+            ...currentUser,
+            [name]: value,
+        }));
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="flex w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
-                {/* Left Form Section */}
                 <div className="w-full md:w-1/2 p-8">
                     <h2 className="text-2xl font-bold text-center mb-8">Sign Up</h2>
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
-                            onFinish();
+                            signup(user);
                         }}
                         autoComplete="off"
                         className="space-y-6"
@@ -56,112 +80,99 @@ const SignUpScreen = () => {
                                 {errMsg}
                             </div>
                         )}
-
-                        <div>
-                            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+                        {/* <div>
+                            <label htmlFor="firstname" className="block text-sm font-medium text-gray-700 mb-1">
                                 First Name
                             </label>
                             <input
-                                id="firstName"
+                                id="firstname"
+                                name="firstname"
                                 type="text"
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
+                                onChange={handleUserChange}
                                 required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md"
                             />
-                        </div>
-
-                        <div>
-                            <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+                        </div> */}
+                        {/* <div>
+                            <label htmlFor="lastname" className="block text-sm font-medium text-gray-700 mb-1">
                                 Last Name
                             </label>
                             <input
-                                id="lastName"
+                                id="lastname"
+                                name="lastname"
                                 type="text"
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
+                                onChange={handleUserChange}
                                 required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md"
                             />
-                        </div>
-
+                        </div> */}
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                                Email Address
+                                Email
                             </label>
                             <input
                                 id="email"
+                                name="email"
                                 type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={handleUserChange}
                                 required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md"
                             />
                         </div>
-
                         <div>
                             <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
                                 Username
                             </label>
                             <input
                                 id="username"
+                                name="username"
                                 type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={handleUserChange}
                                 required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md"
                             />
                         </div>
-
                         <div>
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                                 Password
                             </label>
                             <input
                                 id="password"
+                                name="password"
                                 type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={handleUserChange}
                                 required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md"
                             />
                         </div>
-
-                        <div>
-                            <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">
+                        {/* <div>
+                            <label htmlFor="birth_date" className="block text-sm font-medium text-gray-700 mb-1">
                                 Date of Birth
                             </label>
                             <input
-                                id="dob"
+                                id="birth_date"
+                                name="birth_date"
                                 type="date"
-                                value={dob}
-                                onChange={(e) => setDob(e.target.value)}
+                                onChange={handleUserChange}
                                 required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md"
                             />
-                        </div>
-
+                        </div> */}
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none disabled:opacity-50"
                         >
                             {isLoading ? "Loading..." : "Sign Up"}
                         </button>
                     </form>
                 </div>
-
-                {/* Right Image Section */}
                 <div className="hidden md:block w-1/2">
-                    <img
-                        src={signUpImage}
-                        alt="Sign Up"
-                        className="object-cover h-full w-full"
-                    />
+                    <img src={signUpImage} alt="Sign Up" className="object-cover h-full w-full" />
                 </div>
             </div>
         </div>
     );
 };
 
-export default SignUpScreen;
+export default Register;
