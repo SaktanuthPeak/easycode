@@ -61,7 +61,7 @@ $RECYCLE.BIN/
 # Logs and databases
 ############################
 
-.tmp
+#.tmp
 *.log
 
 ############################
@@ -117,7 +117,7 @@ license.txt
 exports
 .strapi
 .strapi-updater.json
-.strapi-cloud.json
+.strapi-cloud.jsona
 
 ############################
 # Ensure Strapi schema files are included
