@@ -13,7 +13,7 @@ import Login from "./clientPage/loginPage";
 import SignUp from "./clientPage/signUpPage";
 import ClientHomePage from "./clientPage/clientHomePage";
 import categoryPage from "./clientPage/categoryPage";
-import cartPage from "./clientPage/cartPage";
+import CartPage from "./clientPage/cartPage";
 import ProfilePage from "./clientPage/profilePage";
 import learningPage from "./clientPage/learningPage";
 import Nav from "./component/navbarPreview";
@@ -70,7 +70,7 @@ function App() {
                 <Route path="/clienthome" element={<ClientHomePage />} />
                 <Route path="/category-page" element={<categoryPage />} />
                 <Route path="/my-learning" element={<learningPage />} />
-                <Route path="/cart" element={<cartPage />} />
+                <Route path="/cart" element={<CartPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/clienthome/web-dev" element={<WebDevPage />} />
                 <Route path="/clienthome/data-sci" element={<dataSciPage />} />
