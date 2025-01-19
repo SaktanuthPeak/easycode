@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Code, Database, Shield, Brain, Wifi, Gamepad } from "lucide-react";
-
+import PromotionBanner from '../component/promotionBanner';
 const CategoryCard = ({ icon: Icon, title, courses, onClick }) => {
   return (
     <div
@@ -100,19 +100,23 @@ const ClientHomePage = () => {
   ];
 
   return (
-    <div className="p-8">
-      {/* Categories Section */}
-      <div className="mb-12">
-        <div className="flex justify-between mb-6">
-          <h1 className="text-3xl font-bold">All Categories</h1>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {categories.map((category, index) => (
-            <CategoryCard key={index} {...category} />
-          ))}
+    <div>
+      <PromotionBanner />
+      <div className="p-8">
+        {/* Categories Section */}
+        <div className="mb-12">
+          <div className="flex justify-between mb-6">
+            <h1 className="text-3xl font-bold">All Categories</h1>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {categories.map((category, index) => (
+              <CategoryCard key={index} {...category} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
+
   );
 };
 
