@@ -32,15 +32,11 @@
       "max": 10000,
       "min": 0
     },
-    "amoutn": {
-      "type": "integer",
-      "max": 2000,
-      "min": 1
-    },
-    "type": {
-      "type": "string",
-      "maxLength": 100,
-      "minLength": 1
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "course"
     }
   }
 }
