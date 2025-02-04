@@ -36,7 +36,7 @@ const App = () => {
 
           const role = result.data.role.type;
           setUserRole(role);
-          if (role === "Authenticated") {
+          if (role === "client") {
             setNav(<NavbarLogin />);
             setHome("/client-home");
           } else if (role === "admin") {
@@ -62,7 +62,9 @@ const App = () => {
   if (loading) return <div>Loading...</div>;
   return (
     <Router>
-
+      <div>
+        <NavbarLogin />
+      </div>
 
 
       <Routes>
@@ -77,7 +79,7 @@ const App = () => {
         <Route
           path="/client-home"
           element={
-            state.isLoggedIn && userRole === "Authenticated" ? (
+            state.isLoggedIn && userRole === "client" ? (
               <ClientHomePage />
             ) : (
               <Navigate to={home || "/login"} />

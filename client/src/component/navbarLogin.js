@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "Home", path: "/clienthome", current: true },
+  { name: "Home", path: "/client-home", current: true },
   { name: "Categories", path: "/category-page", current: false },
   { name: "My learning", path: "/my-learning", current: false },
 ];
@@ -30,6 +30,9 @@ export default function NavbarLogin({ onLogout }) {
   const handleOpenProfile = () => {
     navigate("/profile");
   };
+  const handleHome = () => {
+    navigate("/client-home")
+  }
 
   return (
     <Disclosure as="nav" className="bg-white-800">
