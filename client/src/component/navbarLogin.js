@@ -21,7 +21,11 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function NavbarLogin({ onLogout }) {
+export default function NavbarLogin() {
+  const logout = () => {
+    sessionStorage.clear();
+    window.location.href = "/home-preview";
+  };
   const navigate = useNavigate();
 
   const handleOpenCart = () => {
@@ -159,7 +163,8 @@ export default function NavbarLogin({ onLogout }) {
                 </MenuItem>
                 <MenuItem>
                   <button
-                    onClick={onLogout}
+                    onClick={logout}
+                    navigate to="/home-preview"
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Sign Out

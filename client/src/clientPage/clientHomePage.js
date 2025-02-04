@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Code, Database, Shield, Brain, Wifi, Gamepad } from "lucide-react";
+import ax from '../conf/ax';
 
 const CategoryCard = ({ icon: Icon, title, courses, onClick }) => {
   return (
@@ -59,6 +60,18 @@ const ClientHomePage = () => {
   const handleCategoryGameDev = () => navigate("/clienthome/game-dev");
 
   const handleSeeAllCourses = () => navigate("/courses");
+  const fetchDataInfo = async () => {
+    try {
+      const userResponse = await ax.get(`users/me?populate=role`);
+      console.log(userResponse)
+
+
+    } catch (error) {
+      console.log(error)
+    }
+  };
+  fetchDataInfo();
+
 
   const categories = [
     {

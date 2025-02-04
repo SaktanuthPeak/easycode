@@ -8,40 +8,38 @@ import {
 } from "react-router-dom";
 import { AuthContext } from "./context/Auth.context";
 import ax from "./conf/ax";
-// import pages
+
+// Import pages
 import AdminHomePage from "./adminPage/adminHomepage";
 import LoginForm from "./authenticationPage/login";
-// import components
-import NavbarLogin from "./component/navbarLogin";
 import ClientHomePage from "./clientPage/clientHomePage";
+import Signup from "./authenticationPage/signup";
 
-
-
-// axios.defaults.baseURL =
-//   process.env.REACT_APP_BASE_URL || "http://localhost:1337";
+// Import components
+import NavbarLogin from "./component/navbarLogin";
+import NavbarPreview from "./component/navbarPreview";
 
 const App = () => {
   const { state } = useContext(AuthContext);
   const [userRole, setUserRole] = useState(null);
-  const [nav, setNav] = useState(null);
-  const [home, setHome] = useState(null);
+  const [homePath, setHomePath] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("isLoggedIn", state.isLoggedIn)
+    console.log("isLoggedIn:", state.isLoggedIn);
+
     if (state.isLoggedIn) {
       const fetchRole = async () => {
         try {
           const result = await ax.get("users/me?populate=role");
-
           const role = result.data.role.type;
           setUserRole(role);
+
+          // Redirect based on role
           if (role === "client") {
-            setNav(<NavbarLogin />);
-            setHome("/client-home");
+            setHomePath("/client-home");
           } else if (role === "admin") {
-            // setNav(<AdminNavbar />);
-            setHome("/admin-home");
+            setHomePath("/admin-home");
           } else {
             setUserRole(null);
           }
@@ -60,51 +58,35 @@ const App = () => {
   }, [state.isLoggedIn]);
 
   if (loading) return <div>Loading...</div>;
+
   return (
     <Router>
-      <div>
-        <NavbarLogin />
-      </div>
+      {state.isLoggedIn ? (
+        <>
+          <NavbarLogin />
+          {homePath && <Navigate to={homePath} replace />}
+          <Routes>
 
+            <Route path="/client-home" element={<ClientHomePage />} />
+            <Route path="/admin-home" element={<AdminHomePage />} />
 
-      <Routes>
-        <Route path="" element={<Navigate to="/login" />} />
-        <Route
-          path="/login"
-          element={
-            state.isLoggedIn ? <Navigate to={home} /> : <LoginForm />
-          }
-        />
-        {/* Student page */}
-        <Route
-          path="/client-home"
-          element={
-            state.isLoggedIn && userRole === "client" ? (
-              <ClientHomePage />
-            ) : (
-              <Navigate to={home || "/login"} />
-            )
-          }
-        />
+          </Routes>
+        </>
+      ) : (
+        <>
+          <NavbarPreview />
+          <Routes>
 
+            <Route path="/home-preview" element={<ClientHomePage />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/sign-up" element={<Signup />} />
 
-        {/* Admin page */}
-        <Route
-          path="/admin-home"
-          element={
-            state.isLoggedIn && userRole === "admin" ? (
-              <AdminHomePage />
-            ) : (
-              <Navigate to={home || "/login"} />
-            )
-          }
-        />
-
-
-      </Routes>
-
-    </Router >
+          </Routes>
+        </>
+      )}
+    </Router>
   );
 };
+
 
 export default App;

@@ -26,7 +26,7 @@ export default function NavbarPreview({ onLogout }) {
     navigate("/login");
   };
   const handleSignUp = () => {
-    navigate("/signUp");
+    navigate("/sign-up");
   };
 
   return (
