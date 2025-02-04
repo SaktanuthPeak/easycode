@@ -43,6 +43,10 @@ export const ContextProvider = props => {
     }
 
     useEffect(() => {
+        console.log(state)
+    }, [state])
+
+    useEffect(() => {
         setLoginPending(true)
         loadPersistedJwt(handleLoginResult)
     }, [])

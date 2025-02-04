@@ -1,110 +1,108 @@
+// import axios from "axios";
+import { useContext, useState, useEffect } from "react";
 import {
+  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
-  BrowserRouter,
-  useNavigate,
-  useLocation,
 } from "react-router-dom";
-import { useState, useRef } from "react";
-import axios from "axios";
+import { AuthContext } from "./context/Auth.context";
+import ax from "./conf/ax";
+// import pages
 import AdminHomePage from "./adminPage/adminHomepage";
-import Login from "./clientPage/loginPage";
-import SignUp from "./clientPage/signUpPage";
-import ClientHomePage from "./clientPage/clientHomePage";
-import categoryPage from "./clientPage/categoryPage";
-import cartPage from "./clientPage/cartPage";
-import ProfilePage from "./clientPage/profilePage";
-import learningPage from "./clientPage/learningPage";
-import Nav from "./component/navbarPreview";
+import LoginForm from "./authenticationPage/login";
+// import components
 import NavbarLogin from "./component/navbarLogin";
-import WebFooter from "./component/webFooter";
-import WebDevPage from "./coursePage/webdevPage";
-import iotPage from "./coursePage/iotPage";
-import dataSciPage from "./coursePage/dataSciPage";
-import cyberSecPage from "./coursePage/cyberSecPage";
-import gameDevPage from "./coursePage/gameDevPage";
-import aiPage from "./coursePage/aiPage";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import ClientHomePage from "./clientPage/clientHomePage";
 
-axios.defaults.baseURL =
-  process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const nodeRef = useRef(null);
 
-  const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
-    navigate("/clienthome");
-  };
+// axios.defaults.baseURL =
+//   process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    console.log("User has logged out");
-    window.location.href = "/";
-    localStorage.clear();
-  };
+const App = () => {
+  const { state } = useContext(AuthContext);
+  const [userRole, setUserRole] = useState(null);
+  const [nav, setNav] = useState(null);
+  const [home, setHome] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    console.log("isLoggedIn", state.isLoggedIn)
+    if (state.isLoggedIn) {
+      const fetchRole = async () => {
+        try {
+          const result = await ax.get("users/me?populate=role");
+
+          const role = result.data.role.type;
+          setUserRole(role);
+          if (role === "Authenticated") {
+            setNav(<NavbarLogin />);
+            setHome("/client-home");
+          } else if (role === "admin") {
+            // setNav(<AdminNavbar />);
+            setHome("/admin-home");
+          } else {
+            setUserRole(null);
+          }
+        } catch (error) {
+          console.error("Error fetching role:", error);
+          setUserRole(null);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchRole();
+    } else {
+      setLoading(false);
+    }
+  }, [state.isLoggedIn]);
+
+  if (loading) return <div>Loading...</div>;
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Navbar */}
-      <header>
-        {isAuthenticated ? <NavbarLogin onLogout={handleLogout} /> : <Nav />}
-      </header>
-      {/* Main Content */}
-      <main className="flex-grow">
-        <TransitionGroup>
-          <CSSTransition
-            in={true}
-            timeout={500}
-            classNames="fade"
-            unmountOnExit
-            nodeRef={nodeRef}
-          >
-            <div ref={nodeRef}>
-              <Routes>
-                <Route path="/adminhome" element={<AdminHomePage />} />
-                <Route path="/clienthome" element={<ClientHomePage />} />
-                <Route path="/category-page" element={<categoryPage />} />
-                <Route path="/my-learning" element={<learningPage />} />
-                <Route path="/cart" element={<cartPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/clienthome/web-dev" element={<WebDevPage />} />
-                <Route path="/clienthome/data-sci" element={<dataSciPage />} />
-                <Route
-                  path="/clienthome/cyber-security"
-                  element={<cyberSecPage />}
-                />
-                <Route path="/clienthome/ai" element={<aiPage />} />
-                <Route
-                  path="/clienthome/internet-of-things"
-                  element={<iotPage />}
-                />
-                <Route path="/clienthome/game-dev" element={<gameDevPage />} />
-                <Route
-                  path="/login"
-                  element={<Login onLoginSuccess={handleLoginSuccess} />}
-                />
-                <Route path="/signUp" element={<SignUp />} />
-                <Route path="*" element={<Navigate to="/clienthome" />} />
-                cd ..
-              </Routes>
-            </div>
-          </CSSTransition>
-        </TransitionGroup>
-      </main>
-      <WebFooter />
-    </div>
-  );
-}
+    <Router>
 
-export default function AppWithRouter() {
-  return (
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+
+
+      <Routes>
+        <Route path="" element={<Navigate to="/login" />} />
+        <Route
+          path="/login"
+          element={
+            state.isLoggedIn ? <Navigate to={home} /> : <LoginForm />
+          }
+        />
+        {/* Student page */}
+        <Route
+          path="/client-home"
+          element={
+            state.isLoggedIn && userRole === "Authenticated" ? (
+              <ClientHomePage />
+            ) : (
+              <Navigate to={home || "/login"} />
+            )
+          }
+        />
+
+
+        {/* Admin page */}
+        <Route
+          path="/admin-home"
+          element={
+            state.isLoggedIn && userRole === "admin" ? (
+              <AdminHomePage />
+            ) : (
+              <Navigate to={home || "/login"} />
+            )
+          }
+        />
+
+
+      </Routes>
+
+    </Router >
   );
-}
+};
+
+export default App;
