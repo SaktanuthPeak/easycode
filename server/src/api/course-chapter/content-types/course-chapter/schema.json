@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "course_chapters",
+  "info": {
+    "singularName": "course-chapter",
+    "pluralName": "course-chapters",
+    "displayName": "Course_chapter",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name_of_chapter": {
+      "type": "string"
+    },
+    "video": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "course": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course.course",
+      "inversedBy": "course_chapters"
+    },
+    "chapter_description": {
+      "type": "string"
+    }
+  }
+}

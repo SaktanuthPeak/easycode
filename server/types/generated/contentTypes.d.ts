@@ -402,6 +402,42 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCourseChapterCourseChapter
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'course_chapters';
+  info: {
+    description: '';
+    displayName: 'Course_chapter';
+    pluralName: 'course-chapters';
+    singularName: 'course-chapter';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    chapter_description: Schema.Attribute.String;
+    course: Schema.Attribute.Relation<'manyToOne', 'api::course.course'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::course-chapter.course-chapter'
+    > &
+      Schema.Attribute.Private;
+    name_of_chapter: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    video: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+  };
+}
+
 export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
   collectionName: 'courses';
   info: {
@@ -415,6 +451,11 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
   };
   attributes: {
     category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
+    course_chapters: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::course-chapter.course-chapter'
+    >;
+    Course_description: Schema.Attribute.String;
     course_img: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
@@ -956,6 +997,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::category.category': ApiCategoryCategory;
+      'api::course-chapter.course-chapter': ApiCourseChapterCourseChapter;
       'api::course.course': ApiCourseCourse;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

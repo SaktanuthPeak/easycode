@@ -36,6 +36,15 @@
       "type": "float",
       "max": 5,
       "min": 0
+    },
+    "Course_description": {
+      "type": "string"
+    },
+    "course_chapters": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-chapter.course-chapter",
+      "mappedBy": "course"
     }
   }
 }
