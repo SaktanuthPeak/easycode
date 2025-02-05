@@ -405,6 +405,7 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
 export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
   collectionName: 'courses';
   info: {
+    description: '';
     displayName: 'Course';
     pluralName: 'courses';
     singularName: 'course';
@@ -429,6 +430,14 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    rating: Schema.Attribute.Float &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 0;
+        },
+        number
+      >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
