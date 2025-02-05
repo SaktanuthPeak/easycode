@@ -96,7 +96,7 @@ const LoginForm = () => {
                             type="submit"
                             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         >
-                            {isLoginPending ? 'Loading...' : 'Login'}
+                            Login
                         </button>
                         {isLoggedIn && (
                             <div className="mt-4 p-2 bg-green-100 text-green-700 border border-green-400 rounded-md">

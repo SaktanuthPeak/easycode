@@ -1,4 +1,3 @@
-// import axios from "axios";
 import { useContext, useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -14,10 +13,21 @@ import AdminHomePage from "./adminPage/adminHomepage";
 import LoginForm from "./authenticationPage/login";
 import ClientHomePage from "./clientPage/clientHomePage";
 import Signup from "./authenticationPage/signup";
-
+import CategoryPage from "./coursePage/categoryPage";
 // Import components
 import NavbarLogin from "./component/navbarLogin";
 import NavbarPreview from "./component/navbarPreview";
+
+const RouteAfterLogin = ({ homePath }) => {
+  return (
+    <Routes>
+      {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
+      <Route path="/client-home" element={<ClientHomePage />} />
+      <Route path="/admin-home" element={<AdminHomePage />} />
+      <Route path="/client-home/:categoryId" element={<CategoryPage />} />
+    </Routes>
+  );
+};
 
 const App = () => {
   const { state } = useContext(AuthContext);
@@ -35,13 +45,10 @@ const App = () => {
           const role = result.data.role.type;
           setUserRole(role);
 
-          // Redirect based on role
-          if (role === "client") {
-            setHomePath("/client-home");
-          } else if (role === "admin") {
+          if (role === "admin") {
             setHomePath("/admin-home");
           } else {
-            setUserRole(null);
+            setHomePath("/client-home");
           }
         } catch (error) {
           console.error("Error fetching role:", error);
@@ -64,29 +71,21 @@ const App = () => {
       {state.isLoggedIn ? (
         <>
           <NavbarLogin />
-          {homePath && <Navigate to={homePath} replace />}
-          <Routes>
-
-            <Route path="/client-home" element={<ClientHomePage />} />
-            <Route path="/admin-home" element={<AdminHomePage />} />
-
-          </Routes>
+          <RouteAfterLogin homePath={homePath} />
         </>
       ) : (
         <>
           <NavbarPreview />
           <Routes>
-
+            <Route path="*" element={<Navigate to="/home-preview" />} />
             <Route path="/home-preview" element={<ClientHomePage />} />
             <Route path="/login" element={<LoginForm />} />
-            <Route path="/sign-up" element={<Signup />} />
-
+            <Route path="/signup" element={<Signup />} />
           </Routes>
         </>
       )}
     </Router>
   );
 };
-
 
 export default App;
