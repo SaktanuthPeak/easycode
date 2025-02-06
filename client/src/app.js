@@ -5,6 +5,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "./context/Auth.context";
 import ax from "./conf/ax";
 
@@ -13,7 +15,11 @@ import AdminHomePage from "./adminPage/adminHomepage";
 import LoginForm from "./authenticationPage/login";
 import ClientHomePage from "./clientPage/clientHomePage";
 import Signup from "./authenticationPage/signup";
-import CategoryPage from "./coursePage/categoryPage";
+import CategoryPage from "./clientPage/categoryPage";
+import CoursePage from "./clientPage/coursePage";
+import CategoryPreviewPage from "./homePreviewPage/categoryPreviewPage";
+import HomePreviewPage from "./homePreviewPage/homePreviewPage";
+
 // Import components
 import NavbarLogin from "./component/navbarLogin";
 import NavbarPreview from "./component/navbarPreview";
@@ -25,12 +31,13 @@ const RouteAfterLogin = ({ homePath }) => {
       <Route path="/client-home" element={<ClientHomePage />} />
       <Route path="/admin-home" element={<AdminHomePage />} />
       <Route path="/client-home/:categoryId" element={<CategoryPage />} />
+      <Route path="/client-home/:categoryId/:courseId" element={<CoursePage />} />
     </Routes>
   );
 };
 
 const App = () => {
-  const { state } = useContext(AuthContext);
+  const { state, dispatch } = useContext(AuthContext); // Get Auth context
   const [userRole, setUserRole] = useState(null);
   const [homePath, setHomePath] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,6 +46,16 @@ const App = () => {
     console.log("isLoggedIn:", state.isLoggedIn);
 
     if (state.isLoggedIn) {
+      // Show login success notification
+      toast.success("Login Success!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
       const fetchRole = async () => {
         try {
           const result = await ax.get("users/me?populate=role");
@@ -64,13 +81,28 @@ const App = () => {
     }
   }, [state.isLoggedIn]);
 
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" }); // Update Auth context
+
+    // Show logout success notification
+    toast.info("Logout Success!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
   if (loading) return <div>Loading...</div>;
 
   return (
     <Router>
+      <ToastContainer /> {/* Toast notification container */}
       {state.isLoggedIn ? (
         <>
-          <NavbarLogin />
+          <NavbarLogin onLogout={handleLogout} /> {/* Pass logout function */}
           <RouteAfterLogin homePath={homePath} />
         </>
       ) : (
@@ -78,9 +110,11 @@ const App = () => {
           <NavbarPreview />
           <Routes>
             <Route path="*" element={<Navigate to="/home-preview" />} />
-            <Route path="/home-preview" element={<ClientHomePage />} />
+            <Route path="/home-preview" element={<HomePreviewPage />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/home-preview/:categoryId" element={<CategoryPreviewPage />} />
+            <Route path="/home-preview/:categoryId/:courseId" element={<CoursePage />} />
           </Routes>
         </>
       )}

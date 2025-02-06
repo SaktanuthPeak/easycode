@@ -45,6 +45,7 @@ const ClientHomePage = () => {
     const fetchCategory = async () => {
       try {
         const response = await ax.get("categories?populate=*");
+        console.log(response.data.data)
         const fetchedCategories = response.data.data.map(item => ({
           title: item.Category_name,
           icon: iconMap[item.Category_name] || Code,

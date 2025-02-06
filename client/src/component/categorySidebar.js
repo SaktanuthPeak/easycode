@@ -6,13 +6,13 @@ import { ChevronDown, HomeIcon, Code, Database, Shield, Brain, Wifi, Gamepad } f
 const CategorySidebar = () => {
     const [isOpen, setIsOpen] = React.useState(false);
     const navigate = useNavigate();
-    const handleCategoryWebDev = () => navigate("/clienthome/web-dev");
-    const handleCategoryDataScience = () => navigate("/clienthome/data-sci");
-    const handleCategoryCyberSecurity = () => navigate("/clienthome/cyber-security");
-    const handleCategoryAI = () => navigate("/clienthome/ai");
-    const handleCategoryIoT = () => navigate("/clienthome/internet-of-things");
-    const handleCategoryGameDev = () => navigate("/clienthome/game-dev");
-    const handlehomebutton = () => navigate("/clienthome");
+    const handleCategoryWebDev = () => navigate("/client-home/f0mtu52dgtpcxp4z12z8dc9o");
+    const handleCategoryDataScience = () => navigate("/client-home/vfbral9tzt496gn6jycxynlq");
+    const handleCategoryCyberSecurity = () => navigate("/client-home/h6kej05rcffd4plawilkpbql");
+    const handleCategoryAI = () => navigate("/client-home/j4uvzt32dp0zq1o1b4jazry9");
+    const handleCategoryIoT = () => navigate("/client-home/sic18kt1hvsx9eplidqx9e0z");
+    const handleCategoryGameDev = () => navigate("/client-home/efz59zmctstqov5beque5n7d");
+    const handlehomebutton = () => navigate("/client-home");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
