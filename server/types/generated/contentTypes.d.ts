@@ -455,13 +455,16 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::course-chapter.course-chapter'
     >;
-    Course_description: Schema.Attribute.String;
-    course_details: Schema.Attribute.Blocks;
+    course_description: Schema.Attribute.RichText;
+    course_hour: Schema.Attribute.Integer;
     course_img: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
     >;
+    course_minute: Schema.Attribute.Integer;
     Course_name: Schema.Attribute.String;
+    course_overview: Schema.Attribute.RichText;
+    course_syllabus: Schema.Attribute.Blocks;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

@@ -37,9 +37,6 @@
       "max": 5,
       "min": 0
     },
-    "Course_description": {
-      "type": "string"
-    },
     "course_chapters": {
       "type": "relation",
       "relation": "oneToMany",
@@ -49,8 +46,21 @@
     "price": {
       "type": "decimal"
     },
-    "course_details": {
+    "course_syllabus": {
       "type": "blocks"
+    },
+    "course_hour": {
+      "required": false,
+      "type": "integer"
+    },
+    "course_minute": {
+      "type": "integer"
+    },
+    "course_description": {
+      "type": "richtext"
+    },
+    "course_overview": {
+      "type": "richtext"
     }
   }
 }

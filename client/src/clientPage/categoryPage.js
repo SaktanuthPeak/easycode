@@ -74,7 +74,7 @@ const CategoryPage = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, delay: course.id * 0.1 }}
-                            onClick={() => navigate(`/client-home/${categoryId}/${course.documentId}`) || navigate(`/home-preview/${categoryId}/${course.documentId}`)}
+                            onClick={() => navigate(`/client-home/${categoryId}/${course.documentId}`)}
                         >
                             <motion.img
                                 src={course.course_img?.length > 0 ? `${baseURL}${course.course_img[0].url}` : no_image_available}
