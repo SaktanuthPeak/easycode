@@ -45,6 +45,12 @@
       "relation": "oneToMany",
       "target": "api::course-chapter.course-chapter",
       "mappedBy": "course"
+    },
+    "price": {
+      "type": "decimal"
+    },
+    "course_details": {
+      "type": "blocks"
     }
   }
 }

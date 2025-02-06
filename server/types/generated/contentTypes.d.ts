@@ -456,6 +456,7 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
       'api::course-chapter.course-chapter'
     >;
     Course_description: Schema.Attribute.String;
+    course_details: Schema.Attribute.Blocks;
     course_img: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
@@ -470,6 +471,7 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
       'api::course.course'
     > &
       Schema.Attribute.Private;
+    price: Schema.Attribute.Decimal;
     publishedAt: Schema.Attribute.DateTime;
     rating: Schema.Attribute.Float &
       Schema.Attribute.SetMinMax<
