@@ -9,6 +9,7 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import logo from "./images/Logo2.png"
 
 const navigation = [
   { name: "Home", path: "/clienthome", current: true },
@@ -51,7 +52,7 @@ export default function NavbarPreview({ onLogout }) {
             <div className="flex shrink-0 items-center pr-5">
               <img
                 alt="Your Company"
-                src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
+                src={logo}
                 className="h-8 w-auto"
               />
             </div>

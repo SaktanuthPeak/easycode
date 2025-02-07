@@ -10,6 +10,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import logo from "./images/Logo2.png"
 
 const navigation = [
   { name: "Home", path: "/client-home", current: true },
@@ -29,7 +30,7 @@ export default function NavbarLogin() {
   const navigate = useNavigate();
 
   const handleOpenCart = () => {
-    navigate("/cart");
+    navigate("client-home/cart");
   };
   const handleOpenProfile = () => {
     navigate("/profile");
@@ -60,7 +61,7 @@ export default function NavbarLogin() {
             <div className="flex shrink-0 items-center pr-5">
               <img
                 alt="Your Company"
-                src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
+                src={logo}
                 className="h-8 w-auto"
               />
             </div>

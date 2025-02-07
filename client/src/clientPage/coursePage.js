@@ -1,12 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import ax from "../conf/ax"
-import { Star, Globe } from "lucide-react"
+import { Star, Globe, ShoppingCart, Trash2 } from "lucide-react"
+import { useCart } from '../context/Cart.context'
 import no_image_available from "./images/No_image_available.svg.jpg";
-
 
 const CoursePage = () => {
     const { courseId } = useParams()
@@ -14,13 +14,18 @@ const CoursePage = () => {
     const [courseDetails, setCourseDetails] = useState(null)
     const [activeTab, setActiveTab] = useState("description")
     const baseURL = "http://localhost:1337";
+    const { cart, addToCart, removeFromCart } = useCart();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourseDetails = async () => {
             try {
                 const response = await ax.get(`courses?filters[documentId][$eq]=${courseId}&populate=*`)
                 if (response.data.data.length > 0) {
-                    setCourseDetails(response.data.data[0])
+                    setCourseDetails({
+                        ...response.data.data[0],
+                        id: response.data.data[0].documentId
+                    })
                 } else {
                     setCourseDetails("Course not found")
                 }
@@ -36,6 +41,8 @@ const CoursePage = () => {
     if (!courseDetails || typeof courseDetails === "string") {
         return <div className="p-8 text-center">{courseDetails || "Loading..."}</div>
     }
+
+    const isInCart = cart.some(item => item.id === courseDetails.id);
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -108,8 +115,6 @@ const CoursePage = () => {
                                         <div className="bg-white p-6 rounded-lg shadow-sm">
                                             <h2 className="text-2xl font-semibold mb-4">Course Description</h2>
                                             <p className="text-gray-600">{courseDetails.course_description}</p>
-
-
                                         </div>
                                     )}
 
@@ -167,14 +172,33 @@ const CoursePage = () => {
                                 />
                                 <div className="p-6">
                                     <div className="flex items-baseline gap-2 mb-4">
-                                        <span className="text-3xl font-bold">$49.5</span>
-                                        <span className="text-gray-500 line-through">$99.5</span>
-                                        <span className="text-green-500 font-semibold">50% Off</span>
+                                        <span className="text-3xl font-bold">{courseDetails.price}฿</span>
                                     </div>
                                     <div className="space-y-3">
-                                        <button className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors">
-                                            Add To Cart
-                                        </button>
+                                        {!isInCart ? (
+                                            <button
+                                                onClick={() => {
+                                                    addToCart({
+                                                        ...courseDetails,
+                                                        courseId: courseId
+                                                    });
+                                                    navigate('/client-home/cart', {
+                                                        state: { courseId: courseId }
+                                                    });
+                                                }}
+                                                className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                                            >
+                                                <ShoppingCart className="w-5 h-5" /> Add To Cart
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={() => removeFromCart(courseDetails.id)}
+                                                className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
+                                            >
+                                                <Trash2 className="w-5 h-5" />
+                                                Remove from Cart
+                                            </button>
+                                        )}
                                         <button className="w-full border border-gray-300 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                                             Buy Now
                                         </button>
@@ -190,4 +214,3 @@ const CoursePage = () => {
 }
 
 export default CoursePage
-

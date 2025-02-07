@@ -50,7 +50,7 @@ const CategoryPage = () => {
                 className="text-4xl font-bold text-center text-gray-800"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
             >
                 {categoryData.Category_name}'s Courses
             </motion.h1>
@@ -82,7 +82,7 @@ const CategoryPage = () => {
                                 className="rounded-lg w-full h-48 object-cover"
                                 initial={{ scale: 0.9 }}
                                 animate={{ scale: 1 }}
-                                transition={{ duration: 0.3 }}
+                                transition={{ duration: 0.1 }}
                             />
                             <div className="p-4 text-center">
                                 <h3 className="text-xl font-semibold text-gray-800">{course.Course_name}</h3>

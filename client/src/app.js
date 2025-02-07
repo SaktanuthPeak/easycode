@@ -8,6 +8,7 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "./context/Auth.context";
+import { CartProvider } from "./context/Cart.context";
 import ax from "./conf/ax";
 
 // Import pages
@@ -19,6 +20,7 @@ import CategoryPage from "./clientPage/categoryPage";
 import CoursePage from "./clientPage/coursePage";
 import CategoryPreviewPage from "./homePreviewPage/categoryPreviewPage";
 import HomePreviewPage from "./homePreviewPage/homePreviewPage";
+import CartPage from "./clientPage/cartPage";
 
 // Import components
 import NavbarLogin from "./component/navbarLogin";
@@ -32,6 +34,7 @@ const RouteAfterLogin = ({ homePath }) => {
       <Route path="/admin-home" element={<AdminHomePage />} />
       <Route path="/client-home/:categoryId" element={<CategoryPage />} />
       <Route path="/client-home/:categoryId/:courseId" element={<CoursePage />} />
+      <Route path="/client-home/cart" element={<CartPage />} />
     </Routes>
   );
 };
@@ -99,25 +102,27 @@ const App = () => {
 
   return (
     <Router>
-      <ToastContainer /> {/* Toast notification container */}
-      {state.isLoggedIn ? (
-        <>
-          <NavbarLogin onLogout={handleLogout} /> {/* Pass logout function */}
-          <RouteAfterLogin homePath={homePath} />
-        </>
-      ) : (
-        <>
-          <NavbarPreview />
-          <Routes>
-            <Route path="*" element={<Navigate to="/home-preview" />} />
-            <Route path="/home-preview" element={<HomePreviewPage />} />
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/home-preview/:categoryId" element={<CategoryPreviewPage />} />
-            <Route path="/home-preview/:categoryId/:courseId" element={<CoursePage />} />
-          </Routes>
-        </>
-      )}
+      <CartProvider>
+        <ToastContainer />
+        {state.isLoggedIn ? (
+          <>
+            <NavbarLogin onLogout={handleLogout} />
+            <RouteAfterLogin homePath={homePath} />
+          </>
+        ) : (
+          <>
+            <NavbarPreview />
+            <Routes>
+              <Route path="*" element={<Navigate to="/home-preview" />} />
+              <Route path="/home-preview" element={<HomePreviewPage />} />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/home-preview/:categoryId" element={<CategoryPreviewPage />} />
+              <Route path="/home-preview/:categoryId/:courseId" element={<CoursePage />} />
+            </Routes>
+          </>
+        )}
+      </CartProvider>
     </Router>
   );
 };
