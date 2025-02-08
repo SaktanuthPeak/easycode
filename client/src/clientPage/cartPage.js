@@ -60,18 +60,18 @@ const CartPage = () => {
                 </div>
 
                 <div className="grid md:grid-cols-[2fr_1fr] gap-6">
-                    {/* Course List */}
+
                     <div className="space-y-4">
                         {courses.map((course) => (
                             <div key={course.id} className="bg-white rounded-lg shadow-md p-4 flex items-center">
                                 <img
                                     src={course.course_img?.length > 0 ? `${baseURL}${course.course_img[0].url}` : no_image_available}
                                     alt={course.Course_name}
-                                    className="w-24 h-24 object-cover rounded-md mr-4"
+                                    className="w-50 h-24 object-cover rounded-md mr-4"
                                 />
                                 <div className="flex-grow">
                                     <h2 className="font-semibold text-lg">{course.Course_name}</h2>
-                                    <p className="text-gray-600">By {course.instructor}</p>
+                                    {/* <p className="text-gray-600">By {course.instructor}</p> */}
                                 </div>
                                 <div>
                                     <p className="font-bold text-lg">${course.price.toFixed(2)}</p>

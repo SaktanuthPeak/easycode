@@ -9,17 +9,17 @@ import FacebookLoginButton from "./facebookLoginButton.js"
 
 const LoginForm = () => {
     const { state: ContextState, login } = useContext(AuthContext)
-    const { isLoginPending, isLoggedIn, loginError } = ContextState
+    const { loginError } = ContextState
 
-    const [email, setEmail] = useState("")
+    const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [rememberMe, setRememberMe] = useState(false)
 
     useEffect(() => {
-        const savedEmail = localStorage.getItem("email")
+        const savedUsername = localStorage.getItem("username")
         const savedPassword = localStorage.getItem("password")
-        if (savedEmail && savedPassword) {
-            setEmail(savedEmail)
+        if (savedUsername && savedPassword) {
+            setUsername(savedUsername)
             setPassword(savedPassword)
             setRememberMe(true)
         }
@@ -27,12 +27,12 @@ const LoginForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        login(email, password)
+        login(username, password)
         if (rememberMe) {
-            localStorage.setItem("email", email)
+            localStorage.setItem("username", username)
             localStorage.setItem("password", password)
         } else {
-            localStorage.removeItem("email")
+            localStorage.removeItem("username")
             localStorage.removeItem("password")
         }
     }
@@ -65,12 +65,12 @@ const LoginForm = () => {
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <label className="text-gray-700">Email</label>
+                            <label className="text-gray-700">Username</label>
                             <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Username or Email ID"
+                                type="username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder="Username"
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
                                 required
                             />
