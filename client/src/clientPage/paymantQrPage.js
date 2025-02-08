@@ -6,17 +6,26 @@ import qrcode from "qrcode";
 const PromptPayQR = () => {
     const location = useLocation();
 
-    const [promptPayID, setPromptPayID] = useState("0887893891");
-    const [amount, setAmount] = useState(() => {
+    const [promptPayID] = useState("0887893891");
+    const [amount] = useState(() => {
         return location.state?.total ? parseFloat(location.state.total) : 0;
     });
+    const [courseName, setCourseName] = useState(null);
     const [qrCode, setQrCode] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
-    const [fileContent, setFileContent] = useState(null); // Store file content
+    const [fileContent, setFileContent] = useState(null);
 
     useEffect(() => {
         generateQRCode();
-    }, [promptPayID, amount]);
+
+        if (location.state && location.state.course_name) {
+            setCourseName(location.state.course_name);
+            console.log("Course Name from location:", location.state.course_name);
+        } else {
+            console.log("No course name found in location.state")
+        }
+
+    }, [promptPayID, amount, location]);
 
     const generateQRCode = () => {
         if (!promptPayID || isNaN(amount) || amount <= 0) {

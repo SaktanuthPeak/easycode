@@ -101,7 +101,13 @@ const CartPage = () => {
                             </div>
                         </div>
                         <button
-                            onClick={() => navigate("/client-home/cart/payment", { state: { total: orderDetails.total } })}
+                            onClick={() => navigate("/client-home/cart/payment",
+                                {
+                                    state: {
+                                        total: orderDetails.total,
+                                        course_name: courses.map(course => course.Course_name).join(', ')
+                                    }
+                                })}
                             className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition flex items-center justify-center">
                             <ShoppingCart className="mr-2 w-5 h-5" /> Proceed to Checkout
                         </button>
