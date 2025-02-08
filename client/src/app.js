@@ -21,6 +21,7 @@ import CoursePage from "./clientPage/coursePage";
 import CategoryPreviewPage from "./homePreviewPage/categoryPreviewPage";
 import HomePreviewPage from "./homePreviewPage/homePreviewPage";
 import CartPage from "./clientPage/cartPage";
+import CoursePreviewPage from "./homePreviewPage/coursePreviewPage";
 
 // Import components
 import NavbarLogin from "./component/navbarLogin";
@@ -118,7 +119,7 @@ const App = () => {
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/home-preview/:categoryId" element={<CategoryPreviewPage />} />
-              <Route path="/home-preview/:categoryId/:courseId" element={<CoursePage />} />
+              <Route path="/home-preview/:categoryId/:courseId" element={<CoursePreviewPage />} />
             </Routes>
           </>
         )}
