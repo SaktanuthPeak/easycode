@@ -27,7 +27,7 @@ const CoursePage = () => {
                         id: response.data.data[0].documentId
                     })
                 } else {
-                    setCourseDetails("Course not found")
+                    setCourseDetails("Course not found eieieieiei")
                 }
             } catch (error) {
                 console.error("Error fetching course details:", error)

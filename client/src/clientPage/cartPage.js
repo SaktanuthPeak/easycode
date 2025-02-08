@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Trash2 } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ax from "../conf/ax";
 import no_image_available from "./images/No_image_available.svg.jpg";
 import { useCart } from '../context/Cart.context';
 
 const CartPage = () => {
     const location = useLocation();
-    const { courseId } = location.state || {};
     const { cart, removeFromCart } = useCart();
     const [courses, setCourses] = useState([]);
     const baseURL = "http://localhost:1337";
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourseDetails = async () => {
@@ -100,8 +100,13 @@ const CartPage = () => {
                                 <span>${orderDetails.total.toFixed(2)}</span>
                             </div>
                         </div>
-                        <button className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition flex items-center justify-center">
-                            <ShoppingCart className="mr-2 w-5 h-5" /> Proceed to Checkout
+                        <button
+                            onClick={() => navigate("/client-home/cart/payment")}
+                            className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition flex items-center justify-center">
+                            <ShoppingCart
+                                className="mr-2 w-5 h-5"
+                            /> Proceed to Checkout
+
                         </button>
                     </div>
                 </div>
