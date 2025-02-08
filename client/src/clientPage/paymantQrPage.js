@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import generatePayload from "promptpay-qr";
 import qrcode from "qrcode";
+import ax from "../conf/ax";
+import { ToastContainer, toast } from "react-toastify";
 
 const PromptPayQR = () => {
+
+
     const location = useLocation();
 
     const [promptPayID] = useState("0887893891");
@@ -14,6 +18,30 @@ const PromptPayQR = () => {
     const [qrCode, setQrCode] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [fileContent, setFileContent] = useState(null);
+    const [notification, setNotification] = useState("");
+
+    const notifySuccess = (message) => {
+        toast.success(message, {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+        });
+    };
+
+    const notifyError = (message) => {
+        toast.error(message, {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+        });
+    };
+
 
     useEffect(() => {
         generateQRCode();
@@ -72,9 +100,58 @@ const PromptPayQR = () => {
             }
         }
     };
+    const uploadSlip = async () => {
+        if (!selectedFile || !courseName) {
+            console.warn("Please select a file and ensure the course name is available.");
+            alert("กรุณาเลือกไฟล์และระบุชื่อคอร์สก่อนอัปโหลด");
+            return;
+        }
+
+        try {
+
+            const userResponse = await ax.get(`/users/me`);
+            const username = userResponse.data.username;
+            const email = userResponse.data.email;
+
+            if (!username) {
+                throw new Error("Username not found in user profile");
+            }
+
+
+            const formData = new FormData();
+            formData.append("files", selectedFile);
+
+            const fileUploadResponse = await ax.post("/upload", formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            });
+
+            const uploadedFileId = fileUploadResponse.data[0]?.id;
+            if (!uploadedFileId) {
+                throw new Error("File upload failed");
+            }
+
+
+            const createResponse = await ax.post(`/admin-confirmations`, {
+                data: {
+                    Username: username,
+                    slip_upload: uploadedFileId,
+                    Applied_course: courseName,
+                    Email: email
+                }
+            });
+
+            notifySuccess("Slip อัปโหลดสำเร็จ! แอดมินจะส่งอีเมลแจ้งให้ภายใน 10 นาที");
+        } catch (error) {
+            console.error("Error uploading slip:", error);
+            notifyError("อัปโหลดล้มเหลว! กรุณาลองใหม่");
+        }
+    };
+
+
 
     return (
         <div className="container mx-auto p-8 bg-gray-100 rounded-lg shadow-md flex">
+            <ToastContainer />
             <div className="w-1/2 pr-4">
                 <h1 className="text-2xl font-bold mb-4">PromptPay QR Code</h1>
                 {qrCode && (
@@ -103,7 +180,14 @@ const PromptPayQR = () => {
                                 {typeof fileContent === 'string' && fileContent.startsWith('data:image/') ? <img src={fileContent} alt="File Preview" className="max-w-full" /> : null}
                             </div>
                         )}
+                        <button
+                            onClick={uploadSlip}
+                            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Upload Slip
+                        </button>
                     </div>
+
                 )}
             </div>
         </div>

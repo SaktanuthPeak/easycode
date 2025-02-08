@@ -80,12 +80,6 @@
       "relation": "manyToMany",
       "target": "api::course.course",
       "inversedBy": "users"
-    },
-    "admin_confirmation": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::admin-confirmation.admin-confirmation",
-      "mappedBy": "users_permissions_user"
     }
   }
 }

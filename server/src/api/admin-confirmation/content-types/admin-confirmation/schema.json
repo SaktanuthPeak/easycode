@@ -24,11 +24,12 @@
     "Applied_course": {
       "type": "string"
     },
-    "users_permissions_user": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "admin_confirmation"
+    "Username": {
+      "type": "string",
+      "required": false
+    },
+    "Email": {
+      "type": "string"
     }
   }
 }
