@@ -74,6 +74,12 @@
     },
     "lastname": {
       "type": "string"
+    },
+    "courses": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::course.course",
+      "inversedBy": "users"
     }
   }
 }

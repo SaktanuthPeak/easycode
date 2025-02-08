@@ -61,6 +61,12 @@
     },
     "course_overview": {
       "type": "richtext"
+    },
+    "users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "courses"
     }
   }
 }
