@@ -15,7 +15,7 @@ import logo from "./images/Logo2.png"
 const navigation = [
   { name: "Home", path: "/client-home", current: true },
   { name: "Categories", path: "/category-page", current: false },
-  { name: "My learning", path: "/my-learning", current: false },
+  { name: "My learning", path: "/client-home/my-learning", current: false },
 ];
 
 function classNames(...classes) {
