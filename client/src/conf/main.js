@@ -1,5 +1,7 @@
+const apiUrlPrefix = process.env.REACT_APP_STATUS === "production" ? process.env.REACT_APP_PRODUCTION_URL : process.env.REACT_APP_DEVELOP_URL
+
 const conf = {
-    apiUrlPrefix: 'http://localhost:1337/api',
+    apiUrlPrefix,
     loginEndpoint: '/auth/local',
     jwtUserEndpoint: '/users/me',
     jwtSessionStorageKey: 'auth.jwt'
