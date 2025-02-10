@@ -4,11 +4,16 @@ import ax from "../conf/ax";
 import no_image_available from "./images/No_image_available.svg.jpg";
 import { motion } from "framer-motion";
 import CategorySidebar from "../component/categorySidebar";
+import conf from "../conf/main";
+
+// Use API URL from config
 
 const CategoryPreviewPage = () => {
     const { categoryId } = useParams();
     const [categoryData, setCategoryData] = useState(null);
-    const baseURL = "http://localhost:1337";
+    // const baseURL = "http://localhost:1337";
+    const baseURL = conf.apiUrlPrefix;
+    console.log(baseURL)
     const navigate = useNavigate();
     useEffect(() => {
         const fetchCategoryDetails = async () => {
@@ -42,6 +47,10 @@ const CategoryPreviewPage = () => {
                 <span className="text-gray-700 text-sm ml-2">({rating.toFixed(1)})</span>
             </div>
         );
+    };
+    const getImageUrl = (img) => {
+        if (!img || !img.url) return no_image_available;
+        return img.url.startsWith("/") ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}` : img.url;
     };
 
     return (
@@ -77,7 +86,7 @@ const CategoryPreviewPage = () => {
                             onClick={() => navigate(`/home-preview/${categoryId}/${course.documentId}`) || navigate(`/home-preview/${categoryId}/${course.documentId}`)}
                         >
                             <motion.img
-                                src={course.course_img?.length > 0 ? `${baseURL}${course.course_img[0].url}` : no_image_available}
+                                src={getImageUrl(course.course_img[0])}
                                 alt={course.Course_name}
                                 className="rounded-lg w-full h-48 object-cover"
                                 initial={{ scale: 0.9 }}

@@ -7,13 +7,15 @@ import ax from "../conf/ax"
 import { Star, Globe, ShoppingCart, Trash2 } from "lucide-react"
 import { useCart } from '../context/Cart.context'
 import no_image_available from "./images/No_image_available.svg.jpg"
+import conf from "../conf/main"
 
 const CoursePreviewPage = () => {
     const { courseId } = useParams()
     const { categoryId } = useParams()
     const [courseDetails, setCourseDetails] = useState(null)
     const [activeTab, setActiveTab] = useState("description")
-    const baseURL = "http://localhost:1337"
+    // const baseURL = "http://localhost:1337"
+    const baseURL = conf.apiUrlPrefix;
     const { cart, addToCart, removeFromCart } = useCart()
     const navigate = useNavigate()
 
@@ -45,6 +47,11 @@ const CoursePreviewPage = () => {
         }
         return
     }
+    const getImageUrl = (img) => {
+        if (!img || !img.url) return no_image_available;
+        return img.url.startsWith("/") ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}` : img.url;
+    };
+
 
     if (!courseDetails || typeof courseDetails === "string") {
         return <div className="p-8 text-center">{courseDetails || "Loading..."}</div>
@@ -173,8 +180,7 @@ const CoursePreviewPage = () => {
                         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
                             <div className="sticky top-8 bg-white rounded-lg shadow-sm overflow-hidden">
                                 <img
-                                    src={courseDetails.course_img?.length > 0 ? `${baseURL}${courseDetails.course_img[0].url}` : no_image_available}
-                                    alt="Course Preview"
+                                    src={getImageUrl(courseDetails.course_img[0])}
                                     className="w-full"
                                 />
                                 <div className="p-6">
