@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import ax from "../conf/ax"
+import conf from "../conf/main"
 import { Star, Globe, ShoppingCart, Trash2 } from "lucide-react"
 import { useCart } from '../context/Cart.context'
 import no_image_available from "./images/No_image_available.svg.jpg";
@@ -43,6 +44,11 @@ const CoursePage = () => {
     }
 
     const isInCart = cart.some(item => item.id === courseDetails.id);
+
+    const getImageUrl = (img) => {
+        if (!img || !img.url) return no_image_available;
+        return img.url.startsWith("/") ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}` : img.url;
+    };
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -166,7 +172,7 @@ const CoursePage = () => {
                         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
                             <div className="sticky top-8 bg-white rounded-lg shadow-sm overflow-hidden">
                                 <img
-                                    src={courseDetails.course_img?.length > 0 ? `${baseURL}${courseDetails.course_img[0].url}` : no_image_available}
+                                    src={getImageUrl(courseDetails.course_img[0])}
                                     alt="Course Preview"
                                     className="w-full"
                                 />

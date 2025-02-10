@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ax from "../conf/ax";
+import conf from "../conf/main";
 import no_image_available from "./images/No_image_available.svg.jpg";
 import { motion } from "framer-motion";
 import CategorySidebar from "../component/categorySidebar";
@@ -43,6 +44,10 @@ const CategoryPage = () => {
             </div>
         );
     };
+    const getImageUrl = (img) => {
+        if (!img || !img.url) return no_image_available;
+        return img.url.startsWith("/") ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}` : img.url;
+    };
 
     return (
         <div className="container mx-auto p-6">
@@ -77,7 +82,7 @@ const CategoryPage = () => {
                             onClick={() => navigate(`/client-home/${categoryId}/${course.documentId}`)}
                         >
                             <motion.img
-                                src={course.course_img?.length > 0 ? `${baseURL}${course.course_img[0].url}` : no_image_available}
+                                src={getImageUrl(course.course_img[0])}
                                 alt={course.Course_name}
                                 className="rounded-lg w-full h-48 object-cover"
                                 initial={{ scale: 0.9 }}

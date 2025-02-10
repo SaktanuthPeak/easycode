@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ax from "../conf/ax";
+import conf from "../conf/main";
 import no_image_available from "./images/No_image_available.svg.jpg";
 import { motion } from "framer-motion";
 
 const MyLearningPage = () => {
     const [filteredCourses, setFilteredCourses] = useState([]);
-    const baseURL = "http://localhost:1337";
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const userResponse = await ax.get("users/me?populate=*");
+                const userResponse = await ax.get("users/me?populate=courses");
                 const userCoursesData = userResponse.data.courses || [];
 
-                const courseResponse = await ax.get("courses?populate=*");
+                const courseResponse = await ax.get("courses?populate=course_img");
                 const allCoursesData = courseResponse.data.data || [];
 
                 const matchedCourses = allCoursesData.filter(course =>
@@ -31,6 +31,11 @@ const MyLearningPage = () => {
         fetchData();
     }, []);
 
+    const getImageUrl = (img) => {
+        if (!img || !img.url) return no_image_available;
+        return img.url.startsWith("/") ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}` : img.url;
+    };
+
     return (
         <div className="container mx-auto p-6">
             <h1 className="text-3xl font-bold text-center text-gray-800">My Learning Page</h1>
@@ -44,11 +49,7 @@ const MyLearningPage = () => {
                             onClick={() => navigate(`/course/${course.documentId}`)}
                         >
                             <img
-                                src={
-                                    course.course_img?.length > 0
-                                        ? `${baseURL}${course.course_img[0].url}`
-                                        : no_image_available
-                                }
+                                src={getImageUrl(course.course_img?.[0])}
                                 alt={course.Course_name}
                                 className="w-full h-40 object-cover rounded-md"
                             />
