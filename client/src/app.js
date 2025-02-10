@@ -30,6 +30,9 @@ import NavbarLogin from "./component/navbarLogin";
 import NavbarPreview from "./component/navbarPreview";
 
 const RouteAfterLogin = ({ homePath }) => {
+  if (!homePath) {
+    return <div>Loading...</div>;
+  }
   return (
     <Routes>
       {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
@@ -70,11 +73,7 @@ const App = () => {
           const role = result.data.role.type;
           setUserRole(role);
 
-          if (role === "admin") {
-            setHomePath("/admin-home");
-          } else {
-            setHomePath("/client-home");
-          }
+          setHomePath(role === "admin" ? "/admin-home" : "/client-home");
         } catch (error) {
           console.error("Error fetching role:", error);
           setUserRole(null);

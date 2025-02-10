@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Code, Database, Shield, Brain, Wifi, Gamepad } from "lucide-react";
+import { Code, FolderCode, Database, Shield, BrainCircuit, Wifi, Gamepad } from "lucide-react";
 import ax from '../conf/ax';
 import { motion } from 'framer-motion';
 import AdvertisementBanner from '../component/advertisementBanner';
 import WebFooter from '../component/webFooter';
 
+
 const iconMap = {
-  "Web Development": Code,
+  "Web Development": FolderCode,
   "Data Science": Database,
   "Cyber Security": Shield,
-  "Artificial Intelligence": Brain,
+  "Artificial Intelligence": BrainCircuit,
   "Internet of Things": Wifi,
   "Game Development": Gamepad,
 };

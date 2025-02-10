@@ -1,31 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
 import { ChevronDown, HomeIcon, Code, Database, Shield, Brain, Wifi, Gamepad } from "lucide-react";
+import ax from '../conf/ax';
 
 const CategorySidebar = () => {
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
-    const handleCategoryWebDev = () => navigate("/client-home/f0mtu52dgtpcxp4z12z8dc9o");
-    const handleCategoryDataScience = () => navigate("/client-home/vfbral9tzt496gn6jycxynlq");
-    const handleCategoryCyberSecurity = () => navigate("/client-home/h6kej05rcffd4plawilkpbql");
-    const handleCategoryAI = () => navigate("/client-home/j4uvzt32dp0zq1o1b4jazry9");
-    const handleCategoryIoT = () => navigate("/client-home/sic18kt1hvsx9eplidqx9e0z");
-    const handleCategoryGameDev = () => navigate("/client-home/efz59zmctstqov5beque5n7d");
-    const handlehomebutton = () => navigate("/client-home");
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    }
 
-    const categories = [
-        { icon: Code, name: "Web Development", onClick: handleCategoryWebDev },
-        { icon: Database, name: "Data Science", onClick: handleCategoryDataScience },
-        { icon: Shield, name: "Cyber Security", onClick: handleCategoryCyberSecurity },
-        { icon: Brain, name: "Artificial Intelligence", onClick: handleCategoryAI },
-        { icon: Wifi, name: "Internet of Things", onClick: handleCategoryIoT },
-        { icon: Gamepad, name: "Game Development", onClick: handleCategoryGameDev },
-    ];
+    const fetchCategory = async () => {
+        try {
+            const response = await ax.get('categories?populate=*');
+            console.log("Fetched categories:", response.data);
+
+
+            if (Array.isArray(response.data.data)) {
+                const categoryData = response.data.data.map(category => ({
+                    name: category.Category_name,
+                    id: category.documentId,
+                }));
+                setCategories(categoryData);
+            } else {
+                console.error('Fetched data is not an array');
+                setCategories([]);
+            }
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+            setCategories([]);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategory();
+    }, []);
+
+    const handlehomebutton = () => navigate("/client-home");
+
+    const handleCategoryClick = (categoryId) => {
+        navigate(`/client-home/${categoryId}`);
+    };
+
+    console.log("Categories to render:", categories);
 
     return (
         <div className="w-64 bg-white rounded-lg shadow-md p-4">
@@ -51,16 +66,39 @@ const CategorySidebar = () => {
 
                 {isOpen && (
                     <div className="absolute z-10 w-full mt-2 bg-white rounded-md shadow-lg border border-gray-200">
-                        {categories.map((category) => {
-                            const Icon = category.icon;
+                        {categories.map(({ name, id }) => {
+                            let Icon;
+                            switch (name) {
+                                case "Web Development":
+                                    Icon = Code;
+                                    break;
+                                case "Data Science":
+                                    Icon = Database;
+                                    break;
+                                case "Cyber Security":
+                                    Icon = Shield;
+                                    break;
+                                case "Artificial Intelligence":
+                                    Icon = Brain;
+                                    break;
+                                case "Internet of Things":
+                                    Icon = Wifi;
+                                    break;
+                                case "Game Development":
+                                    Icon = Gamepad;
+                                    break;
+                                default:
+                                    Icon = Code;
+                            }
+
                             return (
                                 <button
-                                    key={category.path}
-                                    onClick={category.onClick}
+                                    key={id}
+                                    onClick={() => handleCategoryClick(id)}
                                     className="flex items-center gap-2 w-full px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors first:rounded-t-md last:rounded-b-md"
                                 >
                                     <Icon className="w-4 h-4" />
-                                    <span>{category.name}</span>
+                                    <span>{name}</span>
                                 </button>
                             );
                         })}
