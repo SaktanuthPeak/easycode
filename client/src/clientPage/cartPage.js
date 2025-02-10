@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Trash2 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ax from "../conf/ax";
+import conf from '../conf/main';
 import no_image_available from "./images/No_image_available.svg.jpg";
 import { useCart } from '../context/Cart.context';
 
@@ -49,6 +50,11 @@ const CartPage = () => {
 
     const orderDetails = calculateOrderDetails();
 
+    const getImageUrl = (img) => {
+        if (!img || !img.url) return no_image_available;
+        return img.url.startsWith("/") ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}` : img.url;
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <div className="container mx-auto px-4 py-8 flex-grow">
@@ -65,7 +71,7 @@ const CartPage = () => {
                         {courses.map((course) => (
                             <div key={course.id} className="bg-white rounded-lg shadow-md p-4 flex items-center">
                                 <img
-                                    src={course.course_img?.length > 0 ? `${baseURL}${course.course_img[0].url}` : no_image_available}
+                                    src={getImageUrl(course.course_img[0])}
                                     alt={course.Course_name}
                                     className="w-50 h-24 object-cover rounded-md mr-4"
                                 />
