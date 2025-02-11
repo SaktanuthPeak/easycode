@@ -25,6 +25,7 @@ import CoursePreviewPage from "./homePreviewPage/coursePreviewPage";
 import PaymentQRPage from "./clientPage/paymantQrPage";
 import MyLearningPage from "./clientPage/myLearningPage";
 import CourseLearningPage from "./clientPage/courseLearningPage";
+import AllCoursePage from "./clientPage/allCoursePage";
 
 // Import components
 import NavbarLogin from "./component/navbarLogin";
@@ -45,6 +46,7 @@ const RouteAfterLogin = ({ homePath }) => {
       <Route path="/client-home/cart/payment" element={<PaymentQRPage />} />
       <Route path="/client-home/my-learning" element={<MyLearningPage />} />
       <Route path="/client-home/my-learning/:courseId" element={<CourseLearningPage />} />
+      <Route path="/client-home/all-courses" element={<AllCoursePage />} />
     </Routes>
   );
 };

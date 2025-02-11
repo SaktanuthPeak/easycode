@@ -9,7 +9,6 @@ import CategorySidebar from "../component/categorySidebar";
 const CategoryPage = () => {
     const { categoryId } = useParams();
     const [categoryData, setCategoryData] = useState(null);
-    const baseURL = "http://localhost:1337";
     const navigate = useNavigate();
     useEffect(() => {
         const fetchCategoryDetails = async () => {
