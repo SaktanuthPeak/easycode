@@ -28,7 +28,7 @@ const CourseLearningPage = () => {
             {course ? (
                 <div className="mt-6">
                     <h2 className="text-2xl font-semibold text-gray-700">{course.Course_name}</h2>
-                    {/* กริดแสดงแต่ละ Chapter (1 ต่อ 1 แถว) */}
+
                     <div className="space-y-6 mt-6">
                         {course.course_chapters?.map((chapter) => (
                             <motion.div
@@ -36,17 +36,19 @@ const CourseLearningPage = () => {
                                 className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
                                 whileHover={{ scale: 1.05 }}
                             >
-                                <div className="flex items-center space-x-6">
-                                    <img
-                                        src={getImageUrl(chapter.video?.[0])}
-                                        alt={chapter.name_of_chapter}
-                                        className="w-32 h-32 object-cover rounded-md"
-                                    />
-                                    <div>
-                                        <h3 className="text-lg font-semibold">{chapter.name_of_chapter}</h3>
-                                        <p className="text-gray-600 text-sm">{chapter.chapter_description}</p>
+                                <a href="https://www.youtube.com/watch?v=kCHYhymCQZs" target="_blank" rel="noopener noreferrer">
+                                    <div className="flex items-center space-x-6">
+                                        <img
+                                            src={getImageUrl(chapter.video?.[0])}
+                                            alt={chapter.name_of_chapter}
+                                            className="w-32 h-32 object-cover rounded-md"
+                                        />
+                                        <div>
+                                            <h3 className="text-lg font-semibold">{chapter.name_of_chapter}</h3>
+                                            <p className="text-gray-600 text-sm">{chapter.chapter_description}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </motion.div>
                         ))}
                     </div>
