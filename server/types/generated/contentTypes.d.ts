@@ -449,6 +449,7 @@ export interface ApiCourseChapterCourseChapter
   };
   attributes: {
     chapter_description: Schema.Attribute.String;
+    chapter_number: Schema.Attribute.Integer;
     course: Schema.Attribute.Relation<'manyToOne', 'api::course.course'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
