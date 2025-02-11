@@ -67,6 +67,12 @@
       "relation": "manyToMany",
       "target": "plugin::users-permissions.user",
       "mappedBy": "courses"
+    },
+    "instructors": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::instructor.instructor",
+      "mappedBy": "course"
     }
   }
 }
