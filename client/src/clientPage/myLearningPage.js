@@ -46,7 +46,7 @@ const MyLearningPage = () => {
                             key={course.id}
                             className="bg-white p-4 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-all"
                             whileHover={{ scale: 1.05 }}
-                            onClick={() => navigate(`/course/${course.documentId}`)}
+                            onClick={() => navigate(`/client-home/my-learning/${course.documentId}`)}
                         >
                             <img
                                 src={getImageUrl(course.course_img?.[0])}
