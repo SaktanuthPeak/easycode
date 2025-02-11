@@ -4,6 +4,7 @@ import ax from "../conf/ax";
 import conf from "../conf/main";
 import no_image_available from "./images/No_image_available.svg.jpg";
 import { motion } from "framer-motion";
+import { Progress } from "flowbite-react";
 
 const MyLearningPage = () => {
     const [filteredCourses, setFilteredCourses] = useState([]);
@@ -54,12 +55,17 @@ const MyLearningPage = () => {
                                 className="w-full h-40 object-cover rounded-md"
                             />
                             <h2 className="text-lg font-semibold mt-2">{course.Course_name}</h2>
+                            <div class="bg-green-600 text-xs font-medium text-gray-100 text-center p-0.5 leading-none rounded-full mt-4" style={{ width: "45%" }}> 45%</div>
+
                         </motion.div>
                     ))
                 ) : (
                     <p className="text-center text-gray-500">No matching courses found.</p>
                 )}
+
             </div>
+
+
         </div>
     );
 };

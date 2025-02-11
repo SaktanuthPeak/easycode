@@ -4,9 +4,14 @@ import ax from "../conf/ax";
 import conf from "../conf/main";
 import no_image_available from "./images/No_image_available.svg.jpg";
 import { motion } from "framer-motion";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
+
 const CourseLearningPage = () => {
     const { courseId } = useParams();
     const [course, setCourse] = useState(null);
+    const [completedChapters, setCompletedChapters] = useState(() => {
+        return JSON.parse(localStorage.getItem(`completedChapters-${courseId}`)) || {};
+    });
     useEffect(() => {
         const fetchCourse = async () => {
             try {
@@ -18,6 +23,19 @@ const CourseLearningPage = () => {
         };
         fetchCourse();
     }, [courseId]);
+    useEffect(() => {
+        localStorage.setItem(`completedChapters-${courseId}`, JSON.stringify(completedChapters));
+    }, [completedChapters, courseId]);
+
+    const toggleCompletion = (chapterId) => {
+        setCompletedChapters((prev) => ({
+            ...prev,
+            [chapterId]: !prev[chapterId],
+        }));
+    };
+
+
+
     const getImageUrl = (img) => {
         if (!img || !img.url) return no_image_available;
         return img.url.startsWith("/") ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}` : img.url;
@@ -33,8 +51,9 @@ const CourseLearningPage = () => {
                         {course.course_chapters?.map((chapter) => (
                             <motion.div
                                 key={chapter.id}
-                                className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
+                                className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all flex justify-between items-center"
                                 whileHover={{ scale: 1.05 }}
+                                onClick={() => toggleCompletion(chapter.id)}
                             >
                                 <a href="https://www.youtube.com/watch?v=kCHYhymCQZs" target="_blank" rel="noopener noreferrer">
                                     <div className="flex items-center space-x-6">
@@ -49,6 +68,9 @@ const CourseLearningPage = () => {
                                         </div>
                                     </div>
                                 </a>
+                                {completedChapters[chapter.id] && (
+                                    <CheckCircleIcon className="w-10 h-20 text-green-500 flex-shrink-0" />
+                                )}
                             </motion.div>
                         ))}
                     </div>
