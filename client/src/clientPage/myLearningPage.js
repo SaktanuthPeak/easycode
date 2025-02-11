@@ -38,7 +38,12 @@ const MyLearningPage = () => {
     };
 
     return (
-        <div className="container mx-auto p-6">
+        <motion.div
+            className="container mx-auto p-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
             <h1 className="text-3xl font-bold text-center text-gray-800">My Learning Page</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
                 {filteredCourses.length > 0 ? (
@@ -47,26 +52,41 @@ const MyLearningPage = () => {
                             key={course.id}
                             className="bg-white p-4 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-all"
                             whileHover={{ scale: 1.05 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: 0.1 }}
                             onClick={() => navigate(`/client-home/my-learning/${course.documentId}`)}
                         >
-                            <img
+                            <motion.img
                                 src={getImageUrl(course.course_img?.[0])}
                                 alt={course.Course_name}
                                 className="w-full h-40 object-cover rounded-md"
+                                initial={{ scale: 0.9 }}
+                                animate={{ scale: 1 }}
+                                transition={{ duration: 0.3 }}
                             />
                             <h2 className="text-lg font-semibold mt-2">{course.Course_name}</h2>
-                            <div class="bg-green-600 text-xs font-medium text-gray-100 text-center p-0.5 leading-none rounded-full mt-4" style={{ width: "45%" }}> 45%</div>
-
+                            <motion.div
+                                className="bg-green-600 text-xs font-medium text-gray-100 text-center p-0.5 leading-none rounded-full mt-4"
+                                initial={{ width: "0%" }}
+                                animate={{ width: "45%" }}
+                                transition={{ duration: 1 }}
+                            >
+                                45%
+                            </motion.div>
                         </motion.div>
                     ))
                 ) : (
-                    <p className="text-center text-gray-500">No matching courses found.</p>
+                    <motion.p className="text-center text-gray-500"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        No matching courses found.
+                    </motion.p>
                 )}
-
             </div>
-
-
-        </div>
+        </motion.div>
     );
 };
 
