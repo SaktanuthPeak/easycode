@@ -48,6 +48,14 @@ const AllCoursePage = () => {
         course.Course_name.toLowerCase().includes(search.toLowerCase())
     );
 
+    const truncateText = (text, maxLength) => {
+        if (text.length <= maxLength) {
+            return text;
+        }
+        return text.substring(0, maxLength) + "...";
+    };
+
+
     return (
         <div className="container mx-auto p-6">
             <motion.h1
@@ -81,7 +89,7 @@ const AllCoursePage = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.1, delay: 0.1 }}
-                        onClick={() => navigate(`/client-home/${course.category.documentId}/${course.documentId}`)}
+                        onClick={() => navigate(`/client-home/${course.category?.documentId}/${course.documentId}`)}
                     >
                         <motion.img
                             src={getImageUrl(course.course_img[0])}
@@ -92,9 +100,12 @@ const AllCoursePage = () => {
                             transition={{ duration: 0.1 }}
                         />
                         <div className="p-4 text-center">
-                            <h3 className="text-xl font-semibold text-gray-800">{course.Course_name}</h3>
+                            <h3 className="text-xl font-semibold text-gray-800">{truncateText(course.Course_name, 25)}</h3> {/* Truncate course name */}
                             <p className="text-sm text-gray-500 mt-1">Created By Me</p>
                             {course.rating ? renderStars(course.rating) : <p className="text-sm text-gray-500 mt-1">No rating</p>}
+                            <p className="text-sm text-gray-500 mt-1">
+                                Total Chapters: {course.chapter?.length || 0} {/* Use optional chaining */}
+                            </p>
                         </div>
                     </motion.div>
                 ))}
