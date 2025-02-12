@@ -4,6 +4,7 @@ import { Code, Database, Shield, Brain, Wifi, Gamepad } from "lucide-react";
 import ax from '../conf/ax';
 import { motion } from 'framer-motion';
 import AdvertisementBanner from '../component/advertisementBanner';
+import WebFooter from '../component/webFooter';
 
 const iconMap = {
     "Web Development": Code,
@@ -62,7 +63,7 @@ const HomePreviewPage = () => {
     }, [navigate]);
 
     return (
-        <div className="p-8">
+        <div>
             <motion.div
                 className="mb-12 text-center"
                 initial={{ opacity: 0 }}
@@ -93,7 +94,10 @@ const HomePreviewPage = () => {
                     ))}
                 </motion.div>
             </div>
+            <WebFooter />
         </div>
+
+
     );
 };
 
