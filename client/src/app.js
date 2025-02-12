@@ -26,6 +26,7 @@ import PaymentQRPage from "./clientPage/paymantQrPage";
 import MyLearningPage from "./clientPage/myLearningPage";
 import CourseLearningPage from "./clientPage/courseLearningPage";
 import AllCoursePage from "./clientPage/allCoursePage";
+import PreviewAllCoursePage from "./homePreviewPage/previewAllCoursePage";
 
 // Import components
 import NavbarLogin from "./component/navbarLogin";
@@ -127,6 +128,7 @@ const App = () => {
               <Route path="/signup" element={<Signup />} />
               <Route path="/home-preview/:categoryId" element={<CategoryPreviewPage />} />
               <Route path="/home-preview/:categoryId/:courseId" element={<CoursePreviewPage />} />
+              <Route path="/home-preview/all-courses" element={<PreviewAllCoursePage />} />
             </Routes>
           </>
         )}

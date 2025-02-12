@@ -6,7 +6,7 @@ import no_image_available from "./images/No_image_available.svg.jpg";
 import { motion } from "framer-motion";
 import CategorySidebar from "../component/categorySidebar";
 
-const AllCoursePage = () => {
+const PreviewAllCoursePage = () => {
     const [courses, setCourses] = useState([]);
     const [search, setSearch] = useState("");
     const navigate = useNavigate();
@@ -58,9 +58,9 @@ const AllCoursePage = () => {
 
 
     return (
-        <div className="flex min-h-screen"> {/* Add flex for layout */}
-            <CategorySidebar /> {/* Place the sidebar component */}
-            <div className="container mx-auto p-6 flex-grow"> {/* Content area */}
+        <div className="flex min-h-screen">
+            <CategorySidebar />
+            <div className="container mx-auto p-6 flex-grow">
                 <motion.h1
                     className="text-4xl font-bold text-center text-gray-800"
                     initial={{ opacity: 0, y: -20 }}
@@ -92,7 +92,7 @@ const AllCoursePage = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.1, delay: 0.1 }}
-                            onClick={() => navigate(`/client-home/${course.category?.documentId}/${course.documentId}`)}
+                            onClick={() => navigate(`/home-preview/${course.category?.documentId}/${course.documentId}`)}
                         >
                             <motion.img
                                 src={getImageUrl(course.course_img[0])}
@@ -117,4 +117,4 @@ const AllCoursePage = () => {
         </div>
     );
 };
-export default AllCoursePage;
+export default PreviewAllCoursePage;

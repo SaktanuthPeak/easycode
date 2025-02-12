@@ -14,7 +14,7 @@ const CategoryPage = () => {
         const fetchCategoryDetails = async () => {
             try {
                 const response = await ax.get(`categories/${categoryId}?populate=courses.course_img`);
-                console.log(response.data.data.courses[0].documentId)
+                console.log("dddddd", response.data.data)
                 setCategoryData(response.data.data);
             } catch (error) {
                 console.error("Error fetching category details:", error);
@@ -93,6 +93,7 @@ const CategoryPage = () => {
                                 <p className="text-sm text-gray-500 mt-1">Created By Me</p>
                                 {course.rating ? renderStars(course.rating) : <p className="text-sm text-gray-500 mt-1">No rating</p>}
                             </div>
+
                         </motion.div>
                     ))}
                 </div>

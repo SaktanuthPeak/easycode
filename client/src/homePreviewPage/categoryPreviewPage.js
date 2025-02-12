@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import CategorySidebar from "../component/categorySidebar";
 import conf from "../conf/main";
 
-// Use API URL from config
 
 const CategoryPreviewPage = () => {
     const { categoryId } = useParams();
