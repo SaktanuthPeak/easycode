@@ -12,7 +12,6 @@ import { CartProvider } from "./context/Cart.context";
 import ax from "./conf/ax";
 
 // Import pages
-import AdminHomePage from "./adminPage/adminHomepage";
 import LoginForm from "./authenticationPage/login";
 import ClientHomePage from "./clientPage/clientHomePage";
 import Signup from "./authenticationPage/signup";
@@ -26,27 +25,43 @@ import PaymentQRPage from "./clientPage/paymantQrPage";
 import MyLearningPage from "./clientPage/myLearningPage";
 import CourseLearningPage from "./clientPage/courseLearningPage";
 
+//Import admin pages
+import AdminHomePage from "./admin/adminPage/adminHomepage";
+
 // Import components
 import NavbarLogin from "./component/navbarLogin";
 import NavbarPreview from "./component/navbarPreview";
+import NavbarAdmin from "./component/navbarAdmin";
 
-const RouteAfterLogin = ({ homePath }) => {
+const RouteAfterLogin = ({ homePath, userRole }) => {
   if (!homePath) {
     return <div>Loading...</div>;
   }
-  return (
-    <Routes>
-      {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
-      <Route path="/client-home" element={<ClientHomePage />} />
-      <Route path="/admin-home" element={<AdminHomePage />} />
-      <Route path="/client-home/:categoryId" element={<CategoryPage />} />
-      <Route path="/client-home/:categoryId/:courseId" element={<CoursePage />} />
-      <Route path="/client-home/cart" element={<CartPage />} />
-      <Route path="/client-home/cart/payment" element={<PaymentQRPage />} />
-      <Route path="/client-home/my-learning" element={<MyLearningPage />} />
-      <Route path="/client-home/my-learning/:courseId" element={<CourseLearningPage />} />
-    </Routes>
-  );
+  if (userRole === "admin") {
+    {
+      homePath && <Route path="*" element={<Navigate to={homePath} />} />;
+    }
+    <Route path="/admin-home" element={<AdminHomePage />} />;
+  } else {
+    return (
+      <Routes>
+        {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
+        <Route path="/client-home" element={<ClientHomePage />} />
+        <Route path="/client-home/:categoryId" element={<CategoryPage />} />
+        <Route
+          path="/client-home/:categoryId/:courseId"
+          element={<CoursePage />}
+        />
+        <Route path="/client-home/cart" element={<CartPage />} />
+        <Route path="/client-home/cart/payment" element={<PaymentQRPage />} />
+        <Route path="/client-home/my-learning" element={<MyLearningPage />} />
+        <Route
+          path="/client-home/my-learning/:courseId"
+          element={<CourseLearningPage />}
+        />
+      </Routes>
+    );
+  }
 };
 
 const App = () => {
@@ -59,7 +74,6 @@ const App = () => {
     console.log("isLoggedIn:", state.isLoggedIn);
 
     if (state.isLoggedIn) {
-
       toast.success("Login Success!", {
         position: "top-right",
         autoClose: 2000,
@@ -105,15 +119,18 @@ const App = () => {
   };
 
   if (loading) return <div>Loading...</div>;
-
   return (
     <Router>
       <CartProvider>
         <ToastContainer />
         {state.isLoggedIn ? (
           <>
-            <NavbarLogin onLogout={handleLogout} />
-            <RouteAfterLogin homePath={homePath} />
+            {userRole === "admin" ? (
+              <NavbarAdmin />
+            ) : (
+              <NavbarLogin onLogout={handleLogout} />
+            )}
+            <RouteAfterLogin homePath={homePath} userRole={userRole} />
           </>
         ) : (
           <>
@@ -123,8 +140,14 @@ const App = () => {
               <Route path="/home-preview" element={<HomePreviewPage />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<Signup />} />
-              <Route path="/home-preview/:categoryId" element={<CategoryPreviewPage />} />
-              <Route path="/home-preview/:categoryId/:courseId" element={<CoursePreviewPage />} />
+              <Route
+                path="/home-preview/:categoryId"
+                element={<CategoryPreviewPage />}
+              />
+              <Route
+                path="/home-preview/:categoryId/:courseId"
+                element={<CoursePreviewPage />}
+              />
             </Routes>
           </>
         )}
