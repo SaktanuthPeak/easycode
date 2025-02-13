@@ -7,14 +7,17 @@ import no_image_available from "./images/No_image_available.svg.jpg";
 import { useCart } from '../context/Cart.context';
 
 const CartPage = () => {
-    const location = useLocation();
     const { cart, removeFromCart } = useCart();
     const [courses, setCourses] = useState([]);
-    const baseURL = "http://localhost:1337";
     const navigate = useNavigate();
-
+    /*  */
     useEffect(() => {
         const fetchCourseDetails = async () => {
+            if (cart.length === 0) {
+                setCourses([]);
+                return;
+            }
+
             try {
                 const coursePromises = cart.map(async (cartItem) => {
                     const response = await ax.get(`courses?filters[documentId][$eq]=${cartItem.id}&populate=*`);
@@ -80,14 +83,16 @@ const CartPage = () => {
                                     {/* <p className="text-gray-600">By {course.instructor}</p> */}
                                 </div>
                                 <div>
-                                    <p className="font-bold text-lg">${course.price.toFixed(2)}</p>
+                                    <p className="font-bold text-lg">{course.price.toFixed(2)} ฿</p>
                                     <div className="flex mt-2">
-                                        <button
-                                            onClick={() => removeFromCart(course.id)}
-                                            className="text-red-500 flex items-center hover:bg-red-50 p-1 rounded"
-                                        >
-                                            <Trash2 className="mr-1 w-4 h-4" /> Remove
-                                        </button>
+                                        {courses.length > 1 && (
+                                            <button
+                                                onClick={() => removeFromCart(course.id)}
+                                                className="text-red-500 flex items-center hover:bg-red-50 p-1 rounded"
+                                            >
+                                                <Trash2 className="mr-1 w-4 h-4" /> Remove
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -98,12 +103,9 @@ const CartPage = () => {
                     <div className="bg-white rounded-lg shadow-md p-6">
                         <h2 className="text-xl font-bold mb-4">Order Summary</h2>
                         <div className="space-y-2 mb-4">
-
-
-
                             <div className="flex justify-between font-bold text-lg border-t pt-2">
                                 <span>Total</span>
-                                <span>${orderDetails.total.toFixed(2)}</span>
+                                <span>฿ {orderDetails.total.toFixed(2)}</span>
                             </div>
                         </div>
                         <button

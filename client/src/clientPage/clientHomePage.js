@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Code, FolderCode, Database, Shield, BrainCircuit, Wifi, Gamepad } from "lucide-react";
 import ax from '../conf/ax';
 import { motion } from 'framer-motion';
-import AdvertisementBanner from '../component/advertisementBanner';
 import WebFooter from '../component/webFooter';
-
+import AdvertisementBanner from '../component/advertisementBanner';
 
 const iconMap = {
   "Web Development": FolderCode,
@@ -43,6 +42,8 @@ const ClientHomePage = () => {
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
+
+
   useEffect(() => {
     const fetchCategory = async () => {
       try {
@@ -64,7 +65,9 @@ const ClientHomePage = () => {
   }, [navigate]);
 
   return (
+
     <div>
+
       <motion.div
         className="mb-12 text-center"
         initial={{ opacity: 0 }}

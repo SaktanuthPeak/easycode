@@ -11,12 +11,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "./images/Logo2.png"
+import { useMessageModal } from "./messageModal";
 
 const navigation = [
   { name: "Home", path: "/client-home", current: true },
   { name: "All courses", path: "/client-home/all-courses", current: false },
   { name: "My learning", path: "/client-home/my-learning", current: false },
 ];
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -38,6 +40,7 @@ export default function NavbarLogin() {
   const handleHome = () => {
     navigate("/client-home")
   }
+  const { openModal } = useMessageModal();
 
   return (
     <Disclosure as="nav" className="bg-white-800">
@@ -135,13 +138,14 @@ export default function NavbarLogin() {
                   </button>
                 </MenuItem>
                 <MenuItem>
-                  <a
-                    href="#"
+                  <button
+                    onclick={openModal}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    Settings
-                  </a>
+                    Support
+                  </button>
                 </MenuItem>
+
                 <MenuItem>
                   <button
                     onClick={logout}
@@ -151,6 +155,7 @@ export default function NavbarLogin() {
                     Sign Out
                   </button>
                 </MenuItem>
+
               </MenuItems>
             </Menu>
           </div>
