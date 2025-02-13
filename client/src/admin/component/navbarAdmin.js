@@ -1,5 +1,16 @@
 import React, { useState } from "react";
-import { Menu, ChevronLeft, Home, User, Settings } from "lucide-react";
+import {
+  Menu,
+  ChevronLeft,
+  BookMinus,
+  LaptopMinimal,
+  Home,
+  Package,
+  CircleHelp,
+  BadgeHelp,
+  User,
+  Settings,
+} from "lucide-react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 export default function NavbarAdmin() {
@@ -17,7 +28,13 @@ export default function NavbarAdmin() {
         toggle={() => setIsOpen(!isOpen)}
         navigate={navigate}
       />
-      <Outlet />
+      <div
+        className={`flex-1 transition-all duration-300 ${
+          isOpen ? "ml-64" : "ml-20"
+        } p-6`}
+      >
+        <Outlet />
+      </div>
     </div>
   );
 }
@@ -25,30 +42,51 @@ export default function NavbarAdmin() {
 function Sidebar({ isOpen, toggle, onLogout, navigate }) {
   return (
     <div
-      className={`bg-gray-900 text-white transition-all duration-300 p-4 ${
-        isOpen ? "w-64" : "w-20"
-      }`}
+      className={`bg-gray-900 text-white transition-all duration-300 p-4
+        ${isOpen ? "w-64" : "w-20"} 
+        fixed h-screen top-0 left-0 overflow-y-auto`}
     >
       <nav className="flex flex-col space-y-4">
-        <NavItem
-          icon={Home}
-          label="Home"
-          isOpen={isOpen}
-          path="/admin-home"
-          navigate={navigate}
-        />
         <NavItem
           icon={User}
           label="Profile"
           isOpen={isOpen}
-          path="/admin-home2"
+          path="profile"
           navigate={navigate}
         />
         <NavItem
-          icon={Settings}
-          label="Settings"
+          icon={LaptopMinimal}
+          label="Dashboard"
           isOpen={isOpen}
-          path="/admin-home3"
+          path="/dashboard"
+          navigate={navigate}
+        />
+        <NavItem
+          icon={Package}
+          label="Order"
+          isOpen={isOpen}
+          path="/order"
+          navigate={navigate}
+        />
+        <NavItem
+          icon={BookMinus}
+          label="Courses"
+          isOpen={isOpen}
+          path="/courses"
+          navigate={navigate}
+        />
+        <NavItem
+          icon={BadgeHelp}
+          label="Teacher Support"
+          isOpen={isOpen}
+          path="/teacher-support"
+          navigate={navigate}
+        />
+        <NavItem
+          icon={CircleHelp}
+          label="Support"
+          isOpen={isOpen}
+          path="support"
           navigate={navigate}
         />
         <NavItem
@@ -58,11 +96,11 @@ function Sidebar({ isOpen, toggle, onLogout, navigate }) {
           onClick={onLogout}
         />
       </nav>
-      <div className="flex justify-between items-center mb-6">
+      <div className="absolute bottom-6 left-1.5">
         <button
           onClick={toggle}
           aria-label="Toggle Sidebar"
-          className="mb-6 space-y-4 pl-1.5"
+          className="mb-6 space-y-4 pl-1.5 mt-100"
         >
           {isOpen ? <ChevronLeft size={24} /> : <Menu size={24} />}
         </button>
