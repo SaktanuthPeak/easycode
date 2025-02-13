@@ -75,13 +75,13 @@ const CategoryPage = () => {
                             key={course.id}
                             className="flex flex-col items-center p-6 bg-white rounded-xl shadow-md cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
                             whileHover={{ scale: 1.05 }}
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 1, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.1, delay: 0.1 }}
                             onClick={() => navigate(`/client-home/${categoryId}/${course.documentId}`)}
                         >
                             <motion.img
-                                src={getImageUrl(course.course_img[0])}
+                                src={course.course_img?.length > 0 ? getImageUrl(course.course_img[0]) : no_image_available}
                                 alt={course.Course_name}
                                 className="rounded-lg w-full h-48 object-cover"
                                 initial={{ scale: 0.9 }}

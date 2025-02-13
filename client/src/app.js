@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "./context/Auth.context";
 import { CartProvider } from "./context/Cart.context";
 import ax from "./conf/ax";
+import { MessageModalProvider } from "./component/messageModal";
 
 // Import pages
 import AdminHomePage from "./adminPage/adminHomepage";
@@ -31,6 +32,21 @@ import PreviewAllCoursePage from "./homePreviewPage/previewAllCoursePage";
 // Import components
 import NavbarLogin from "./component/navbarLogin";
 import NavbarPreview from "./component/navbarPreview";
+import { useMessageModal } from "./component/messageModal";
+import { MessageCircle } from "lucide-react";
+
+const FloatingMessageButton = () => {
+  const { openModal } = useMessageModal();
+
+  return (
+    <button
+      onClick={openModal}
+      className="fixed bottom-6 right-6 bg-blue-500 text-white p-4 rounded-full shadow-lg hover:bg-blue-600 transition"
+    >
+      <MessageCircle className="w-6 h-6" />
+    </button>
+  );
+};
 
 const RouteAfterLogin = ({ homePath }) => {
   if (!homePath) {
@@ -38,6 +54,7 @@ const RouteAfterLogin = ({ homePath }) => {
   }
   return (
     <Routes>
+
       {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
       <Route path="/client-home" element={<ClientHomePage />} />
       <Route path="/admin-home" element={<AdminHomePage />} />
@@ -53,7 +70,7 @@ const RouteAfterLogin = ({ homePath }) => {
 };
 
 const App = () => {
-  const { state, dispatch } = useContext(AuthContext); // Get Auth context
+  const { state, dispatch } = useContext(AuthContext);
   const [userRole, setUserRole] = useState(null);
   const [homePath, setHomePath] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -94,9 +111,9 @@ const App = () => {
   }, [state.isLoggedIn]);
 
   const handleLogout = () => {
-    dispatch({ type: "LOGOUT" }); // Update Auth context
+    dispatch({ type: "LOGOUT" });
 
-    // Show logout success notification
+
     toast.info("Logout Success!", {
       position: "top-right",
       autoClose: 2000,
@@ -112,26 +129,29 @@ const App = () => {
   return (
     <Router>
       <CartProvider>
-        <ToastContainer />
-        {state.isLoggedIn ? (
-          <>
-            <NavbarLogin onLogout={handleLogout} />
-            <RouteAfterLogin homePath={homePath} />
-          </>
-        ) : (
-          <>
-            <NavbarPreview />
-            <Routes>
-              <Route path="*" element={<Navigate to="/home-preview" />} />
-              <Route path="/home-preview" element={<HomePreviewPage />} />
-              <Route path="/login" element={<LoginForm />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/home-preview/:categoryId" element={<CategoryPreviewPage />} />
-              <Route path="/home-preview/:categoryId/:courseId" element={<CoursePreviewPage />} />
-              <Route path="/home-preview/all-courses" element={<PreviewAllCoursePage />} />
-            </Routes>
-          </>
-        )}
+        <MessageModalProvider>
+          <ToastContainer />
+          {state.isLoggedIn ? (
+            <>
+              <NavbarLogin onLogout={handleLogout} />
+              <RouteAfterLogin homePath={homePath} />
+            </>
+          ) : (
+            <>
+              <NavbarPreview />
+              <Routes>
+                <Route path="*" element={<Navigate to="/home-preview" />} />
+                <Route path="/home-preview" element={<HomePreviewPage />} />
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/home-preview/:categoryId" element={<CategoryPreviewPage />} />
+                <Route path="/home-preview/:categoryId/:courseId" element={<CoursePreviewPage />} />
+                <Route path="/home-preview/all-courses" element={<PreviewAllCoursePage />} />
+              </Routes>
+            </>
+          )}
+          <FloatingMessageButton />
+        </MessageModalProvider>
       </CartProvider>
     </Router>
   );

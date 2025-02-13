@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Code, Database, Shield, Brain, Wifi, Gamepad } from "lucide-react";
 import ax from '../conf/ax';
 import { motion } from 'framer-motion';
-import AdvertisementBanner from '../component/advertisementBanner';
+import PreviewAdvertisementBanner from '../component/previewAdvertisementBanner';
 import WebFooter from '../component/webFooter';
 
 const iconMap = {
@@ -70,7 +70,7 @@ const HomePreviewPage = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8 }}
             >
-                <AdvertisementBanner />
+                <PreviewAdvertisementBanner />
             </motion.div>
             <div className="p-8">
 

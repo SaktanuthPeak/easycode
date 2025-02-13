@@ -12,7 +12,7 @@ const advertisementData = [
         subtitle: "Unlock Your Potential with Our Courses",
         backgroundImage: easycode,
         buttonText: "Explore Courses",
-        link: "/client-home/all-courses"
+        link: "/home-preview/all-courses"
     },
     {
         id: 2,
@@ -28,11 +28,11 @@ const advertisementData = [
         subtitle: "Flexible Online Learning",
         backgroundImage: coding,
         buttonText: "Start Learning",
-        link: "/client-home/my-learning"
+        link: "/login"
     }
 ];
 
-const AdvertisementBanner = () => {
+const PreviewAdvertisementBanner = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const navigate = useNavigate();
 
@@ -103,4 +103,4 @@ const AdvertisementBanner = () => {
     );
 };
 
-export default AdvertisementBanner;
+export default PreviewAdvertisementBanner;
