@@ -10,6 +10,7 @@ import {
   BadgeHelp,
   User,
   Settings,
+  School,
 } from "lucide-react";
 import { Outlet, useNavigate } from "react-router-dom";
 
@@ -73,6 +74,13 @@ function Sidebar({ isOpen, toggle, onLogout, navigate }) {
           label="Courses"
           isOpen={isOpen}
           path="/courses"
+          navigate={navigate}
+        />
+        <NavItem
+          icon={School}
+          label="Teacher"
+          isOpen={isOpen}
+          path="/teacher"
           navigate={navigate}
         />
         <NavItem
