@@ -26,12 +26,18 @@ import MyLearningPage from "./clientPage/myLearningPage";
 import CourseLearningPage from "./clientPage/courseLearningPage";
 
 //Import admin pages
-import AdminHomePage from "./admin/adminPage/adminHomepage";
+import Dashboard from "./admin/adminPage/dashboard";
+import Courses from "./admin/adminPage/courses";
+import Profile from "./admin/adminPage/profile";
+import Support from "./admin/adminPage/support";
+import Teacher from "./admin/adminPage/teacher";
+import TeacherSupport from "./admin/adminPage/teacherSupport";
+import Order from "./admin/adminPage/order";
 
 // Import components
 import NavbarLogin from "./component/navbarLogin";
 import NavbarPreview from "./component/navbarPreview";
-import NavbarAdmin from "./component/navbarAdmin";
+import NavbarAdmin from "./admin/component/navbarAdmin";
 
 const RouteAfterLogin = ({ homePath, userRole }) => {
   if (!homePath) {
@@ -43,7 +49,13 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
       <Routes>
         {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
         <Route path="/" element={<NavbarAdmin />}>
-          <Route path="/admin-home" element={<AdminHomePage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/teacher" element={<Teacher />} />
+          <Route path="/teacher-support" element={<TeacherSupport />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/order" element={<Order />} />
         </Route>
       </Routes>
     );
@@ -94,7 +106,7 @@ const App = () => {
           const role = result.data.role.type;
           setUserRole(role);
 
-          setHomePath(role === "admin" ? "/admin-home" : "/client-home");
+          setHomePath(role === "admin" ? "/dashboard" : "/client-home");
         } catch (error) {
           console.error("Error fetching role:", error);
           setUserRole(null);
