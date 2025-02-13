@@ -13,7 +13,6 @@ import ax from "./conf/ax";
 import { MessageModalProvider } from "./component/messageModal";
 
 // Import pages
-import AdminHomePage from "./adminPage/adminHomepage";
 import LoginForm from "./authenticationPage/login";
 import ClientHomePage from "./clientPage/clientHomePage";
 import Signup from "./authenticationPage/signup";
@@ -27,13 +26,22 @@ import PaymentQRPage from "./clientPage/paymantQrPage";
 import MyLearningPage from "./clientPage/myLearningPage";
 import CourseLearningPage from "./clientPage/courseLearningPage";
 import AllCoursePage from "./clientPage/allCoursePage";
-import PreviewAllCoursePage from "./homePreviewPage/previewAllCoursePage";
+
+//Import admin pages
+import Dashboard from "./admin/adminPage/dashboard";
+import Courses from "./admin/adminPage/courses";
+import Profile from "./admin/adminPage/profile";
+import Support from "./admin/adminPage/support";
+import Teacher from "./admin/adminPage/teacher";
+import TeacherSupport from "./admin/adminPage/teacherSupport";
+import Order from "./admin/adminPage/order";
 
 // Import components
 import NavbarLogin from "./component/navbarLogin";
 import NavbarPreview from "./component/navbarPreview";
 import { useMessageModal } from "./component/messageModal";
 import { MessageCircle } from "lucide-react";
+import NavbarAdmin from "./admin/component/navbarAdmin";
 
 const FloatingMessageButton = () => {
   const { openModal } = useMessageModal();
@@ -48,25 +56,44 @@ const FloatingMessageButton = () => {
   );
 };
 
-const RouteAfterLogin = ({ homePath }) => {
+const RouteAfterLogin = ({ homePath, userRole }) => {
   if (!homePath) {
     return <div>Loading...</div>;
   }
-  return (
-    <Routes>
-
-      {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
-      <Route path="/client-home" element={<ClientHomePage />} />
-      <Route path="/admin-home" element={<AdminHomePage />} />
-      <Route path="/client-home/:categoryId" element={<CategoryPage />} />
-      <Route path="/client-home/:categoryId/:courseId" element={<CoursePage />} />
-      <Route path="/client-home/cart" element={<CartPage />} />
-      <Route path="/client-home/cart/payment" element={<PaymentQRPage />} />
-      <Route path="/client-home/my-learning" element={<MyLearningPage />} />
-      <Route path="/client-home/my-learning/:courseId" element={<CourseLearningPage />} />
-      <Route path="/client-home/all-courses" element={<AllCoursePage />} />
-    </Routes>
-  );
+  console.log(userRole);
+  if (userRole === "admin") {
+    return (
+      <Routes>
+        {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
+        <Route path="/" element={<NavbarAdmin />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/teacher" element={<Teacher />} />
+          <Route path="/teacher-support" element={<TeacherSupport />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/order" element={<Order />} />
+        </Route>
+      </Routes>
+    );
+  } else {
+    return (
+      <Routes>
+        {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
+        <Route path="/client-home" element={<ClientHomePage />} />
+        <Route path="/client-home/:categoryId" element={<CategoryPage />} />
+        <Route
+          path="/client-home/:categoryId/:courseId"
+          element={<CoursePage />}
+        />
+        <Route path="/client-home/cart" element={<CartPage />} />
+        <Route path="/client-home/cart/payment" element={<PaymentQRPage />} />
+        <Route path="/client-home/my-learning" element={<MyLearningPage />} />
+        <Route path="/client-home/my-learning/:courseId" element={<CourseLearningPage />} />
+        <Route path="/client-home/all-courses" element={<AllCoursePage />} />
+      </Routes>
+    );
+  }
 };
 
 const App = () => {
@@ -79,7 +106,6 @@ const App = () => {
     console.log("isLoggedIn:", state.isLoggedIn);
 
     if (state.isLoggedIn) {
-
       toast.success("Login Success!", {
         position: "top-right",
         autoClose: 2000,
@@ -95,7 +121,7 @@ const App = () => {
           const role = result.data.role.type;
           setUserRole(role);
 
-          setHomePath(role === "admin" ? "/admin-home" : "/client-home");
+          setHomePath(role === "admin" ? "/dashboard" : "/client-home");
         } catch (error) {
           console.error("Error fetching role:", error);
           setUserRole(null);
@@ -125,35 +151,50 @@ const App = () => {
   };
 
   if (loading) return <div>Loading...</div>;
-
   return (
     <Router>
       <CartProvider>
-        <MessageModalProvider>
-          <ToastContainer />
-          {state.isLoggedIn ? (
-            <>
-              <NavbarLogin onLogout={handleLogout} />
-              <RouteAfterLogin homePath={homePath} />
-            </>
-          ) : (
-            <>
-              <NavbarPreview />
-              <Routes>
-                <Route path="*" element={<Navigate to="/home-preview" />} />
-                <Route path="/home-preview" element={<HomePreviewPage />} />
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/home-preview/:categoryId" element={<CategoryPreviewPage />} />
-                <Route path="/home-preview/:categoryId/:courseId" element={<CoursePreviewPage />} />
-                <Route path="/home-preview/all-courses" element={<PreviewAllCoursePage />} />
-              </Routes>
-            </>
-          )}
-          <FloatingMessageButton />
-        </MessageModalProvider>
+
+        <ToastContainer />
+        {state.isLoggedIn ? (
+          <>
+            {userRole === "admin" ? (
+              <RouteAfterLogin homePath={homePath} userRole={userRole} />
+            ) : (
+              <>
+                <MessageModalProvider>
+                  <NavbarLogin />
+                  <RouteAfterLogin homePath={homePath} userRole={userRole} />
+                  <FloatingMessageButton />
+                </MessageModalProvider>
+
+              </>
+            )}
+
+          </>
+        ) : (
+          <>
+            <NavbarPreview />
+            <Routes>
+              <Route path="*" element={<Navigate to="/home-preview" />} />
+              <Route path="/home-preview" element={<HomePreviewPage />} />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route
+                path="/home-preview/:categoryId"
+                element={<CategoryPreviewPage />}
+              />
+              <Route
+                path="/home-preview/:categoryId/:courseId"
+                element={<CoursePreviewPage />}
+              />
+            </Routes>
+          </>
+        )}
+
+
       </CartProvider>
-    </Router>
+    </Router >
   );
 };
 
