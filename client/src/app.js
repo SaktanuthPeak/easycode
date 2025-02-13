@@ -37,11 +37,16 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
   if (!homePath) {
     return <div>Loading...</div>;
   }
+  console.log(userRole);
   if (userRole === "admin") {
-    {
-      homePath && <Route path="*" element={<Navigate to={homePath} />} />;
-    }
-    <Route path="/admin-home" element={<AdminHomePage />} />;
+    return (
+      <Routes>
+        {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
+        <Route path="/" element={<NavbarAdmin />}>
+          <Route path="/admin-home" element={<AdminHomePage />} />
+        </Route>
+      </Routes>
+    );
   } else {
     return (
       <Routes>
@@ -126,9 +131,11 @@ const App = () => {
         {state.isLoggedIn ? (
           <>
             {userRole === "admin" ? (
-              <NavbarAdmin />
+              <></>
             ) : (
-              <NavbarLogin onLogout={handleLogout} />
+              <>
+                <NavbarLogin />
+              </>
             )}
             <RouteAfterLogin homePath={homePath} userRole={userRole} />
           </>
