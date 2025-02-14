@@ -22,7 +22,9 @@ function Order() {
   return (
     <div>
       <div>
-        <h1>Order</h1>
+        <h1 className="text-4xl font-black text-gray-900 mb-10">
+          Muhahahaha Order
+        </h1>
       </div>
       {/* This is a comment */}
       <div className="shadow-lg rounded-lg overflow-hidden mx-4 md:mx-10">
@@ -71,10 +73,6 @@ function Order() {
                         id="order_status"
                         className=" border border-gray-300 text-gray-000 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       >
-                        <option selected>{item.order_status}</option>
-                        {/* {item.order_status.map((item) => (
-                        <option value="US">{item}</option>
-                      ))} */}
                         <option value="confirm">confirm</option>
                         <option value="not confirm">not confirm</option>
                       </select>
