@@ -35,6 +35,7 @@ import Support from "./admin/adminPage/support";
 import Teacher from "./admin/adminPage/teacher";
 import TeacherSupport from "./admin/adminPage/teacherSupport";
 import Order from "./admin/adminPage/order";
+import TeacherDetailPage from "./admin/adminPage/teacherDetailPage";
 
 // Import components
 import NavbarLogin from "./component/navbarLogin";
@@ -42,6 +43,8 @@ import NavbarPreview from "./component/navbarPreview";
 import { useMessageModal } from "./component/messageModal";
 import { MessageCircle } from "lucide-react";
 import NavbarAdmin from "./admin/component/navbarAdmin";
+
+
 
 const FloatingMessageButton = () => {
   const { openModal } = useMessageModal();
@@ -69,6 +72,7 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/teacher" element={<Teacher />} />
+          <Route path="/teacher/:id" element={<TeacherDetailPage />} />
           <Route path="/teacher-support" element={<TeacherSupport />} />
           <Route path="/support" element={<Support />} />
           <Route path="/courses" element={<Courses />} />
@@ -180,6 +184,7 @@ const App = () => {
               <Route path="/home-preview" element={<HomePreviewPage />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<Signup />} />
+              
               <Route
                 path="/home-preview/:categoryId"
                 element={<CategoryPreviewPage />}
@@ -187,7 +192,9 @@ const App = () => {
               <Route
                 path="/home-preview/:categoryId/:courseId"
                 element={<CoursePreviewPage />}
+                
               />
+              
             </Routes>
           </>
         )}
