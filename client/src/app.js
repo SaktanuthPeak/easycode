@@ -28,6 +28,7 @@ import CourseLearningPage from "./clientPage/courseLearningPage";
 import AllCoursePage from "./clientPage/allCoursePage";
 import PreviewAllCoursePage from "./homePreviewPage/previewAllCoursePage";
 import TeacherDashboard from "./teacher/dashboard";
+import CourseDashboard from "./teacher/courseDashboard";
 //Import admin pages
 import Dashboard from "./admin/adminPage/dashboard";
 import Courses from "./admin/adminPage/courses";
@@ -98,6 +99,10 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
         />
         <Route path="/client-home/all-courses" element={<AllCoursePage />} />
         <Route path="/client-home/dashboard" element={<TeacherDashboard />} />
+        <Route
+          path="/client-home/dashboard/:courseId"
+          element={<CourseDashboard />}
+        />
       </Routes>
     );
   }
