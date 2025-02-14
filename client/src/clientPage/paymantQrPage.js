@@ -4,10 +4,10 @@ import generatePayload from "promptpay-qr";
 import qrcode from "qrcode";
 import ax from "../conf/ax";
 import { ToastContainer, toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
 const PromptPayQR = () => {
 
-
+    const navigate = useNavigate();
     const location = useLocation();
 
     const [promptPayID] = useState("0887893891");
@@ -141,6 +141,9 @@ const PromptPayQR = () => {
             });
 
             notifySuccess("Slip อัปโหลดสำเร็จ! แอดมินจะส่งอีเมลแจ้งให้ภายใน 10 นาที");
+            setTimeout(() => {
+                navigate("/client-home");  // นำทางไป client-home หลังจาก 3 วินาที
+            }, 1500);
         } catch (error) {
             console.error("Error uploading slip:", error);
             notifyError("อัปโหลดล้มเหลว! กรุณาลองใหม่");
