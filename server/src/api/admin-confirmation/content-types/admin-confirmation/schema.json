@@ -30,6 +30,9 @@
     },
     "Email": {
       "type": "string"
+    },
+    "user_documentid": {
+      "type": "string"
     }
   }
 }

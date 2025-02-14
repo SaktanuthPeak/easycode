@@ -398,6 +398,7 @@ export interface ApiAdminConfirmationAdminConfirmation
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_documentid: Schema.Attribute.String;
     Username: Schema.Attribute.String;
   };
 }
@@ -502,8 +503,8 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    instructors: Schema.Attribute.Relation<
-      'oneToMany',
+    instructor: Schema.Attribute.Relation<
+      'manyToOne',
       'api::instructor.instructor'
     >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -544,7 +545,7 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    course: Schema.Attribute.Relation<'manyToOne', 'api::course.course'>;
+    courses: Schema.Attribute.Relation<'oneToMany', 'api::course.course'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
