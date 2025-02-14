@@ -35,6 +35,7 @@ import Support from "./admin/adminPage/support";
 import Teacher from "./admin/adminPage/teacher";
 import TeacherSupport from "./admin/adminPage/teacherSupport";
 import Order from "./admin/adminPage/order";
+import CreateCourse from "./admin/component/createCourse";
 
 // Import components
 import NavbarLogin from "./component/navbarLogin";
@@ -72,6 +73,7 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
           <Route path="/teacher-support" element={<TeacherSupport />} />
           <Route path="/support" element={<Support />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/courses/create-course" element={<CreateCourse />} />
           <Route path="/order" element={<Order />} />
         </Route>
       </Routes>
@@ -89,7 +91,10 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
         <Route path="/client-home/cart" element={<CartPage />} />
         <Route path="/client-home/cart/payment" element={<PaymentQRPage />} />
         <Route path="/client-home/my-learning" element={<MyLearningPage />} />
-        <Route path="/client-home/my-learning/:courseId" element={<CourseLearningPage />} />
+        <Route
+          path="/client-home/my-learning/:courseId"
+          element={<CourseLearningPage />}
+        />
         <Route path="/client-home/all-courses" element={<AllCoursePage />} />
       </Routes>
     );
@@ -139,7 +144,6 @@ const App = () => {
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
 
-
     toast.info("Logout Success!", {
       position: "top-right",
       autoClose: 2000,
@@ -154,7 +158,6 @@ const App = () => {
   return (
     <Router>
       <CartProvider>
-
         <ToastContainer />
         {state.isLoggedIn ? (
           <>
@@ -167,10 +170,8 @@ const App = () => {
                   <RouteAfterLogin homePath={homePath} userRole={userRole} />
                   <FloatingMessageButton />
                 </MessageModalProvider>
-
               </>
             )}
-
           </>
         ) : (
           <>
@@ -191,10 +192,8 @@ const App = () => {
             </Routes>
           </>
         )}
-
-
       </CartProvider>
-    </Router >
+    </Router>
   );
 };
 
