@@ -26,6 +26,7 @@ import PaymentQRPage from "./clientPage/paymantQrPage";
 import MyLearningPage from "./clientPage/myLearningPage";
 import CourseLearningPage from "./clientPage/courseLearningPage";
 import AllCoursePage from "./clientPage/allCoursePage";
+import PreviewAllCoursePage from "./homePreviewPage/previewAllCoursePage";
 
 //Import admin pages
 import Dashboard from "./admin/adminPage/dashboard";
@@ -89,7 +90,10 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
         <Route path="/client-home/cart" element={<CartPage />} />
         <Route path="/client-home/cart/payment" element={<PaymentQRPage />} />
         <Route path="/client-home/my-learning" element={<MyLearningPage />} />
-        <Route path="/client-home/my-learning/:courseId" element={<CourseLearningPage />} />
+        <Route
+          path="/client-home/my-learning/:courseId"
+          element={<CourseLearningPage />}
+        />
         <Route path="/client-home/all-courses" element={<AllCoursePage />} />
       </Routes>
     );
@@ -139,7 +143,6 @@ const App = () => {
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
 
-
     toast.info("Logout Success!", {
       position: "top-right",
       autoClose: 2000,
@@ -154,7 +157,6 @@ const App = () => {
   return (
     <Router>
       <CartProvider>
-
         <ToastContainer />
         {state.isLoggedIn ? (
           <>
@@ -167,10 +169,8 @@ const App = () => {
                   <RouteAfterLogin homePath={homePath} userRole={userRole} />
                   <FloatingMessageButton />
                 </MessageModalProvider>
-
               </>
             )}
-
           </>
         ) : (
           <>
@@ -188,13 +188,15 @@ const App = () => {
                 path="/home-preview/:categoryId/:courseId"
                 element={<CoursePreviewPage />}
               />
+              <Route
+                path="/home-preview/all-courses"
+                element={<PreviewAllCoursePage />}
+              />
             </Routes>
           </>
         )}
-
-
       </CartProvider>
-    </Router >
+    </Router>
   );
 };
 
