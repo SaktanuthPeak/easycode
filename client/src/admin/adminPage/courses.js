@@ -3,6 +3,7 @@ import ax from "../../conf/ax";
 import { useNavigate } from "react-router-dom";
 import conf from "../../conf/main";
 import no_image_available from "../../clientPage/images/No_image_available.svg.jpg";
+
 const Courses = () => {
   const [coursesData, setCoursesData] = useState([]);
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const Courses = () => {
       const courses = await ax.get(`/courses?populate=*`);
       setCoursesData(courses.data.data);
     } catch (error) {
-      console.log("TThis is error");
+      console.log("TThis is error", error);
     }
   };
 
