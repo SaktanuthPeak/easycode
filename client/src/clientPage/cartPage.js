@@ -59,7 +59,7 @@ const CartPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen  flex flex-col">
             <div className="container mx-auto px-4 py-8 flex-grow">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-3xl font-bold">Shopping Cart</h1>
@@ -109,16 +109,19 @@ const CartPage = () => {
                             </div>
                         </div>
                         <button
-                            onClick={() => navigate("/client-home/cart/payment",
-                                {
-                                    state: {
-                                        total: orderDetails.total,
-                                        course_name: courses.map(course => course.Course_name).join(', ')
-                                    }
-                                })}
-                            className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition flex items-center justify-center">
+                            onClick={() => navigate("/client-home/cart/payment", {
+                                state: {
+                                    total: orderDetails.total,
+                                    course_name: courses.map(course => course.Course_name).join(', ')
+                                }
+                            })}
+                            disabled={courses.length === 0}  // ปิดการใช้งานปุ่มเมื่อไม่มีสินค้า
+                            className={`w-full py-3 rounded-lg transition flex items-center justify-center 
+                            ${courses.length === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-black text-white hover:bg-gray-800"}`}
+                        >
                             <ShoppingCart className="mr-2 w-5 h-5" /> Proceed to Checkout
                         </button>
+
 
                     </div>
                 </div>
