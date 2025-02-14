@@ -3,6 +3,8 @@ import ax from "../../conf/ax";
 
 function Order() {
   const [ordersData, setOrdersData] = useState([]);
+  const dayjs = require("dayjs");
+
   const fetchOrder = async () => {
     try {
       const orders = await ax.get(`/admin-confirmations?populate=*`);
@@ -22,7 +24,7 @@ function Order() {
   return (
     <div>
       <div>
-        <h1>Order</h1>
+        <h1 className="text-4xl mb-5">Order</h1>
       </div>
       {/* This is a comment */}
       <div className="shadow-lg rounded-lg overflow-hidden mx-4 md:mx-10">
@@ -30,22 +32,22 @@ function Order() {
           <thead>
             <tr className="bg-gray-100">
               <th className="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
-                Date
+                <center>Date</center>
               </th>
               <th className="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
-                Name
+                <center>Name</center>
               </th>
               <th className="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
-                Email
+                <center>Email</center>
               </th>
               <th className="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
-                course
+                <center>Course</center>
               </th>
               <th className="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
-                Status
+                <center>Status</center>
               </th>
               <th className="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
-                Action
+                <center>Action</center>
               </th>
             </tr>
           </thead>
@@ -53,7 +55,7 @@ function Order() {
             {ordersData.map((item) => (
               <tr>
                 <td className="py-4 px-6 border-b border-gray-200">
-                  {item.updatedAt}
+                  {dayjs(item.updatedAt).format("DD-MM-YYYY HH:mm")}
                 </td>
                 <td className="py-4 px-6 border-b border-gray-200">
                   {item.Username}
