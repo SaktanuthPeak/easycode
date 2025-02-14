@@ -124,7 +124,7 @@ function NavItem({ icon: Icon, label, isOpen, path, onClick, navigate }) {
       onClick={() => (onClick ? onClick() : navigate(path))}
     >
       <Icon size={20} />
-      {isOpen && <span className="text-lg">{label}</span>}
+      {isOpen && <span className="text-base">{label}</span>}
     </button>
   );
 }
