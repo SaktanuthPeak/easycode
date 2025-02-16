@@ -383,6 +383,7 @@ export interface ApiAdminConfirmationAdminConfirmation
   };
   attributes: {
     Applied_course: Schema.Attribute.String;
+    course_documentid: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -393,6 +394,10 @@ export interface ApiAdminConfirmationAdminConfirmation
       'api::admin-confirmation.admin-confirmation'
     > &
       Schema.Attribute.Private;
+    order_status: Schema.Attribute.Enumeration<
+      ['pending', 'confirm', 'not confirm']
+    > &
+      Schema.Attribute.DefaultTo<'pending'>;
     publishedAt: Schema.Attribute.DateTime;
     slip_upload: Schema.Attribute.Media<'images' | 'files', true>;
     updatedAt: Schema.Attribute.DateTime;

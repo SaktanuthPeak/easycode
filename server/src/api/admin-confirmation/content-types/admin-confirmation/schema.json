@@ -33,6 +33,18 @@
     },
     "user_documentid": {
       "type": "string"
+    },
+    "order_status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "confirm",
+        "not confirm"
+      ],
+      "default": "pending"
+    },
+    "course_documentid": {
+      "type": "string"
     }
   }
 }
