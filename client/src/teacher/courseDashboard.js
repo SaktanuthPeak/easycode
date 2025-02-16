@@ -56,7 +56,7 @@ const CourseDashboard = () => {
                   #
                 </th>
                 <th className="border border-gray-300 px-4 py-2 text-left">
-                  Name
+                  username
                 </th>
                 <th className="border border-gray-300 px-4 py-2 text-left">
                   Email
@@ -73,7 +73,7 @@ const CourseDashboard = () => {
                     {index + 1}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    {user.name || "N/A"}
+                    {user.username || "N/A"}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     {user.email || "N/A"}
