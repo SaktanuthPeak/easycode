@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import ax from "../../conf/ax";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 function CreateCourse() {
   const [course, setCourse] = useState([]);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -10,15 +13,19 @@ function CreateCourse() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Course Created:", course);
-    try{
-      const addCourse = await ax.post(`/courses`,{
-        data:course
-      })
+    const confirmCreate = window.confirm(
+      "Are you sure you want to Create this course?"
+    );
 
-      console.log("add course complete")
-    }catch(error){
-      console.log("This is error",error)
+    if (!confirmCreate) return;
+    try {
+      const addCourse = await ax.post(`/courses`, {
+        data: course,
+      });
+      toast.success("Course created successfully!");
+      navigate("/courses");
+    } catch (error) {
+      console.log("This is error", error);
     }
   };
 
@@ -111,7 +118,6 @@ function CreateCourse() {
               required
             />
           </div>
-          
 
           {/* Course Price */}
           <div className="mb-6">
