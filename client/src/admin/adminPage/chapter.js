@@ -4,11 +4,13 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import conf from "../../conf/main";
 import no_image_available from "../../clientPage/images/No_image_available.svg.jpg";
 import { motion } from "framer-motion";
-import { Edit } from "lucide-react";
+import { Edit, Plus, Search, Eye } from "lucide-react";
 
 const Chapter = () => {
   const [chaptersData, setChapterData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const { courseId } = useParams();
+  const navigate = useNavigate();
   const fetchChapters = async () => {
     try {
       const chapters = await ax.get(`/courses/${courseId}?populate=*`);
@@ -24,6 +26,35 @@ const Chapter = () => {
   }, []);
   return (
     <div>
+      <div className="flex flex-col md:flex-row items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
+          All Courses
+        </h1>
+        <div className="flex items-center space-x-4">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search courses..."
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Search
+              className="absolute left-3 top-2.5 text-gray-400"
+              size={20}
+            />
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/courses/create-course")}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 flex items-center"
+          >
+            <Plus size={20} className="mr-2" />
+            Add Course
+          </motion.button>
+        </div>
+      </div>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -45,23 +76,26 @@ const Chapter = () => {
               >
                 <div>
                   <h2 className="text-xl font-semibold text-gray-800">
-                    {chapter.order}. {chapter.title}
+                    {chapter.chapter_number}. {chapter.name_of_chapter}
                   </h2>
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 items-stretch">
                   <button asChild variant="outline">
                     <Link
                       href={`/courses/${courseId}/chapters/${chapter.documetId}`}
+                      className="flex items-center space-x-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 ease-in-out"
                     >
+                      <Eye className="w-4 h-4 mr-2" />
                       View
                     </Link>
                   </button>
-                  <button asChild>
+                  <button asChild className="flex ">
                     <Link
                       href={`/courses/${courseId}/chapters/${chapter.documetId}/edit`}
+                      className="flex items-center flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 ease-in-out"
                     >
                       <Edit className="w-4 h-4 mr-2" />
-                      Edit
+                      <span>Edit</span>
                     </Link>
                   </button>
                 </div>

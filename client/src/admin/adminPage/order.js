@@ -4,11 +4,17 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
 import { ChevronDown, FileText, Check } from "lucide-react";
+import SlipModal from "../component/slipModal";
 
 function Order() {
   const [ordersData, setOrdersData] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const dayjs = require("dayjs");
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const fetchOrder = async () => {
     try {
@@ -142,10 +148,14 @@ function Order() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end space-x-2">
-                      <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out flex items-center">
+                      <button
+                        onClick={openModal}
+                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out flex items-center"
+                      >
                         <FileText className="h-4 w-4 mr-2" />
                         Slip
                       </button>
+                      {isModalOpen && <SlipModal onClose={closeModal} />}
                       <button
                         className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out flex items-center"
                         onClick={() => handleUpdateStatus(item.documentId)} // Changed id to item.id

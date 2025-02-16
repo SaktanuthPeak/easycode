@@ -42,7 +42,7 @@ const Courses = () => {
           <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
             All Courses
           </h1>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center  space-x-4">
             <div className="relative">
               <input
                 type="text"
@@ -68,7 +68,7 @@ const Courses = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ">
           {filteredCourses.map((item, index) => (
             <motion.div
               key={item.documentId}
@@ -80,7 +80,7 @@ const Courses = () => {
               <div className="relative">
                 <img
                   className="w-full h-48 object-cover"
-                  src={getImageUrl(item.course_img[0]) || "/placeholder.svg"}
+                  src={item.course_img ? getImageUrl(item.course_img[0]) : no_image_available}
                   alt={item.Course_name}
                 />
                 <div className="absolute top-0 right-0 m-2">

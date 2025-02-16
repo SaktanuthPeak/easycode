@@ -1,23 +1,25 @@
 import React, { useState } from "react";
-
+import ax from "../../conf/ax";
 function CreateCourse() {
-  const [course, setCourse] = useState({
-    title: "",
-    description: "",
-    instructor: "",
-    duration: "",
-    price: "",
-  });
+  const [course, setCourse] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCourse({ ...course, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Course Created:", course);
-    // Add your logic to submit the course data (e.g., API call)
+    try{
+      const addCourse = await ax.post(`/courses`,{
+        data:course
+      })
+
+      console.log("add course complete")
+    }catch(error){
+      console.log("This is error",error)
+    }
   };
 
   return (
@@ -40,9 +42,9 @@ function CreateCourse() {
             </label>
             <input
               type="text"
-              id="title"
-              name="title"
-              value={course.title}
+              id="Course_name"
+              name="Course_name"
+              value={course.Course_name}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter course title"
@@ -59,8 +61,8 @@ function CreateCourse() {
               Course Description
             </label>
             <textarea
-              id="description"
-              name="description"
+              id="course_description"
+              name="course_description"
               value={course.description}
               onChange={handleChange}
               rows="4"
@@ -71,7 +73,7 @@ function CreateCourse() {
           </div>
 
           {/* Instructor Name */}
-          <div className="mb-6">
+          {/* <div className="mb-6">
             <label
               htmlFor="instructor"
               className="block text-sm font-medium text-gray-700"
@@ -88,7 +90,7 @@ function CreateCourse() {
               placeholder="Enter instructor name"
               required
             />
-          </div>
+          </div> */}
 
           {/* Course Duration */}
           <div className="mb-6">
@@ -100,8 +102,8 @@ function CreateCourse() {
             </label>
             <input
               type="number"
-              id="duration"
-              name="duration"
+              id="course_hour"
+              name="course_hour"
               value={course.duration}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -109,6 +111,7 @@ function CreateCourse() {
               required
             />
           </div>
+          
 
           {/* Course Price */}
           <div className="mb-6">
