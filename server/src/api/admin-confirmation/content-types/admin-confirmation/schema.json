@@ -42,6 +42,9 @@
         "not confirm"
       ],
       "default": "pending"
+    },
+    "course_documentid": {
+      "type": "string"
     }
   }
 }
