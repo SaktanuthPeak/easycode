@@ -45,7 +45,7 @@ import { useMessageModal } from "./component/messageModal";
 import { MessageCircle } from "lucide-react";
 import NavbarAdmin from "./admin/component/navbarAdmin";
 import { useSetState } from "react-use";
-import TeacherNavBar from "./teacher/teacherNav";
+import TeacherNavBar from "./teacher/component/teacherNav";
 
 const FloatingMessageButton = () => {
   const { openModal } = useMessageModal();

@@ -10,7 +10,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import logo from "./images/Logo2.png";
+import logo from "./images/Logo2.png"
 
 const navigation = [
   { name: "Home", path: "/client-home", current: true },
