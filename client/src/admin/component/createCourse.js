@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ax from "../../conf/ax";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,30 @@ import { Upload } from "lucide-react";
 
 function CreateCourse() {
   const [course, setCourse] = useState([]);
+  const [categoriesData, setCategoriesData] = useState([]);
+  const [teachersData, setTeacherData] = useState([]);
   const navigate = useNavigate();
+
+  const fetchCategories = async () => {
+    try {
+      const categories = await ax.get(`/categories?populate=*`);
+      setCategoriesData(categories.data.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  // const fetchTeacher = async () => {
+  //   try {
+  //     const teachers = await ax.get(``);
+  //   } catch (error) {
+  //     console.log("This is error", error);
+  //   }
+  // };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +54,7 @@ function CreateCourse() {
       }));
     }
   };
-  console.log("++++++++++++", course);
+  console.log("++++++++++++", categoriesData);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const confirmCreate = window.confirm(
@@ -77,10 +100,36 @@ function CreateCourse() {
               required
             >
               <option value="">Select category</option>
-              <option value="development">Development</option>
-              <option value="business">Business</option>
-              <option value="design">Design</option>
-              <option value="marketing">Marketing</option>
+              {categoriesData.map((category) => (
+                <option value={category.Category_name}>
+                  {category.Category_name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* teacher */}
+          <div className="space-y-2">
+            <label
+              htmlFor="teacher"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Teacher
+            </label>
+            <select
+              id="teacher"
+              name="teacher"
+              value={course.category}
+              onChange={handleChange}
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
+              required
+            >
+              <option value="">Select category</option>
+              {categoriesData.map((category) => (
+                <option value={category.Category_name}>
+                  {category.Category_name}
+                </option>
+              ))}
             </select>
           </div>
 

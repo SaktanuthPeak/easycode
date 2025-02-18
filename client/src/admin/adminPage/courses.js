@@ -80,7 +80,11 @@ const Courses = () => {
               <div className="relative">
                 <img
                   className="w-full h-48 object-cover"
-                  src={item.course_img ? getImageUrl(item.course_img[0]) : no_image_available}
+                  src={
+                    item.course_img
+                      ? getImageUrl(item.course_img[0])
+                      : no_image_available
+                  }
                   alt={item.Course_name}
                 />
                 <div className="absolute top-0 right-0 m-2">
