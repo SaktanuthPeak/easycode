@@ -16,10 +16,7 @@
       "type": "media",
       "multiple": true,
       "required": false,
-      "allowedTypes": [
-        "images",
-        "files"
-      ]
+      "allowedTypes": ["images", "files"]
     },
     "Applied_course": {
       "type": "string"
@@ -31,13 +28,31 @@
     "Email": {
       "type": "string"
     },
+    "user_documentid": {
+      "type": "string"
+    },
     "order_status": {
       "type": "enumeration",
-      "enum": [
-        "pending",
-        "confirm",
-        "not confirm"
-      ],
+      "enum": ["pending", "confirm", "not confirm"],
+      "default": "pending"
+    },
+    "course_documentid": {
+      "type": "string"
+    },
+    "user_documentid": {
+      "type": "string"
+    },
+    "order_status": {
+      "type": "enumeration",
+      "enum": ["pending", "confirm", "not confirm"],
+      "default": "pending"
+    },
+    "course_documentid": {
+      "type": "string"
+    },
+    "order_status": {
+      "type": "enumeration",
+      "enum": ["pending", "confirm", "not confirm"],
       "default": "pending"
     }
   }

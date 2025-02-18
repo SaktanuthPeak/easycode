@@ -68,11 +68,11 @@
       "target": "plugin::users-permissions.user",
       "mappedBy": "courses"
     },
-    "instructors": {
+    "instructor": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToOne",
       "target": "api::instructor.instructor",
-      "mappedBy": "course"
+      "inversedBy": "courses"
     }
   }
 }

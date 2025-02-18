@@ -27,7 +27,8 @@ import MyLearningPage from "./clientPage/myLearningPage";
 import CourseLearningPage from "./clientPage/courseLearningPage";
 import AllCoursePage from "./clientPage/allCoursePage";
 import PreviewAllCoursePage from "./homePreviewPage/previewAllCoursePage";
-
+import TeacherDashboard from "./teacher/dashboard";
+import CourseDashboard from "./teacher/courseDashboard";
 //Import admin pages
 import Dashboard from "./admin/adminPage/dashboard";
 import Courses from "./admin/adminPage/courses";
@@ -45,6 +46,8 @@ import NavbarPreview from "./component/navbarPreview";
 import { useMessageModal } from "./component/messageModal";
 import { MessageCircle } from "lucide-react";
 import NavbarAdmin from "./admin/component/navbarAdmin";
+import { useSetState } from "react-use";
+import TeacherNavBar from "./teacher/component/teacherNav";
 
 const FloatingMessageButton = () => {
   const { openModal } = useMessageModal();
@@ -99,6 +102,11 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
           element={<CourseLearningPage />}
         />
         <Route path="/client-home/all-courses" element={<AllCoursePage />} />
+        <Route path="/client-home/dashboard" element={<TeacherDashboard />} />
+        <Route
+          path="/client-home/dashboard/:courseId"
+          element={<CourseDashboard />}
+        />
       </Routes>
     );
   }
@@ -109,6 +117,7 @@ const App = () => {
   const [userRole, setUserRole] = useState(null);
   const [homePath, setHomePath] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userNavBar, setUserNavBar] = useState(null);
 
   useEffect(() => {
     console.log("isLoggedIn:", state.isLoggedIn);
@@ -127,9 +136,13 @@ const App = () => {
         try {
           const result = await ax.get("users/me?populate=role");
           const role = result.data.role.type;
+          console.log("role=========", role);
           setUserRole(role);
 
           setHomePath(role === "admin" ? "/dashboard" : "/client-home");
+          setUserNavBar(
+            role === "teacher" ? <TeacherNavBar /> : <NavbarLogin />
+          );
         } catch (error) {
           console.error("Error fetching role:", error);
           setUserRole(null);
@@ -169,7 +182,7 @@ const App = () => {
             ) : (
               <>
                 <MessageModalProvider>
-                  <NavbarLogin />
+                  {userNavBar}
                   <RouteAfterLogin homePath={homePath} userRole={userRole} />
                   <FloatingMessageButton />
                 </MessageModalProvider>
