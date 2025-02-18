@@ -383,6 +383,7 @@ export interface ApiAdminConfirmationAdminConfirmation
   };
   attributes: {
     Applied_course: Schema.Attribute.String;
+    course_documentid: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -402,6 +403,7 @@ export interface ApiAdminConfirmationAdminConfirmation
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_documentid: Schema.Attribute.String;
     Username: Schema.Attribute.String;
   };
 }
