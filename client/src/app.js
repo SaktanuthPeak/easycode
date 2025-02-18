@@ -79,6 +79,10 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
           <Route path="/support" element={<Support />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/create-course" element={<CreateCourse />} />
+          <Route
+            path="/courses/edit-course/:courseId"
+            element={<CreateCourse />}
+          />
           <Route path="/order" element={<Order />} />
           <Route path="/courses/:courseId" element={<Chapter />} />
         </Route>

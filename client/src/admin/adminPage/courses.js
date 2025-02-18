@@ -93,7 +93,7 @@ const Courses = () => {
                     whileTap={{ scale: 0.9 }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate(`/courses/edit/${item.documentId}`);
+                      navigate(`/courses/edit-course/${item.documentId}`);
                     }}
                     className="bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors duration-200"
                   >
