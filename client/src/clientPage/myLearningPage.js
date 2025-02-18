@@ -9,6 +9,7 @@ import { Progress } from "flowbite-react";
 const MyLearningPage = () => {
     const [filteredCourses, setFilteredCourses] = useState([]);
     const navigate = useNavigate();
+    const [progressData, setProgressData] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
@@ -16,7 +17,8 @@ const MyLearningPage = () => {
                 const userResponse = await ax.get("users/me?populate=courses");
                 const userCoursesData = userResponse.data.courses || [];
 
-                const courseResponse = await ax.get("courses?populate=course_img");
+                const courseResponse = await ax.get("courses?populate=course_img&populate=course_chapters");
+                console.log(courseResponse.data)
                 const allCoursesData = courseResponse.data.data || [];
 
                 const matchedCourses = allCoursesData.filter(course =>
@@ -24,6 +26,17 @@ const MyLearningPage = () => {
                 );
 
                 setFilteredCourses(matchedCourses);
+
+                // Calculate progress for each course
+                const newProgressData = {};
+                matchedCourses.forEach(course => {
+                    const storedProgress = JSON.parse(localStorage.getItem(`completedChapters-${course.documentId}`)) || {};
+                    const completedCount = Object.keys(storedProgress).length;
+                    const totalChapters = course.course_chapters?.length || 1;
+                    newProgressData[course.documentId] = Math.round((completedCount / totalChapters) * 100);
+                });
+
+                setProgressData(newProgressData);
             } catch (error) {
                 console.error("Error fetching courses:", error);
             }
@@ -66,18 +79,24 @@ const MyLearningPage = () => {
                                 transition={{ duration: 0.3 }}
                             />
                             <h2 className="text-lg font-semibold mt-2">{course.Course_name}</h2>
-                            <motion.div
-                                className="bg-green-600 text-xs font-medium text-gray-100 text-center p-0.5 leading-none rounded-full mt-4"
-                                initial={{ width: "0%" }}
-                                animate={{ width: "45%" }}
-                                transition={{ duration: 1 }}
-                            >
-                                45%
-                            </motion.div>
+                            <p className="text-gray-500 font-semibold mt-2">🕗 {course.course_hour} hours {course.course_minute} minutes</p>
+
+                            {/* Progress Bar */}
+                            <div className="w-full bg-gray-200 rounded-full  mt-2">
+                                <div
+                                    className="bg-green-600 text-xs font-medium text-gray-100 text-center p-0.5 leading-none rounded-full transition-all duration-300"
+                                    style={{ width: `${progressData[course.documentId] || 0}%` }}
+                                >
+                                    {progressData[course.documentId] || 0}%
+                                </div>
+                            </div>
+
+
                         </motion.div>
                     ))
                 ) : (
-                    <motion.p className="text-center text-gray-500"
+                    <motion.p
+                        className="text-center text-gray-500"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
