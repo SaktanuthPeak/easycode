@@ -112,7 +112,8 @@ const CartPage = () => {
                             onClick={() => navigate("/client-home/cart/payment", {
                                 state: {
                                     total: orderDetails.total,
-                                    course_name: courses.map(course => course.Course_name).join(', ')
+                                    course_name: courses.map(course => course.Course_name).join(','),
+                                    document_ids: courses.map(course => course.documentId).join(',')
                                 }
                             })}
                             disabled={courses.length === 0}  // ปิดการใช้งานปุ่มเมื่อไม่มีสินค้า
