@@ -35,7 +35,7 @@ import Support from "./admin/adminPage/support";
 import Teacher from "./admin/adminPage/teacher";
 import TeacherSupport from "./admin/adminPage/teacherSupport";
 import Order from "./admin/adminPage/order";
-import TeacherDetailPage from "./admin/adminPage/teacherDetailPage";
+import TeacherDetailPage from "./admin/adminPage/teacherDetail";
 
 // Import components
 import NavbarLogin from "./component/navbarLogin";
