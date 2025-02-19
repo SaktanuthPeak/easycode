@@ -28,7 +28,7 @@ const Chapter = () => {
     <div>
       <div className="flex flex-col md:flex-row items-center justify-between mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
-          All Courses
+          All Chapter
         </h1>
         <div className="flex items-center space-x-4">
           <div className="relative">
@@ -51,7 +51,7 @@ const Chapter = () => {
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 flex items-center"
           >
             <Plus size={20} className="mr-2" />
-            Add Course
+            Add Chapter
           </motion.button>
         </div>
       </div>

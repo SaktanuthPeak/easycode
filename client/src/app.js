@@ -37,7 +37,7 @@ import Support from "./admin/adminPage/support";
 import Teacher from "./admin/adminPage/teacher";
 import TeacherSupport from "./admin/adminPage/teacherSupport";
 import Order from "./admin/adminPage/order";
-import CreateCourse from "./admin/component/createCourse";
+import CreateCourse from "./admin/component/createAndEditCourse";
 import Chapter from "./admin/adminPage/chapter";
 
 // Import components
@@ -79,6 +79,10 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
           <Route path="/support" element={<Support />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/create-course" element={<CreateCourse />} />
+          <Route
+            path="/courses/edit-course/:courseId"
+            element={<CreateCourse />}
+          />
           <Route path="/order" element={<Order />} />
           <Route path="/courses/:courseId" element={<Chapter />} />
         </Route>
