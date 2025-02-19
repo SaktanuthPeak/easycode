@@ -1,14 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import * as htmlToImage from "html-to-image";
+import download from "downloadjs";
 import ax from "../conf/ax";
 import conf from "../conf/main";
 import no_image_available from "./images/No_image_available.svg.jpg";
+import certificateImg from "./images/certificate.png"
+import { use } from "react";
 
 const CourseLearningPage = () => {
+    const [name, setName] = useState(null);
+
     const { courseId } = useParams();
     const navigate = useNavigate();
     const [course, setCourse] = useState(null);
+    const [courseName, setCourseName] = useState(null);
+    const certificateRef = useRef(null);
     const [selectedChapter, setSelectedChapter] = useState(null);
     const [completedChapters, setCompletedChapters] = useState(() => {
         return JSON.parse(localStorage.getItem(`completedChapters-${courseId}`)) || {};
@@ -19,6 +27,7 @@ const CourseLearningPage = () => {
             try {
                 const courseResponse = await ax.get(`/courses/${courseId}?populate=course_chapters.video`);
                 setCourse(courseResponse.data.data);
+                setCourseName(courseResponse.data.Course_name)
                 if (courseResponse.data.data.course_chapters?.length > 0) {
                     setSelectedChapter(courseResponse.data.data.course_chapters[0]);
                 }
@@ -30,13 +39,27 @@ const CourseLearningPage = () => {
     }, [courseId]);
 
     useEffect(() => {
+        const fetchName = async () => {
+            try {
+                const fetchName = await ax.get(`users/me`)
+                const fullNamae = `${fetchName.data.firstname} ${fetchName.data.lastname}`
+                setName(fullNamae)
+
+            } catch (error) {
+                console.log("Error fetching name:", error)
+            }
+        };
+        fetchName();
+    })
+
+    useEffect(() => {
         localStorage.setItem(`completedChapters-${courseId}`, JSON.stringify(completedChapters));
     }, [completedChapters, courseId]);
 
     const toggleCompletion = (chapterId) => {
         setCompletedChapters((prev) => ({
             ...prev,
-            [chapterId]: true, // Store only once
+            [chapterId]: true,
         }));
     };
 
@@ -48,6 +71,35 @@ const CourseLearningPage = () => {
     const completedCount = Object.keys(completedChapters).length;
     const totalChapters = course?.course_chapters?.length || 1;
     const completionPercentage = Math.round((completedCount / totalChapters) * 100);
+
+    const downloadCertificate = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const img = new Image();
+        img.src = certificateImg;
+        img.onload = () => {
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+
+            ctx.font = "50px Arial";
+            ctx.fillStyle = "#000";
+            ctx.textAlign = "center";
+
+            ctx.fillText(name, canvas.width / 2, canvas.height * 0.485);
+
+
+            ctx.fillText(course?.Course_name, canvas.width / 2, canvas.height * 0.6);
+
+
+            canvas.toBlob((blob) => {
+                download(blob, "certificate.png");
+            });
+        };
+    };
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -98,15 +150,15 @@ const CourseLearningPage = () => {
                                     toggleCompletion(chapter.id);
                                 }}
                                 className={`w-full flex items-center justify-between p-3 rounded-lg text-left transition-colors ${selectedChapter?.id === chapter.id
-                                        ? "bg-gray-900 text-white"
-                                        : "hover:bg-gray-100"
+                                    ? "bg-gray-900 text-white"
+                                    : "hover:bg-gray-100"
                                     }`}
                             >
                                 <div className="flex items-center gap-3">
                                     <div
                                         className={`w-5 h-5 rounded-full border flex items-center justify-center ${completedChapters[chapter.id]
-                                                ? "bg-blue-500 border-blue-500"
-                                                : "border-gray-300"
+                                            ? "bg-blue-500 border-blue-500"
+                                            : "border-gray-300"
                                             }`}
                                     >
                                         {completedChapters[chapter.id] && <CheckCircleIcon className="w-4 h-4 text-white" />}
@@ -119,10 +171,27 @@ const CourseLearningPage = () => {
                             </button>
                         ))}
                     </div>
+
+                    {/* Button to Download Certificate */}
+                    {completionPercentage === 100 && (
+                        <button
+                            onClick={downloadCertificate}
+                            className="w-full mt-6 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                            🎓 Download Certificate
+                        </button>
+                    )}
                 </div>
+            </div>
+
+            {/* Hidden Certificate Template */}
+            <div ref={certificateRef} className="hidden p-8 bg-white text-center border shadow-lg w-[600px]">
+                <h2 className="text-2xl font-semibold mt-2">Peak</h2>
+                <p className="mt-4 text-gray-600">For successfully completing the course:</p>
+                <h3 className="text-xl font-medium text-blue-600">{course?.Course_name}</h3>
             </div>
         </div>
     );
-};
+}
 
 export default CourseLearningPage;
