@@ -37,7 +37,7 @@ import Support from "./admin/adminPage/support";
 import Teacher from "./admin/adminPage/teacher";
 import TeacherSupport from "./admin/adminPage/teacherSupport";
 import Order from "./admin/adminPage/order";
-import CreateCourse from "./admin/component/createCourse";
+import CreateCourse from "./admin/component/createAndEditCourse";
 import Chapter from "./admin/adminPage/chapter";
 
 // Import components
