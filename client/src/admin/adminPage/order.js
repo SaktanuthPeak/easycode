@@ -129,7 +129,7 @@ function Order() {
                             [item.documentId]: e.target.value, // Changed key to item.id
                           })
                         }
-                        className={`appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${
+                        className={`appearance-none w-full border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${
                           item.order_status === "confirm"
                             ? "bg-green-200 text-green-800"
                             : item.order_status === "not confirm"
