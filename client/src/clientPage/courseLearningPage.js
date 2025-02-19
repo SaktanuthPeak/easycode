@@ -69,8 +69,8 @@ const CourseLearningPage = () => {
     };
 
     const completedCount = Object.keys(completedChapters).length;
-    const totalChapters = course?.course_chapters?.length || 1;
-    const completionPercentage = Math.round((completedCount / totalChapters) * 100);
+    const totalChapters = course?.course_chapters?.length || 0;
+    const completionPercentage = totalChapters === 0 ? 0 : Math.round((completedCount / totalChapters) * 100);
 
     const downloadCertificate = () => {
         const canvas = document.createElement("canvas");
@@ -96,7 +96,7 @@ const CourseLearningPage = () => {
 
 
             canvas.toBlob((blob) => {
-                download(blob, "certificate.png");
+                download(blob, `${course?.Course_name}.png`);
             });
         };
     };
@@ -149,14 +149,14 @@ const CourseLearningPage = () => {
                                     setSelectedChapter(chapter);
                                     toggleCompletion(chapter.id);
                                 }}
-                                className={`w-full flex items-center justify-between p-3 rounded-lg text-left transition-colors ${selectedChapter?.id === chapter.id
+                                className={`w - full flex items - center justify - between p - 3 rounded - lg text - left transition - colors ${selectedChapter?.id === chapter.id
                                     ? "bg-gray-900 text-white"
                                     : "hover:bg-gray-100"
                                     }`}
                             >
                                 <div className="flex items-center gap-3">
                                     <div
-                                        className={`w-5 h-5 rounded-full border flex items-center justify-center ${completedChapters[chapter.id]
+                                        className={`w - 5 h - 5 rounded - full border flex items - center justify - center ${completedChapters[chapter.id]
                                             ? "bg-blue-500 border-blue-500"
                                             : "border-gray-300"
                                             }`}
@@ -165,9 +165,7 @@ const CourseLearningPage = () => {
                                     </div>
                                     <span className="font-medium">{index + 1}. {chapter.name_of_chapter}</span>
                                 </div>
-                                <span className={`text-sm ${selectedChapter?.id === chapter.id ? "text-white" : "text-gray-400"}`}>
-                                    {completedChapters[chapter.id] ? "✓ Completed" : "Not Completed"}
-                                </span>
+
                             </button>
                         ))}
                     </div>

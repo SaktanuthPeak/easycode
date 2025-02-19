@@ -32,8 +32,9 @@ const MyLearningPage = () => {
                 matchedCourses.forEach(course => {
                     const storedProgress = JSON.parse(localStorage.getItem(`completedChapters-${course.documentId}`)) || {};
                     const completedCount = Object.keys(storedProgress).length;
-                    const totalChapters = course.course_chapters?.length || 1;
-                    newProgressData[course.documentId] = Math.round((completedCount / totalChapters) * 100);
+                    const totalChapters = course.course_chapters?.length || 0;
+                    newProgressData[course.documentId] = totalChapters === 0 ? 0 : Math.round((completedCount / totalChapters) * 100);
+
                 });
 
                 setProgressData(newProgressData);
