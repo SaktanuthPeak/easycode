@@ -47,7 +47,11 @@ const Chapter = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/courses/create-course")}
+            onClick={() =>
+              navigate(`/courses/${courseId}/create-chapter`, {
+                state: { courseId },
+              })
+            }
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 flex items-center"
           >
             <Plus size={20} className="mr-2" />

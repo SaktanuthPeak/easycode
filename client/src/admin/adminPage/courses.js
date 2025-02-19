@@ -36,7 +36,7 @@ const Courses = () => {
   );
 
   return (
-    <div className="bg-gray-100 min-h-screen py-8">
+    <div className=" min-h-screen py-8">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
