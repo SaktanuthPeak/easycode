@@ -20,7 +20,10 @@ const Chapter = () => {
     }
   };
 
-  console.log(chaptersData);
+  const filteredChapter = chaptersData.filter((chapter) =>
+    chapter.name_of_chapter.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   useEffect(() => {
     fetchChapters();
   }, []);
@@ -59,55 +62,57 @@ const Chapter = () => {
           </motion.button>
         </div>
       </div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        {chaptersData.length === 0 ? (
-          <p className="text-center text-gray-500 my-8">
-            No chapters found for this course.
-          </p>
-        ) : (
-          <ul className="space-y-4">
-            {chaptersData.map((chapter, index) => (
-              <motion.li
-                key={chapter.documetId}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="bg-white shadow-md rounded-lg p-4 flex items-center justify-between"
-              >
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-800">
-                    {chapter.chapter_number}. {chapter.name_of_chapter}
-                  </h2>
-                </div>
-                <div className="flex space-x-2 items-stretch">
-                  <button asChild variant="outline">
-                    <Link
-                      href={`/courses/${courseId}/chapters/${chapter.documetId}`}
-                      className="flex items-center space-x-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 ease-in-out"
-                    >
-                      <Eye className="w-4 h-4 mr-2" />
-                      View
-                    </Link>
-                  </button>
-                  <button asChild className="flex ">
-                    <Link
-                      href={`/courses/${courseId}/chapters/${chapter.documetId}/edit`}
-                      className="flex items-center flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 ease-in-out"
-                    >
-                      <Edit className="w-4 h-4 mr-2" />
-                      <span>Edit</span>
-                    </Link>
-                  </button>
-                </div>
-              </motion.li>
-            ))}
-          </ul>
-        )}
-      </motion.div>
+      <div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {filteredChapter.length === 0 ? (
+            <p className="text-center text-gray-500 my-8">
+              No chapters found for this course.
+            </p>
+          ) : (
+            <ul className="space-y-4">
+              {filteredChapter.map((chapter, index) => (
+                <motion.li
+                  key={chapter.documetId}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="bg-white shadow-md rounded-lg p-4 flex items-center justify-between"
+                >
+                  <div>
+                    <h2 className="text-xl font-semibold text-gray-800">
+                      {chapter.chapter_number}. {chapter.name_of_chapter}
+                    </h2>
+                  </div>
+                  <div className="flex space-x-2 items-stretch">
+                    <button asChild variant="outline">
+                      <Link
+                        href={`/courses/${courseId}/chapters/${chapter.documetId}`}
+                        className="flex items-center space-x-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 ease-in-out"
+                      >
+                        <Eye className="w-4 h-4 mr-2" />
+                        View
+                      </Link>
+                    </button>
+                    <button asChild className="flex ">
+                      <Link
+                        href={`/courses/${courseId}/chapters/${chapter.documetId}/edit`}
+                        className="flex items-center flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 ease-in-out"
+                      >
+                        <Edit className="w-4 h-4 mr-2" />
+                        <span>Edit</span>
+                      </Link>
+                    </button>
+                  </div>
+                </motion.li>
+              ))}
+            </ul>
+          )}
+        </motion.div>
+      </div>
     </div>
   );
 };
