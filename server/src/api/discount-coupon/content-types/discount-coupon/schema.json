@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "discount_coupons",
+  "info": {
+    "singularName": "discount-coupon",
+    "pluralName": "discount-coupons",
+    "displayName": "discount_coupon"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "coupon": {
+      "type": "string"
+    },
+    "discount_percent": {
+      "required": true,
+      "type": "float"
+    }
+  }
+}

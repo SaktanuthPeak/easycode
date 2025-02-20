@@ -160,6 +160,11 @@ const PromptPayQR = () => {
       notifyError("อัปโหลดล้มเหลว! กรุณาลองใหม่");
     }
   };
+  const couponDiscount = async () => {
+    const fetchCoupon = await ax.get(`/discount-coupons?populate=*`)
+    console.log(fetchCoupon)
+  }
+  couponDiscount();
 
   return (
     <div className="container mx-auto p-8 bg-gray-100 rounded-lg shadow-md flex">

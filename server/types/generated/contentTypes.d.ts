@@ -538,6 +538,36 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiDiscountCouponDiscountCoupon
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'discount_coupons';
+  info: {
+    displayName: 'discount_coupon';
+    pluralName: 'discount-coupons';
+    singularName: 'discount-coupon';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    coupon: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    discount_percent: Schema.Attribute.Float & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::discount-coupon.discount-coupon'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
   collectionName: 'instructors';
   info: {
@@ -1121,6 +1151,7 @@ declare module '@strapi/strapi' {
       'api::category.category': ApiCategoryCategory;
       'api::course-chapter.course-chapter': ApiCourseChapterCourseChapter;
       'api::course.course': ApiCourseCourse;
+      'api::discount-coupon.discount-coupon': ApiDiscountCouponDiscountCoupon;
       'api::instructor.instructor': ApiInstructorInstructor;
       'api::message.message': ApiMessageMessage;
       'plugin::content-releases.release': PluginContentReleasesRelease;
