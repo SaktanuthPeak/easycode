@@ -97,7 +97,10 @@ export default function Chapters() {
                       className="flex items-center flex items-center space-x-2 bg-green-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 ease-in-out"
                       onClick={() =>
                         navigate(`/courses/${courseId}/${chapter.documentId}`, {
-                          state: { selectedChapter: chapter },
+                          state: {
+                            selectedChapter: chapter,
+                            courseId: courseId,
+                          },
                         })
                       }
                     >
@@ -112,7 +115,10 @@ export default function Chapters() {
                         navigate(
                           `/courses/${courseId}/${chapter.documentId}/edit`,
                           {
-                            state: { selectedChapter: chapter },
+                            state: {
+                              selectedChapter: chapter,
+                              courseId: courseId,
+                            },
                           }
                         )
                       }

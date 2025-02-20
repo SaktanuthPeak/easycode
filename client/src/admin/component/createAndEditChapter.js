@@ -9,7 +9,7 @@ export default function CreateChapterPage() {
   const [title, setTitle] = useState("");
   const [chapterNumber, setChapterNumber] = useState("");
   const [content, setContent] = useState("");
-  const [video, setVideo] = useState(null);
+  const [chapterVideo, setChapterVideo] = useState(null);
   const [videoPreviewUrl, setVideoPreviewUrl] = useState(null);
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
@@ -20,15 +20,21 @@ export default function CreateChapterPage() {
   const courseId = location.state?.courseId;
   const selectedChapter = location.state?.selectedChapter;
   const { chapterId } = useParams();
-  console.log("++++++++++++0", chapterId);
+
   useEffect(() => {
     if (selectedChapter) {
       setTitle(selectedChapter.name_of_chapter);
       setChapterNumber(selectedChapter.chapter_number);
       setContent(selectedChapter.chapter_description);
-      setVideo(selectedChapter.video);
+      setChapterVideo(selectedChapter.video[0]);
+      console.log(selectedChapter.video[0]);
+      console.log("----------------------", chapterVideo);
     }
   }, [selectedChapter]);
+
+  const fullVideoUrl = chapterVideo
+    ? `${conf.apiUrlPrefix.replace("/api", "")}${selectedChapter.video[0].url}`
+    : null;
 
   const handleVideoChange = async (e) => {
     const file = e.target.files?.[0];
@@ -54,8 +60,7 @@ export default function CreateChapterPage() {
         }
 
         // Update the state with the uploaded image
-        console.log("+++++++++++++++", uploadedFileId);
-        setVideo(uploadedFileId);
+        setChapterVideo(uploadedFileId);
 
         console.log("Image uploaded successfully:", uploadedFileId);
       } catch (error) {
@@ -81,14 +86,14 @@ export default function CreateChapterPage() {
       "courseId",
       courseId,
       "video",
-      video
+      chapterVideo
     );
     try {
       const chapterData = {
         name_of_chapter: title,
         chapter_number: chapterNumber,
         chapter_description: content,
-        video: video,
+        video: chapterVideo,
         course: courseId,
       };
       if (selectedChapter) {
@@ -159,13 +164,13 @@ export default function CreateChapterPage() {
           >
             Select Video File
           </button>
-          {video && (
+          {chapterVideo && (
             <p className="text-sm text-gray-500 mt-2">
-              Selected file: {video.name}
+              Selected file: {chapterVideo.name}
             </p>
           )}
         </div>
-        {videoPreviewUrl && (
+        {videoPreviewUrl ? (
           <div className="mt-4">
             <video
               src={videoPreviewUrl}
@@ -173,6 +178,16 @@ export default function CreateChapterPage() {
               className="w-full max-h-64 object-contain"
             />
           </div>
+        ) : (
+          fullVideoUrl && (
+            <div className="mt-4">
+              <video
+                src={fullVideoUrl}
+                controls
+                className="w-full max-h-64 object-contain"
+              />
+            </div>
+          )
         )}
         <div className="space-y-2">
           <label htmlFor="content" className="block font-medium">
@@ -188,7 +203,6 @@ export default function CreateChapterPage() {
             className="w-full border rounded-md p-2"
           />
         </div>
-
         {error && (
           <div className="bg-red-100 text-red-600 text-sm p-3 rounded-md flex items-center">
             {error}
