@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import signUpImage from "./pictures/signup.jpg"
 import ax from "../conf/ax"
 import { useNavigate } from "react-router-dom"
@@ -36,10 +38,33 @@ const Signup = () => {
             if (data.jwt) {
                 storeUser(data)
                 setUser(initialUser)
-                navigate("/login")
+                // Show success toast
+                toast.success('🎉 Sign up successful! Redirecting to login...', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+                // Delay navigation to show the toast
+                setTimeout(() => {
+                    navigate("/login")
+                }, 1000)
             }
         } catch (error) {
             setErrorMsg(error.response?.data?.error?.message || "An unexpected error occurred.")
+            // Show error toast
+            toast.error('❌ ' + (error.response?.data?.error?.message || "An unexpected error occurred."), {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            })
         } finally {
             setIsLoading(false)
         }
@@ -55,6 +80,20 @@ const Signup = () => {
 
     return (
         <div className="flex flex-col lg:flex-row min-h-screen items-center justify-center bg-white">
+            {/* Toast Container */}
+            <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
+
             {/* Left Image Section */}
             <div className="hidden lg:block lg:w-1/2 h-screen">
                 <img

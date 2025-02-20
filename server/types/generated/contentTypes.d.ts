@@ -617,6 +617,7 @@ export interface ApiMessageMessage extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    admin_context: Schema.Attribute.String;
     context: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
