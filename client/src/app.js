@@ -91,6 +91,10 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
             path="/courses/:courseId/create-chapter"
             element={<CreateAndEditChapter />}
           />
+          <Route
+            path="/courses/:courseId/:chapterId/edit"
+            element={<CreateAndEditChapter />}
+          />
         </Route>
       </Routes>
     );

@@ -18,7 +18,17 @@ export default function CreateChapterPage() {
 
   const location = useLocation();
   const courseId = location.state?.courseId;
-  const {} = useParams();
+  const selectedChapter = location.state?.selectedChapter;
+  const { chapterId } = useParams();
+  console.log("++++++++++++0", chapterId);
+  useEffect(() => {
+    if (selectedChapter) {
+      setTitle(selectedChapter.name_of_chapter);
+      setChapterNumber(selectedChapter.chapter_number);
+      setContent(selectedChapter.chapter_description);
+      setVideo(selectedChapter.video);
+    }
+  }, [selectedChapter]);
 
   const handleVideoChange = async (e) => {
     const file = e.target.files?.[0];
@@ -60,16 +70,36 @@ export default function CreateChapterPage() {
     e.preventDefault();
     setError(null);
 
+    console.log(
+      "78978979798789",
+      "title",
+      title,
+      "chapterNumber",
+      chapterNumber,
+      "content",
+      content,
+      "courseId",
+      courseId,
+      "video",
+      video
+    );
     try {
-      const response = await ax.post("/course-chapters", {
-        data: {
-          name_of_chapter: title,
-          chapter_number: chapterNumber,
-          course: courseId,
-          chapter_description: content,
-          video: video,
-        },
-      });
+      const chapterData = {
+        name_of_chapter: title,
+        chapter_number: chapterNumber,
+        chapter_description: content,
+        video: video,
+        course: courseId,
+      };
+      if (selectedChapter) {
+        const response = await ax.put(`/course-chapters/${chapterId}`, {
+          data: chapterData,
+        });
+      } else {
+        const response = await ax.post("/course-chapters", {
+          data: chapterData,
+        });
+      }
 
       navigate(`/courses/${courseId}`);
       console.log("Chapter created successfully");

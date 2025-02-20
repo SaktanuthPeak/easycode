@@ -110,7 +110,10 @@ export default function Chapters() {
                       className="flex items-center flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 ease-in-out"
                       onClick={() =>
                         navigate(
-                          `/courses/${courseId}/${chapter.documetId}/edit`
+                          `/courses/${courseId}/${chapter.documentId}/edit`,
+                          {
+                            state: { selectedChapter: chapter },
+                          }
                         )
                       }
                     >
