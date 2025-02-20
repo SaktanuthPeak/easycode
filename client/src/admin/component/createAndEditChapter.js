@@ -18,6 +18,7 @@ export default function CreateChapterPage() {
 
   const location = useLocation();
   const courseId = location.state?.courseId;
+  const {} = useParams();
 
   const handleVideoChange = async (e) => {
     const file = e.target.files?.[0];
@@ -55,16 +56,9 @@ export default function CreateChapterPage() {
     }
   };
 
-  console.log("-----------", video);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-
-    // if (!video) {
-    //   setError("Please select a video file.");
-    //   return;
-    // }
 
     try {
       const response = await ax.post("/course-chapters", {
