@@ -5,6 +5,7 @@ import ax from "../conf/ax";
 import conf from '../conf/main';
 import no_image_available from "./images/No_image_available.svg.jpg";
 import { useCart } from '../context/Cart.context';
+import dayjs from 'dayjs';
 
 const CartPage = () => {
     const { cart, removeFromCart } = useCart();
@@ -79,6 +80,15 @@ const CartPage = () => {
                 const couponData = fetchCoupon.data.data[0];
                 console.log("coupondata", couponData)
                 if (couponData) {
+                    if (couponData.expired_date) {
+                        const expiryDate = dayjs(couponData.expired_date);
+                        if (dayjs().isAfter(expiryDate)) {
+                            setCouponError('This coupon code has expired.');
+                            setDiscount(0);
+                            setFinalTotal(originalTotal);
+                            return; // Stop applying coupon
+                        }
+                    }
                     let calculatedDiscount = 0;
                     const orderTotal = calculateOrderDetails().total;
 
