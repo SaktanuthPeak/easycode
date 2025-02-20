@@ -14,27 +14,48 @@ export default function CreateChapterPage() {
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
 
+  const navigate = useNavigate();
+
   const location = useLocation();
-  const chapterId = location.state?.courseId;
-  console.log("Chapter ID:", chapterId);
-  const handleVideoChange = (e) => {
+  const courseId = location.state?.courseId;
+
+  const handleVideoChange = async (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 100 * 1024 * 1024) {
-        setError(
-          "Video file is too large. Please select a file smaller than 100MB."
-        );
-        return;
-      }
       if (!file.type.startsWith("video/")) {
         setError("Please select a valid video file.");
         return;
       }
-      setVideo(file);
-      setVideoPreviewUrl(URL.createObjectURL(file));
+
+      const formData = new FormData();
+      formData.append("files", file);
+
+      try {
+        // Upload the image to Strapi
+        const fileUploadResponse = await ax.post("/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        const uploadedFileId = fileUploadResponse.data[0]?.id;
+        setVideoPreviewUrl(URL.createObjectURL(file));
+        if (!uploadedFileId) {
+          setError("File upload failed");
+        }
+
+        // Update the state with the uploaded image
+        console.log("+++++++++++++++", uploadedFileId);
+        setVideo(uploadedFileId);
+
+        console.log("Image uploaded successfully:", uploadedFileId);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        setError("Failed to upload video. Please try again.");
+      }
       setError(null);
     }
   };
+
+  console.log("-----------", video);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,18 +71,16 @@ export default function CreateChapterPage() {
         data: {
           name_of_chapter: title,
           chapter_number: chapterNumber,
+          course: courseId,
           chapter_description: content,
           video: video,
         },
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to create chapter");
-      }
-
-      navigator("c");
+      navigate(`/courses/${courseId}`);
       console.log("Chapter created successfully");
     } catch (error) {
+      console.log("Failed to create chapter. Please try again.", error);
       setError("Failed to create chapter. Please try again.");
     }
   };
