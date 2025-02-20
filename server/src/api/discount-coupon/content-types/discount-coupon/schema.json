@@ -4,7 +4,8 @@
   "info": {
     "singularName": "discount-coupon",
     "pluralName": "discount-coupons",
-    "displayName": "discount_coupon"
+    "displayName": "discount_coupon",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -17,6 +18,10 @@
     "discount_percent": {
       "required": true,
       "type": "float"
+    },
+    "expired_date": {
+      "type": "date",
+      "required": true
     }
   }
 }

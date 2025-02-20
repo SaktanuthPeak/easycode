@@ -542,6 +542,7 @@ export interface ApiDiscountCouponDiscountCoupon
   extends Struct.CollectionTypeSchema {
   collectionName: 'discount_coupons';
   info: {
+    description: '';
     displayName: 'discount_coupon';
     pluralName: 'discount-coupons';
     singularName: 'discount-coupon';
@@ -555,6 +556,7 @@ export interface ApiDiscountCouponDiscountCoupon
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     discount_percent: Schema.Attribute.Float & Schema.Attribute.Required;
+    expired_date: Schema.Attribute.Date & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
