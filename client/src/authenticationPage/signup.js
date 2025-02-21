@@ -18,11 +18,29 @@ const storeUser = (data) => {
 }
 
 const Signup = () => {
-    const initialUser = { username: "", password: "", email: "" }
+    const initialUser = {
+        firstname: "",
+        lastname: "",
+        birthdate: "",
+        username: "",
+        email: "",
+        phone_number: "",
+        password: "",
+        user_group: "",
+    };
     const [user, setUser] = useState(initialUser)
     const [isLoading, setIsLoading] = useState(false)
     const [errorMsg, setErrorMsg] = useState(null)
     const navigate = useNavigate()
+    const [currentStep, setCurrentStep] = useState(1);
+
+    const nextStep = () => {
+        setCurrentStep(currentStep + 1);
+    };
+
+    const prevStep = () => {
+        setCurrentStep(currentStep - 1);
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -33,6 +51,11 @@ const Signup = () => {
                 username: user.username,
                 email: user.email,
                 password: user.password,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                birthdate: user.birthdate,
+                phone_number: user.phone_number,
+                user_group: user.user_group,
             }
             const { data } = await ax.post(url, payload)
             if (data.jwt) {
@@ -78,6 +101,177 @@ const Signup = () => {
         }))
     }
 
+    const renderStep = () => {
+        switch (currentStep) {
+            case 1:
+                return (
+                    <div>
+                        <h2 className="text-2xl font-semibold mb-4">Personal Details</h2>
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <label className="text-gray-700">First Name</label>
+                                <input
+                                    type="text"
+                                    name="firstname"
+                                    value={user.firstname}
+                                    onChange={handleUserChange}
+                                    placeholder="Enter your first name"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-gray-700">Last Name</label>
+                                <input
+                                    type="text"
+                                    name="lastname"
+                                    value={user.lastname}
+                                    onChange={handleUserChange}
+                                    placeholder="Enter your last name"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-gray-700">Birthdate</label>
+                                <input
+                                    type="date"
+                                    name="birthdate"
+                                    value={user.birthdate}
+                                    onChange={handleUserChange}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="flex justify-end mt-6">
+                            <button
+                                type="button"
+                                onClick={nextStep}
+                                className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                );
+            case 2:
+                return (
+                    <div>
+                        <h2 className="text-2xl font-semibold mb-4">Contact Details</h2>
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <label className="text-gray-700">Username</label>
+                                <input
+                                    type="text"
+                                    name="username"
+                                    value={user.username}
+                                    onChange={handleUserChange}
+                                    placeholder="Choose a username"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-gray-700">Email</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={user.email}
+                                    onChange={handleUserChange}
+                                    placeholder="Enter your email"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-gray-700">Phone Number</label>
+                                <input
+                                    type="text"
+                                    name="phone_number"
+                                    value={user.phone_number}
+                                    onChange={handleUserChange}
+                                    placeholder="Enter your phone number"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-gray-700">Password</label>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    value={user.password}
+                                    onChange={handleUserChange}
+                                    placeholder="Create a password"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="flex justify-between mt-6">
+                            <button
+                                type="button"
+                                onClick={prevStep}
+                                className="text-gray-700 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 text-sm"
+                            >
+                                Previous
+                            </button>
+                            <button
+                                type="button"
+                                onClick={nextStep}
+                                className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                );
+            case 3:
+                return (
+                    <div>
+                        <h2 className="text-2xl font-semibold mb-4">User Group</h2>
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <label className="text-gray-700">User Group</label>
+                                <select
+                                    name="user_group"
+                                    value={user.user_group}
+                                    onChange={handleUserChange}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                                    required
+                                >
+                                    <option value="">Select user group</option>
+                                    <option value="high-school student">High-school student</option>
+                                    <option value="university/college student">University/college student</option>
+                                    <option value="graduated">Graduated</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="flex justify-between mt-6">
+                            <button
+                                type="button"
+                                onClick={prevStep}
+                                className="text-gray-700 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 text-sm"
+                            >
+                                Previous
+                            </button>
+                            <button
+                                type="submit"
+                                disabled={isLoading}
+                                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm disabled:opacity-50"
+                            >
+                                {isLoading ? "Creating account..." : "Sign Up"}
+                            </button>
+                        </div>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    }
+
+
     return (
         <div className="flex flex-col lg:flex-row min-h-screen items-center justify-center bg-white">
             {/* Toast Container */}
@@ -108,6 +302,7 @@ const Signup = () => {
                 <div className="w-full max-w-md space-y-6">
                     <div>
                         <h1 className="text-3xl font-semibold">Sign Up</h1>
+                        <p className="text-gray-600">Step {currentStep} of 3</p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
@@ -117,52 +312,9 @@ const Signup = () => {
                             </div>
                         )}
 
-                        <div className="space-y-2">
-                            <label className="text-gray-700">Email</label>
-                            <input
-                                type="email"
-                                name="email"
-                                value={user.email}
-                                onChange={handleUserChange}
-                                placeholder="Enter your email"
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
-                                required
-                            />
-                        </div>
+                        {renderStep()}
 
-                        <div className="space-y-2">
-                            <label className="text-gray-700">Username</label>
-                            <input
-                                type="text"
-                                name="username"
-                                value={user.username}
-                                onChange={handleUserChange}
-                                placeholder="Choose a username"
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
-                                required
-                            />
-                        </div>
 
-                        <div className="space-y-2">
-                            <label className="text-gray-700">Password</label>
-                            <input
-                                type="password"
-                                name="password"
-                                value={user.password}
-                                onChange={handleUserChange}
-                                placeholder="Create a password"
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
-                                required
-                            />
-                        </div>
-
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm disabled:opacity-50"
-                        >
-                            {isLoading ? "Creating account..." : "Sign Up"}
-                        </button>
                     </form>
 
                     <div className="relative">

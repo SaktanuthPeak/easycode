@@ -80,6 +80,15 @@
       "relation": "manyToMany",
       "target": "api::course.course",
       "inversedBy": "users"
+    },
+    "user_group": {
+      "type": "string"
+    },
+    "phone_number": {
+      "type": "string"
+    },
+    "birthdate": {
+      "type": "date"
     }
   }
 }
