@@ -6,11 +6,15 @@ import no_image_available from "./images/No_image_available.svg.jpg";
 import { motion } from "framer-motion";
 import CategorySidebar from "../component/categorySidebar";
 import { Search } from "lucide-react";
+import PriceRangeSlider from "../component/rangeSlider";
+import WebFooter from "../component/webFooter";
 
 const AllCoursePage = () => {
     const [courses, setCourses] = useState([]);
     const [search, setSearch] = useState("");
     const navigate = useNavigate();
+    const [price, setPrice] = useState(1500);
+
 
     useEffect(() => {
         const fetchAllCourses = async () => {
@@ -47,7 +51,8 @@ const AllCoursePage = () => {
     };
 
     const filteredCourses = courses.filter(course =>
-        course.Course_name.toLowerCase().includes(search.toLowerCase())
+        course.Course_name.toLowerCase().includes(search.toLowerCase()) &&
+        course.price <= price
     );
 
     const truncateText = (text, maxLength) => {
@@ -56,8 +61,14 @@ const AllCoursePage = () => {
         }
         return text.substring(0, maxLength) + "...";
     };
+    const handlePriceChange = (event) => {
+        setPrice(event.target.value);
+    };
+
 
     return (
+
+
         <div className="container mx-auto p-6">
             <motion.h1
                 className="text-4xl font-bold text-center text-gray-800"
@@ -73,9 +84,31 @@ const AllCoursePage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
                 {/* Sidebar */}
-                <div >
+                <div>
                     <CategorySidebar />
+                    <div className="relative mb-6 mt-6 max-w-xs">
+                        <h3>Price range</h3>
+                        <label htmlFor="labels-range-input" className="sr-only">Price Range</label>
+                        <input
+                            id="labels-range-input"
+                            type="range"
+                            value={price}
+                            min="100"
+                            max="1500"
+                            className="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                            onChange={handlePriceChange}
+                        />
+                        <div className="flex justify-between text-sm text-gray-500 dark:text-gray-500 mt-1">
+                            <span>Min (฿100)</span>
+                            <span>฿{price}</span>
+                            <span>Max (฿1500)</span>
+                        </div>
+                    </div>
                 </div>
+
+
+
+
 
                 {/* Courses List */}
                 <div className="md:col-span-3">
@@ -117,13 +150,17 @@ const AllCoursePage = () => {
                                     <p className="text-sm text-gray-500 mt-1">
                                         Total Chapters: {course.course_chapters?.length || 0}
                                     </p>
+                                    <p className="text-l text-black-500 mt-3">price: {course.price} ฿</p>
                                 </div>
                             </motion.div>
                         ))}
                     </div>
                 </div>
             </div>
+
         </div>
+
+
     );
 };
 
