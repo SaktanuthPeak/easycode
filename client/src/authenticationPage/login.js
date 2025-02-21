@@ -4,9 +4,9 @@ import { useContext, useState, useEffect } from "react"
 import { AuthContext } from "../context/Auth.context.js"
 import { Facebook } from "lucide-react"
 import loginPicture from "./pictures/login.jpg"
-import axios from "axios"
 import FacebookLoginButton from "./facebookLoginButton.js"
 import { motion } from "framer-motion";
+import ax from "../conf/ax.js"
 
 const LoginForm = () => {
     const { state: ContextState, login } = useContext(AuthContext)
@@ -39,7 +39,7 @@ const LoginForm = () => {
     }
     const handleFacebookLogin = async () => {
         try {
-            const response = await axios.get("http://localhost:1337/api/connect/facebook")
+            const response = await ax.get("/connect/facebook")
             window.location.href = response.data.redirectUrl
         } catch (error) {
             console.error("Facebook login error", error)
