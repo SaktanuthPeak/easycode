@@ -83,7 +83,7 @@ export default function NavbarLogin() {
     navigate("client-home/cart");
   };
   const handleOpenProfile = () => {
-    navigate("/profile");
+    navigate("/client-home/profile-page");
   };
   const handleHome = () => {
     navigate("/client-home");
