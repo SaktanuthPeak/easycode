@@ -29,6 +29,7 @@ import AllCoursePage from "./clientPage/allCoursePage";
 import PreviewAllCoursePage from "./homePreviewPage/previewAllCoursePage";
 import TeacherDashboard from "./teacher/dashboard";
 import CourseDashboard from "./teacher/courseDashboard";
+
 //Import admin pages
 import Dashboard from "./admin/adminPage/dashboard";
 import Courses from "./admin/adminPage/courses";
@@ -41,6 +42,9 @@ import CreateCourse from "./admin/component/createAndEditCourse";
 import Chapters from "./admin/adminPage/chapters";
 import CreateAndEditChapter from "./admin/component/createAndEditChapter";
 import Chapter from "./admin/adminPage/chapter";
+import Coupons from "./admin/adminPage/coupons";
+import CreateAndEditCoupon from "./admin/component/createAndEditCoupon";
+
 // Import components
 import NavbarLogin from "./component/navbarLogin";
 import NavbarPreview from "./component/navbarPreview";
@@ -73,18 +77,20 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
       <Routes>
         {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
         <Route path="/" element={<NavbarAdmin />}>
+          CreateAndEditCoupon
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/order" element={<Order />} />
           <Route path="/teacher" element={<Teacher />} />
           <Route path="/teacher-support" element={<TeacherSupport />} />
           <Route path="/support" element={<Support />} />
+          {/*Course*/}
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/create-course" element={<CreateCourse />} />
           <Route
             path="/courses/edit-course/:courseId"
             element={<CreateCourse />}
           />
-          <Route path="/order" element={<Order />} />
           <Route path="/courses/:courseId" element={<Chapters />} />
           <Route path="/courses/:courseId/:chapterId" element={<Chapter />} />
           <Route
@@ -95,7 +101,14 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
             path="/courses/:courseId/:chapterId/edit"
             element={<CreateAndEditChapter />}
           />
+          <Route path="/coupons" element={<Coupons />} />
+          <Route
+            path="/coupons/:couponId/edit"
+            element={<CreateAndEditCoupon />}
+          />
+          <Route path="/coupons/create" element={<CreateAndEditCoupon />} />
         </Route>
+        {/*Coupon */}
       </Routes>
     );
   } else {
