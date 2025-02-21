@@ -6,6 +6,7 @@ import { Facebook } from "lucide-react"
 import loginPicture from "./pictures/login.jpg"
 import axios from "axios"
 import FacebookLoginButton from "./facebookLoginButton.js"
+import { motion } from "framer-motion";
 
 const LoginForm = () => {
     const { state: ContextState, login } = useContext(AuthContext)
@@ -46,25 +47,54 @@ const LoginForm = () => {
     }
 
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen items-center justify-center bg-white">
+        <motion.div
+            className="flex flex-col lg:flex-row min-h-screen items-center justify-center bg-white"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+        >
             {/* Left Image Section */}
-            <div className="hidden lg:block lg:w-1/2 h-screen">
+            <motion.div
+                className="hidden lg:block lg:w-1/2 h-screen"
+                initial={{ x: -100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
                 <img
                     src={loginPicture || "/placeholder.svg"}
                     alt="Person working on laptop"
                     className="object-cover w-full h-full"
                 />
-            </div>
+            </motion.div>
 
             {/* Right Form Section */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center px-4 py-8 lg:px-24 overflow-y-auto max-h-screen">
-                <div className="w-full max-w-md space-y-6">
-                    <div>
+            <motion.div
+                className="w-full lg:w-1/2 flex items-center justify-center px-4 py-8 lg:px-24 overflow-y-auto max-h-screen"
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
+                <motion.div
+                    className="w-full max-w-md space-y-6"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.7, duration: 0.3 }}
+                >
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                    >
                         <h1 className="text-3xl font-semibold">Login</h1>
-                    </div>
+                    </motion.div>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="space-y-2">
+                        <motion.div
+                            className="space-y-2"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: 0.4 }}
+                        >
                             <label className="text-gray-700">Username</label>
                             <input
                                 type="username"
@@ -74,9 +104,14 @@ const LoginForm = () => {
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
                                 required
                             />
-                        </div>
+                        </motion.div>
 
-                        <div className="space-y-2">
+                        <motion.div
+                            className="space-y-2"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: 0.5 }}
+                        >
                             <label className="text-gray-700">Password</label>
                             <input
                                 type="password"
@@ -86,15 +121,20 @@ const LoginForm = () => {
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
                                 required
                             />
-                        </div>
+                        </motion.div>
 
-                        <div className="flex items-center justify-between mt-4">
+                        <motion.div
+                            className="flex items-center justify-between mt-4"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: 0.6 }}
+                        >
                             <div className="flex items-center">
                                 <input
                                     type="checkbox"
                                     id="remember-me"
                                     checked={rememberMe}
-                                    onClick={handleFacebookLogin}
+                                    onClick={handleFacebookLogin} // keep original onClick
                                     onChange={(e) => setRememberMe(e.target.checked)}
                                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                                 />
@@ -102,14 +142,17 @@ const LoginForm = () => {
                                     Remember me
                                 </label>
                             </div>
-                        </div>
+                        </motion.div>
 
-                        <button
+                        <motion.button
                             type="submit"
                             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-sm"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: 0.7 }}
                         >
                             Login
-                        </button>
+                        </motion.button>
                         <FacebookLoginButton />
                     </form>
 
@@ -121,12 +164,20 @@ const LoginForm = () => {
                     </div>
 
 
-                    {loginError && <div className="text-red-500 text-sm text-center">{loginError.message}</div>}
-                </div>
-            </div>
-        </div>
+                    {loginError &&
+                        <motion.div
+                            className="text-red-500 text-sm text-center"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.3, delay: 0.8 }}
+                        >
+                            {loginError.message}
+                        </motion.div>
+                    }
+                </motion.div>
+            </motion.div>
+        </motion.div>
     )
 }
 
 export default LoginForm
-

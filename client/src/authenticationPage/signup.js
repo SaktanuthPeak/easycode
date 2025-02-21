@@ -1,5 +1,5 @@
 "use client"
-
+import { motion } from "framer-motion";
 import { useState } from "react"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -105,7 +105,11 @@ const Signup = () => {
         switch (currentStep) {
             case 1:
                 return (
-                    <div>
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3 }}
+                    >
                         <h2 className="text-2xl font-semibold mb-4">Personal Details</h2>
                         <div className="space-y-4">
                             <div className="space-y-2">
@@ -153,11 +157,15 @@ const Signup = () => {
                                 Next
                             </button>
                         </div>
-                    </div>
+                    </motion.div>
                 );
             case 2:
                 return (
-                    <div>
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3 }}
+                    >
                         <h2 className="text-2xl font-semibold mb-4">Contact Details</h2>
                         <div className="space-y-4">
                             <div className="space-y-2">
@@ -224,11 +232,15 @@ const Signup = () => {
                                 Next
                             </button>
                         </div>
-                    </div>
+                    </motion.div>
                 );
             case 3:
                 return (
-                    <div>
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3 }}
+                    >
                         <h2 className="text-2xl font-semibold mb-4">User Group</h2>
                         <div className="space-y-4">
                             <div className="space-y-2">
@@ -264,7 +276,7 @@ const Signup = () => {
                                 {isLoading ? "Creating account..." : "Sign Up"}
                             </button>
                         </div>
-                    </div>
+                    </motion.div>
                 );
             default:
                 return null;
@@ -273,7 +285,12 @@ const Signup = () => {
 
 
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen items-center justify-center bg-white">
+        <motion.div
+            className="flex flex-col lg:flex-row min-h-screen items-center justify-center bg-white"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+        >
             {/* Toast Container */}
             <ToastContainer
                 position="top-right"
@@ -289,17 +306,32 @@ const Signup = () => {
             />
 
             {/* Left Image Section */}
-            <div className="hidden lg:block lg:w-1/2 h-screen">
+            <motion.div
+                className="hidden lg:block lg:w-1/2 h-screen"
+                initial={{ x: -100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
                 <img
                     src={signUpImage || "/placeholder.svg"}
                     alt="Sign up illustration"
                     className="object-cover w-full h-full"
                 />
-            </div>
+            </motion.div>
 
             {/* Right Form Section */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center px-4 py-8 lg:px-24 overflow-y-auto max-h-screen">
-                <div className="w-full max-w-md space-y-6">
+            <motion.div
+                className="w-full lg:w-1/2 flex items-center justify-center px-4 py-8 lg:px-24 overflow-y-auto max-h-screen"
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
+                <motion.div
+                    className="w-full max-w-md space-y-6"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.7, duration: 0.3 }}
+                >
                     <div>
                         <h1 className="text-3xl font-semibold">Sign Up</h1>
                         <p className="text-gray-600">Step {currentStep} of 3</p>
@@ -322,9 +354,9 @@ const Signup = () => {
                             <div className="w-full border-t border-gray-300"></div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                </motion.div>
+            </motion.div>
+        </motion.div>
     )
 }
 
