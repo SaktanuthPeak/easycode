@@ -80,8 +80,8 @@ export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-4">
+    <div className="flex h-screen">
+      <main className="flex-1 overflow-x-hidden overflow-y-auto p-4">
         <h1 className="text-2xl font-semibold mb-6">Admin Dashboard</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

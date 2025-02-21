@@ -6,6 +6,7 @@ import {
   LaptopMinimal,
   Home,
   Package,
+  Tickets,
   CircleHelp,
   BadgeHelp,
   User,
@@ -81,6 +82,13 @@ function Sidebar({ isOpen, toggle, onLogout, navigate }) {
           label="Teacher"
           isOpen={isOpen}
           path="/teacher"
+          navigate={navigate}
+        />
+        <NavItem
+          icon={Tickets}
+          label="Coupons"
+          isOpen={isOpen}
+          path="/coupons"
           navigate={navigate}
         />
         <NavItem

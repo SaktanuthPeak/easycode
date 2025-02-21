@@ -40,7 +40,7 @@ const Courses = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
-            All Courses
+            Courses Management
           </h1>
           <div className="flex items-center  space-x-4">
             <div className="relative">
