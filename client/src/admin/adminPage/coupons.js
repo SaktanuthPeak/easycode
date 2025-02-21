@@ -18,7 +18,7 @@ const CouponCard = ({ coupon, onEdit, onDelete, openModal }) => {
             <Pencil className="w-5 h-5" />
           </button>
           <button
-            onClick={() => onDelete(coupon.id)}
+            onClick={() => onDelete(coupon.documentId)}
             className="text-red-600 hover:text-red-800"
           >
             <Trash2 className="w-5 h-5" />
@@ -48,6 +48,21 @@ export default function Coupons() {
   const handleEdit = (coupon) => {
     setEditingCoupon(coupon);
     setIsModalOpen(true);
+  };
+
+  const handleDelete = async (coupon) => {
+    console.log(coupon);
+    try {
+      const deleteCoupon = await ax.delete(`/discount-coupons/${coupon}`);
+      console.log(deleteCoupon);
+
+      if (deleteCoupon.status === 204) {
+        console.log("Coupon created successfully but no content returned.");
+        fetchCoupon();
+      }
+    } catch (error) {
+      console.log("this is error", error);
+    }
   };
 
   const fetchCoupon = async () => {
@@ -95,7 +110,7 @@ export default function Coupons() {
             coupon={coupon}
             openModal={openModal}
             onEdit={handleEdit}
-            // onDelete={handleDelete}
+            onDelete={handleDelete}
           />
         ))}
       </div>
