@@ -115,6 +115,7 @@ function CreateCourse() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const confirmCreate = window.confirm(
       courseId
         ? "Are you sure you want to Edit this course"
@@ -146,6 +147,20 @@ function CreateCourse() {
       navigate("/courses");
     } catch (error) {
       console.log("This is error", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    const confirmCreate = window.confirm(
+      "Are you sure you want to Delete this course"
+    );
+
+    try {
+      await ax.delete(`/courses/${courseId}`);
+      toast.success("Delete course successfully!");
+      navigate("/courses");
+    } catch (error) {
+      console.log("this is error", error);
     }
   };
 
@@ -397,6 +412,15 @@ function CreateCourse() {
 
           {/* Submit Button */}
           <div className="flex justify-end pt-4">
+            {courseId && (
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="mr-1 w-full sm:w-auto bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+              >
+                Delete Course
+              </button>
+            )}
             <button
               type="submit"
               className="w-full sm:w-auto bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
