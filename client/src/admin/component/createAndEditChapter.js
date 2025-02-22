@@ -75,19 +75,6 @@ export default function CreateChapterPage() {
     e.preventDefault();
     setError(null);
 
-    console.log(
-      "78978979798789",
-      "title",
-      title,
-      "chapterNumber",
-      chapterNumber,
-      "content",
-      content,
-      "courseId",
-      courseId,
-      "video",
-      chapterVideo
-    );
     try {
       const chapterData = {
         name_of_chapter: title,
