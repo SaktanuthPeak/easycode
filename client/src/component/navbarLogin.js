@@ -7,13 +7,14 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
-import { motion, AnimatePresence } from "framer-motion"; // Add this import
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "./images/Logo2.png";
 import { useMessageModal } from "./messageModal";
 import { useState, useEffect } from "react";
 import ax from "../conf/ax";
+import Notification from './notification';
 
 const navigation = [
   { name: "Home", path: "/client-home", current: true },
@@ -25,7 +26,6 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-// Animation variants for the dropdown
 const dropdownVariants = {
   hidden: {
     opacity: 0,
@@ -52,42 +52,12 @@ const dropdownVariants = {
   }
 };
 
-// Animation variants for notification items
-const notificationItemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: i => ({
-    opacity: 1,
-    x: 0,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.2
-    }
-  }),
-  exit: {
-    opacity: 0,
-    x: 20,
-    transition: {
-      duration: 0.2
-    }
-  }
-};
-
 export default function NavbarLogin() {
   const logout = () => {
     sessionStorage.clear();
     window.location.href = "/home-preview";
   };
   const navigate = useNavigate();
-
-  const handleOpenCart = () => {
-    navigate("client-home/cart");
-  };
-  const handleOpenProfile = () => {
-    navigate("/client-home/profile-page");
-  };
-  const handleHome = () => {
-    navigate("/client-home");
-  };
   const { openModal } = useMessageModal();
   const [notifications, setNotifications] = useState([]);
   const [username, setUsername] = useState("");
@@ -113,11 +83,28 @@ export default function NavbarLogin() {
       setNotifications([]);
     }
   };
+  const deleteNotification = async (documentId) => {
+    try {
+      await ax.delete(`messages/${documentId}`);
+      setNotifications(notifications.filter((notification) => notification.documentId !== documentId));
+    } catch (error) {
+      console.error("Error deleting notification:", error);
+    }
+  };
+
+  const handleOpenCart = () => {
+    navigate("client-home/cart");
+  };
+
+  const handleOpenProfile = () => {
+    navigate("/client-home/profile-page");
+  };
 
   return (
     <Disclosure as="nav" className="bg-white-800">
       <div className="mx-auto max-w-1xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
+          {/* Mobile menu button */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
               <span className="sr-only">Open main menu</span>
@@ -131,6 +118,8 @@ export default function NavbarLogin() {
               />
             </DisclosureButton>
           </div>
+
+          {/* Logo and navigation */}
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center pr-5">
               <img alt="Your Company" src={logo} className="h-8 w-auto" />
@@ -156,7 +145,10 @@ export default function NavbarLogin() {
               </div>
             </div>
           </div>
+
+          {/* Right side buttons */}
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            {/* Cart button */}
             <button
               type="button"
               onClick={handleOpenCart}
@@ -179,86 +171,14 @@ export default function NavbarLogin() {
               </svg>
             </button>
 
-            {/* Notification dropdown */}
-            <Menu as="div" className="relative">
-              {({ open }) => (
-                <>
-                  <MenuButton
-                    className="relative rounded-full bg-white p-1 text-black-400 hover:text-gray-1000 focus:outline-0 focus:ring-2 focus:ring-black mr-2"
-                    onClick={fetchNotifications}
-                  >
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                  </MenuButton>
+            {/* Notification Component */}
+            <Notification
+              notifications={notifications}
+              fetchNotifications={fetchNotifications}
+              deleteNotification={deleteNotification}
+            />
 
-                  <AnimatePresence>
-                    {open && (
-                      <motion.div
-                        className="absolute right-0 z-10 mt-2 w-96 origin-top-right"
-                        initial="hidden"
-                        animate="visible"
-                        exit="exit"
-                        variants={dropdownVariants}
-                      >
-                        <MenuItems static className="rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none">
-                          <div className="px-4 py-2 border-b border-gray-200">
-                            <h3 className="text-lg font-medium text-gray-900">Notifications</h3>
-                          </div>
-                          <div className="max-h-96 overflow-y-auto">
-                            <AnimatePresence>
-                              {notifications.length > 0 ? (
-                                notifications.map((notification, index) => {
-                                  const adminContext = notification?.admin_context;
-                                  const contextMessage = notification?.context;
-
-                                  if (adminContext) {
-                                    return (
-                                      <motion.div
-                                        key={notification.id}
-                                        custom={index}
-                                        initial="hidden"
-                                        animate="visible"
-                                        exit="exit"
-                                        variants={notificationItemVariants}
-                                      >
-                                        <MenuItem>
-                                          <div className="px-4 py-2 hover:bg-gray-100">
-                                            <p className="text-sm text-gray-800">
-                                              Reply from: <span className="font-semibold">{contextMessage}</span>
-                                            </p>
-                                            <p className="text-sm text-gray-800">
-                                              Reply from admin: <span className="font-semibold">{adminContext}</span>
-                                            </p>
-                                          </div>
-                                        </MenuItem>
-                                      </motion.div>
-                                    );
-                                  }
-                                  return null;
-                                })
-                              ) : (
-                                <motion.div
-                                  initial="hidden"
-                                  animate="visible"
-                                  exit="exit"
-                                  variants={notificationItemVariants}
-                                >
-                                  <div className="px-4 py-2 text-sm text-gray-500">
-                                    No new notifications at this time.
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        </MenuItems>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </>
-              )}
-            </Menu>
-
-            {/* Profile dropdown - with animation */}
+            {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3">
               {({ open }) => (
                 <>
