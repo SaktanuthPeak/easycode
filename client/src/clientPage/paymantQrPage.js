@@ -18,6 +18,8 @@ const PromptPayQR = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileContent, setFileContent] = useState(null);
   const [notification, setNotification] = useState("");
+  const [documentIds, setDocumentIds] = useState(null);
+
 
   const notifySuccess = (message) => {
     toast.success(message, {
@@ -44,11 +46,18 @@ const PromptPayQR = () => {
   useEffect(() => {
     generateQRCode();
 
-    if (location.state && location.state.course_name) {
+    if (location.state?.course_name) {
       setCourseName(location.state.course_name);
       console.log("Course Name from location:", location.state.course_name);
     } else {
       console.log("No course name found in location.state");
+    }
+
+    if (location.state?.document_ids) {
+      setDocumentIds(location.state.document_ids);
+      console.log("Document IDs from location:", location.state.document_ids);
+    } else {
+      console.log("No document IDs found in location.state");
     }
   }, [promptPayID, amount, location]);
 
@@ -112,6 +121,8 @@ const PromptPayQR = () => {
       const userResponse = await ax.get(`/users/me`);
       const username = userResponse.data.username;
       const email = userResponse.data.email;
+      const userDocId = userResponse.data.documentId
+
 
       if (!username) {
         throw new Error("Username not found in user profile");
@@ -135,6 +146,8 @@ const PromptPayQR = () => {
           slip_upload: uploadedFileId,
           Applied_course: courseName,
           Email: email,
+          user_documentid: userDocId,
+          course_documentid: documentIds
         },
       });
 
@@ -147,6 +160,7 @@ const PromptPayQR = () => {
       notifyError("อัปโหลดล้มเหลว! กรุณาลองใหม่");
     }
   };
+
 
   return (
     <div className="container mx-auto p-8 bg-gray-100 rounded-lg shadow-md flex">
@@ -181,7 +195,7 @@ const PromptPayQR = () => {
             {fileContent && (
               <div className="mt-2 p-2 border rounded">
                 {typeof fileContent === "string" &&
-                fileContent.startsWith("data:image/") ? (
+                  fileContent.startsWith("data:image/") ? (
                   <img
                     src={fileContent}
                     alt="File Preview"
