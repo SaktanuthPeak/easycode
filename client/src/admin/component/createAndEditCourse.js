@@ -45,7 +45,7 @@ function CreateCourse() {
       fetchCourseData();
     }
   }, [courseId]);
-  console.log("----------", course);
+  console.log("----------", course?.course_img[0]?.id);
 
   const fetchCategories = async () => {
     try {
@@ -123,20 +123,24 @@ function CreateCourse() {
     );
 
     if (!confirmCreate) return;
+    const payload = {
+      data: {
+        Course_name: course.Course_name,
+        course_description: course.course_description,
+        price: course.price,
+        course_overview: course.course_overview,
+        course_hour: course.course_hour,
+        course_minute: course.course_minute,
+        category: course.category,
+        course_img: previewUpload
+          ? course.course_img
+          : course?.course_img[0]?.id,
+      },
+    };
+    console.log("++++++++", payload);
     try {
       if (courseId) {
-        const editCourse = await ax.put(`/courses/${courseId}`, {
-          data: {
-            Course_name: course.Course_name,
-            course_description: course.course_description,
-            price: course.price,
-            course_overview: course.course_overview,
-            course_hour: course.course_hour,
-            course_minute: course.course_minute,
-            category: course.category,
-            course_img: course.course_img,
-          },
-        });
+        const editCourse = await ax.put(`/courses/${courseId}`, payload);
         toast.success("Course edited successfully!");
       } else {
         const addCourse = await ax.post(`/courses`, {
