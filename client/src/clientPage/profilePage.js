@@ -9,7 +9,8 @@ const ProfilePage = () => {
   const fetchItems = async () => {
     try {
       setIsLoading(true);
-      const response = await ax.get(`users/me`);
+      const response = await ax.get(`users/me?populate=courses`);
+      console.log("+=+=+=+=+=",response.data)
       setUser(response.data);
     } catch (err) {
       console.log(err);
