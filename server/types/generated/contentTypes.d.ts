@@ -382,6 +382,7 @@ export interface ApiAdminConfirmationAdminConfirmation
     draftAndPublish: true;
   };
   attributes: {
+    amount: Schema.Attribute.Integer;
     Applied_course: Schema.Attribute.String;
     course_documentid: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
@@ -602,6 +603,10 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1109,6 +1114,10 @@ export interface PluginUsersPermissionsUser
         minLength: 6;
       }>;
     firstname: Schema.Attribute.String;
+    instructor: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::instructor.instructor'
+    >;
     lastname: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
