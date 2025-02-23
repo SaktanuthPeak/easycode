@@ -1,8 +1,6 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ax from "../../conf/ax";
-import { useNavigate, useParams, Link } from "react-router-dom";
-import conf from "../../conf/main";
-import no_image_available from "../../clientPage/images/No_image_available.svg.jpg";
+import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Edit, Plus, Search, Eye } from "lucide-react";
 
@@ -17,7 +15,11 @@ export default function Chapters() {
       const chapters = await ax.get(
         `/courses/${courseId}?populate=course_chapters.video`
       );
-      setChapterData(chapters.data.data.course_chapters);
+      const sortedChapters = chapters.data.data.course_chapters.sort(
+        (a, b) => a.chapter_number - b.chapter_number
+      );
+
+      setChapterData(sortedChapters);
     } catch (error) {
       console.log("This is error", error);
     }
@@ -26,10 +28,11 @@ export default function Chapters() {
   const filteredChapter = chaptersData.filter((chapter) =>
     chapter.name_of_chapter.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log("++++++++++++++++1", chaptersData);
+
   useEffect(() => {
     fetchChapters();
   }, []);
+
   return (
     <div>
       <div className="flex flex-col md:flex-row items-center justify-between mb-8">

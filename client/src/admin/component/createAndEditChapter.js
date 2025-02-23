@@ -27,8 +27,6 @@ export default function CreateChapterPage() {
       setChapterNumber(selectedChapter.chapter_number);
       setContent(selectedChapter.chapter_description);
       setChapterVideo(selectedChapter.video[0]);
-      console.log(selectedChapter.video[0]);
-      console.log("----------------------", chapterVideo);
     }
   }, [selectedChapter]);
 
@@ -80,23 +78,26 @@ export default function CreateChapterPage() {
         name_of_chapter: title,
         chapter_number: chapterNumber,
         chapter_description: content,
-        video: chapterVideo,
+        video: videoPreviewUrl ? chapterVideo : chapterVideo.id,
         course: courseId,
       };
       if (selectedChapter) {
         const response = await ax.put(`/course-chapters/${chapterId}`, {
           data: chapterData,
         });
+        toast.success("Update chapter successfully!");
       } else {
         const response = await ax.post("/course-chapters", {
           data: chapterData,
         });
+        toast.success("Create chapter successfully!");
       }
 
       navigate(`/courses/${courseId}`);
       console.log("Chapter created successfully");
     } catch (error) {
       console.log("Failed to create chapter. Please try again.", error);
+      toast.error("Update chapter successfully!");
       setError("Failed to create chapter. Please try again.");
     }
   };

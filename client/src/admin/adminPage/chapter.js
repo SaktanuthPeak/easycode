@@ -15,14 +15,10 @@ export default function Chapter() {
   const location = useLocation();
   const selectedChapter = location.state?.selectedChapter;
 
-  const getImageUrl = (img) => {
-    if (!img || !img.url) return no_image_available;
-    return img.url.startsWith("/")
-      ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}`
-      : img.url;
-  };
+  const fullVideoUrl = `${conf.apiUrlPrefix.replace("/api", "")}${
+    selectedChapter.video[0].url
+  }`;
 
-  console.log("++++++++++", selectedChapter);
   return (
     <div className="container mx-auto px-6 py-8 flex gap-8">
       {/* Main Content */}
@@ -30,10 +26,11 @@ export default function Chapter() {
         {selectedChapter && (
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="aspect-w-16 aspect-h-9 bg-gray-800">
-              <img
-                src={getImageUrl(selectedChapter.video?.[0])}
+              <video
+                src={fullVideoUrl}
                 alt={selectedChapter.name_of_chapter}
                 className="w-full h-full object-cover"
+                controls
               />
             </div>
             <div className="p-6">
