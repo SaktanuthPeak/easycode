@@ -35,7 +35,7 @@
         "audios"
       ]
     },
-    "users_permissions_user": {
+    "instructor": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user",

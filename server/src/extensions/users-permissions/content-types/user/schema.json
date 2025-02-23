@@ -94,7 +94,7 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::instructor.instructor",
-      "mappedBy": "users_permissions_user"
+      "mappedBy": "instructor"
     }
   }
 }
