@@ -9,11 +9,15 @@ import SlipModal from "../component/slipModal";
 function Order() {
   const [ordersData, setOrdersData] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState({});
+  const [selectedOrder, setSelectedOrder] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const dayjs = require("dayjs");
 
-  const openModal = () => setIsModalOpen(true);
+  const openModal = (order) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
+  };
   const closeModal = () => setIsModalOpen(false);
 
   const fetchOrder = async () => {
@@ -28,8 +32,6 @@ function Order() {
   };
 
   const handleUpdateStatus = async (id) => {
-    console.log("--------------------", id);
-    console.log("+++++++++++++++", selectedStatus);
     if (!selectedStatus[id]) {
       toast.warn("Please select a status before submitting.");
       return;
@@ -149,13 +151,18 @@ function Order() {
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end space-x-2">
                       <button
-                        onClick={openModal}
+                        onClick={() => openModal(item)}
                         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out flex items-center"
                       >
                         <FileText className="h-4 w-4 mr-2" />
                         Slip
                       </button>
-                      {isModalOpen && <SlipModal onClose={closeModal} />}
+                      {isModalOpen && (
+                        <SlipModal
+                          onClose={closeModal}
+                          selectedOrder={selectedOrder}
+                        />
+                      )}
                       <button
                         className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out flex items-center"
                         onClick={() => handleUpdateStatus(item.documentId)} // Changed id to item.id

@@ -1,6 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import { X, Calendar, Hash, DollarSign, Barcode } from "lucide-react";
-const SlipModal = ({ onClose }) => {
+import dayjs from "dayjs";
+import conf from "../../conf/main";
+import no_image_available from "../../clientPage/images/No_image_available.svg.jpg";
+
+const SlipModal = ({ onClose, selectedOrder }) => {
+  console.log(selectedOrder);
+  console.log(selectedOrder.slip_upload[0].url);
+  const getImageUrl = (img) => {
+    if (!img || !img.url) return no_image_available;
+    return img.url.startsWith("/")
+      ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}`
+      : img.url;
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg">
@@ -27,14 +40,18 @@ const SlipModal = ({ onClose }) => {
               <div className="space-y-4">
                 <div className="flex items-center text-sm">
                   <Calendar className="mr-2 h-4 w-4 text-gray-500" />
-                  <span className="font-medium">Date:</span>
-                  {/* <span className="ml-2">{date}</span> */}
+                  <span className="font-medium">Date: </span>
+                  <span className="ml-2">
+                    {dayjs(selectedOrder.publishedAt).format(
+                      "dddd, YYYY-MM-DD HH:mm:ss"
+                    )}
+                  </span>
                 </div>
-                <div className="flex items-center text-sm">
+                {/* <div className="flex flex-wrap items-start text-sm">
                   <Hash className="mr-2 h-4 w-4 text-gray-500" />
-                  <span className="font-medium">Transaction ID:</span>
-                  {/* <span className="ml-2">{transactionId}</span> */}
-                </div>
+                  <span className="font-medium">Course Name:</span>
+                  <span className="ml-2">{slipData.Applied_course}</span>
+                </div> */}
                 <div className="flex items-center text-sm">
                   <DollarSign className="mr-2 h-4 w-4 text-gray-500" />
                   <span className="font-medium">Amount:</span>
@@ -42,12 +59,7 @@ const SlipModal = ({ onClose }) => {
                 </div>
               </div>
               <div className="mt-6 pt-6 border-t border-gray-200">
-                <div className="flex justify-center">
-                  <Barcode className="h-16 w-64 text-gray-800" />
-                </div>
-                <p className="text-center text-sm text-gray-500 mt-2">
-                  Scan to verify
-                </p>
+                <img src={getImageUrl(selectedOrder.slip_upload[0])}></img>
               </div>
             </div>
           </div>
