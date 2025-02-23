@@ -104,7 +104,9 @@ export default function CreateChapterPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Create New Chapter</h1>
+      <h1 className="text-3xl font-bold mb-6">
+        {chapterId ? `Edit chapter : ${title}` : "Create New Chapter"}
+      </h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-2">
           <label htmlFor="title" className="block font-medium">
@@ -200,7 +202,7 @@ export default function CreateChapterPage() {
           type="submit"
           className="w-full bg-blue-600 text-white p-2 rounded-md"
         >
-          Create Chapter
+          {chapterId ? "Edit Chapter" : "Create Chapter"}
         </button>
       </form>
     </div>

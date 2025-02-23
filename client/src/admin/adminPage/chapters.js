@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import ax from "../../conf/ax";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Edit, Plus, Search, Eye } from "lucide-react";
+import { Edit, Plus, Search, Eye, Trash2 } from "lucide-react";
+import { toast } from "react-toastify";
 
 export default function Chapters() {
   const [chaptersData, setChapterData] = useState([]);
@@ -22,6 +23,17 @@ export default function Chapters() {
       setChapterData(sortedChapters);
     } catch (error) {
       console.log("This is error", error);
+    }
+  };
+
+  const handleDelete = async (chapterId) => {
+    try {
+      await ax.delete(`/course-chapters/${chapterId}`);
+      toast.success("Delete chapter successfully!");
+      fetchChapters();
+    } catch (error) {
+      console.log("this is error");
+      toast.error("Fail to delete chapter");
     }
   };
 
@@ -128,6 +140,15 @@ export default function Chapters() {
                     >
                       <Edit className="w-4 h-4 mr-2" />
                       <span>Edit</span>
+                    </button>
+                    <button
+                      asChild
+                      variant="outline"
+                      className="flex items-center flex items-center space-x-2 bg-red-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 ease-in-out"
+                      onClick={() => handleDelete(chapter.documentId)}
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      <span>Delete</span>
                     </button>
                   </div>
                 </motion.li>
