@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { PlusCircle, Pencil, Trash2 } from "lucide-react";
+import { PlusCircle, Pencil, Trash2, Search } from "lucide-react";
 import ax from "../../conf/ax";
 import CreateAndEditCoupon from "../component/createAndEditCoupon";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CouponCard = ({ coupon, onEdit, onDelete, openModal }) => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const CouponCard = ({ coupon, onEdit, onDelete, openModal }) => {
 
 export default function Coupons() {
   const [coupons, setCoupons] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [editingCoupon, setEditingCoupon] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -58,9 +60,11 @@ export default function Coupons() {
 
       if (deleteCoupon.status === 204) {
         console.log("Coupon created successfully but no content returned.");
+        toast.success("Delete coupon successfully!");
         fetchCoupon();
       }
     } catch (error) {
+      toast.error("Fail to delete coupon");
       console.log("this is error", error);
     }
   };
@@ -74,6 +78,10 @@ export default function Coupons() {
     }
   };
 
+  const filteredCoupons = coupons.filter((coupon) =>
+    coupon.coupon.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   useEffect(() => {
     fetchCoupon();
   }, []);
@@ -83,7 +91,7 @@ export default function Coupons() {
       <h1 className="text-3xl font-bold text-gray-900 mb-8">
         Coupon Management
       </h1>
-      <div className="mb-6">
+      <div className="mb-6 flex items-center justify-between space-x-4">
         <button
           onClick={openModal}
           className="flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -91,6 +99,16 @@ export default function Coupons() {
           <PlusCircle className="w-5 h-5 mr-2" />
           Create New Coupon
         </button>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search courses..."
+            className="pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
+        </div>
       </div>
       {isModalOpen && (
         <CreateAndEditCoupon
@@ -104,7 +122,7 @@ export default function Coupons() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {coupons.map((coupon) => (
+        {filteredCoupons.map((coupon) => (
           <CouponCard
             key={coupon.id}
             coupon={coupon}

@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Upload } from "lucide-react";
 import conf from "../../conf/main";
-import { ContentPasteGoSharp } from "@mui/icons-material";
 
 export default function CreateAndEditCoupon({
   isOpen,
@@ -24,7 +23,7 @@ export default function CreateAndEditCoupon({
       setExpirationDate(editCoupon.expired_date);
     }
   }, [editCoupon]);
-  console.log(editCoupon.documentId);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
@@ -39,8 +38,14 @@ export default function CreateAndEditCoupon({
         ? await ax.put(`/discount-coupons/${editCoupon.documentId}`, payload)
         : await ax.post(`/discount-coupons`, payload);
 
+      editCoupon
+        ? toast.success("Update coupon succesfully!")
+        : toast.success("Create coupon succesfully!");
       onClose();
     } catch (error) {
+      editCoupon
+        ? toast.error("Fail to Update coupon")
+        : toast.error("Fail to create coupon");
       console.log("This is error", error);
     }
   };
