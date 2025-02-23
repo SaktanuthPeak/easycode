@@ -8,11 +8,14 @@ function Support() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  
+
   // get user
   const fetchUsers = async () => {
     try {
       const response = await ax.get("/users");
-      setUsers(response.data);
+      const filteredUsers = response.data.filter(user => user.username !== "admintest"); 
+      setUsers(filteredUsers);
     } catch (error) {
       console.error("Error fetching users:", error);
     }

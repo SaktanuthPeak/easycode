@@ -5,6 +5,7 @@ import ax from '../conf/ax';
 import { motion } from 'framer-motion';
 import PreviewAdvertisementBanner from '../component/previewAdvertisementBanner';
 import WebFooter from '../component/webFooter';
+import computerguy from "./images/computerguy.png"
 
 const iconMap = {
     "Web Development": Code,
@@ -37,6 +38,39 @@ const CategoryCard = ({ icon: Icon, title, courses, onClick }) => {
         </motion.div>
     );
 };
+const HeroSection = () => {
+    const navigate = useNavigate();
+    return (
+        <div className="bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+                            Transform your life through education
+                        </h1>
+                        <p className="text-lg text-gray-600 mb-6">
+                            Learners around the world are launching new careers, advancing in their fields, and enriching their lives.
+                        </p>
+                        <button
+                            onClick={() => navigate('/client-home/all-courses')}
+                            className="bg-gray-900 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition-colors">
+                            Checkout Courses →
+                        </button>
+                    </div>
+                    <div className="relative">
+                        <div className="bg-blue-100 rounded-3xl overflow-hidden">
+                            <img
+                                src={computerguy}
+                                alt="Student learning on laptop"
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 const HomePreviewPage = () => {
     const [categories, setCategories] = useState([]);
@@ -93,6 +127,7 @@ const HomePreviewPage = () => {
                         <CategoryCard key={index} {...category} />
                     ))}
                 </motion.div>
+                <HeroSection />
             </div>
             <WebFooter />
         </div>

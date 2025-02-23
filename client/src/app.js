@@ -29,6 +29,8 @@ import AllCoursePage from "./clientPage/allCoursePage";
 import PreviewAllCoursePage from "./homePreviewPage/previewAllCoursePage";
 import TeacherDashboard from "./teacher/dashboard";
 import CourseDashboard from "./teacher/courseDashboard";
+import ProfilePage from "./clientPage/profilePage";
+
 //Import admin pages
 import Dashboard from "./admin/adminPage/dashboard";
 import Courses from "./admin/adminPage/courses";
@@ -93,6 +95,7 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
       <Routes>
         {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
         <Route path="/client-home" element={<ClientHomePage />} />
+        <Route path="/client-home/profile-page" element={<ProfilePage />} />
         <Route path="/client-home/:categoryId" element={<CategoryPage />} />
         <Route
           path="/client-home/:categoryId/:courseId"
