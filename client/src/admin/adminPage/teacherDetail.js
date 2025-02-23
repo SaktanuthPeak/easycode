@@ -40,7 +40,7 @@ export default function TeacherDetailPage() {
           const students = course.users.filter((user) => user.role && user.role.name !== "Teacher");
           return (
             <div key={course.id} className="p-4 border rounded-lg shadow-md">
-              <h2 className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer" onClick={() => navigate(`/course/${course.id}`)}>
+              <h2 className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer" onClick={() => navigate(`/teacherStudent/${course.id}`)}>
                 {course.Course_name}
               </h2>
               <p className="text-gray-600">Number of Students: {students.length}</p>

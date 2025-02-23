@@ -36,7 +36,7 @@ import Teacher from "./admin/adminPage/teacher";
 import TeacherSupport from "./admin/adminPage/teacherSupport";
 import Order from "./admin/adminPage/order";
 import TeacherDetailPage from "./admin/adminPage/teacherDetail";
-
+import TeacherStudent from "./admin/adminPage/teacherStudent";
 // Import components
 import NavbarLogin from "./component/navbarLogin";
 import NavbarPreview from "./component/navbarPreview";
@@ -77,6 +77,7 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
           <Route path="/support" element={<Support />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/order" element={<Order />} />
+          <Route path="/teacherStudent/:courseId" element={<TeacherStudent />} />
         </Route>
       </Routes>
     );
