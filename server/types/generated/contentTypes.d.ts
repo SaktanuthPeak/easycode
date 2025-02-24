@@ -382,6 +382,7 @@ export interface ApiAdminConfirmationAdminConfirmation
     draftAndPublish: true;
   };
   attributes: {
+    amount: Schema.Attribute.Integer;
     Applied_course: Schema.Attribute.String;
     course_documentid: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
@@ -590,6 +591,10 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
     img_teacher: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
+    >;
+    instructor: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
     >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -1095,6 +1100,7 @@ export interface PluginUsersPermissionsUser
     draftAndPublish: false;
   };
   attributes: {
+    birthdate: Schema.Attribute.Date;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -1108,6 +1114,10 @@ export interface PluginUsersPermissionsUser
         minLength: 6;
       }>;
     firstname: Schema.Attribute.String;
+    instructor: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::instructor.instructor'
+    >;
     lastname: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -1120,6 +1130,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    phone_number: Schema.Attribute.String;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1131,6 +1142,7 @@ export interface PluginUsersPermissionsUser
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_group: Schema.Attribute.String;
     username: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique &

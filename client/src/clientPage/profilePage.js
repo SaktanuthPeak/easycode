@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import dayjs from "dayjs";
+import ax from "../conf/ax";
+import { motion } from "framer-motion";
 
-const URL_AUTH = "/api/auth/local";
 const ProfilePage = () => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({ username: "", firstname: "", lastname: "", email: "", profileImage: "" });
   const [isLoading, setIsLoading] = useState(false);
+
   const fetchItems = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get("api/users/me");
+      const response = await ax.get(`users/me`);
       setUser(response.data);
     } catch (err) {
       console.log(err);
@@ -18,39 +18,109 @@ const ProfilePage = () => {
     }
   };
 
-  console.log(user);
-  console.log(user.firstname);
   useEffect(() => {
     fetchItems();
   }, []);
-  return (
-    <div className="bg-gradient-to-b from-indigo-950 to-blue-900 min-h-screen flex items-center justify-center p-4">
-      <div className="font-std mb-10 w-full rounded-2xl bg-white p-10 font-normal leading-relaxed text-gray-900 shadow-xl">
-        <div className="flex flex-col md:flex-row">
-          {/* Profile Picture and Edit Button */}
-          <div className="md:w-1/3 text-center mb-8 md:mb-0">
-            <img
-              src="https://i.pravatar.cc/300"
-              alt="Profile Picture"
-              className="rounded-full w-48 h-48 mx-auto mb-4 border-4 border-indigo-800 transition-transform duration-300 hover:scale-105 ring ring-gray-300"
-            />
-            <button className="mt-4 bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300 ring ring-gray-300 hover:ring-indigo-300">
-              Edit Profile
-            </button>
-          </div>
 
-          {/* User Information */}
-          <div className="md:w-2/3 md:pl-8">
-            <p className="text-xl   mb-6">First name : {user.firstname}</p>
-            <p className="text-xl   mb-6">Last name : {user.lastname}</p>
-            <p className="text-xl   mb-6">Username: {user.username}</p>
-            <p className="text-xl   mb-6">Username: {user.email}</p>
-            <p className="text-xl   mb-6">Birth date : {dayjs(user.birth_date).format('DD/MM/YYYY')}</p>
-            <p className="text-xl   mb-6">Phone number : 0{user.phone}</p>
-          </div>
-        </div>
-      </div>
+  if (isLoading) {
+    return <p className="text-center text-lg">Loading...</p>;
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white">
+      {/* Welcome text left */}
+      <motion.h1
+        className="text-3xl font-bold text-gray-700 mt-4 ml-8 mb-8"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.1 }}
+      >
+        Welcome, {user.username}
+      </motion.h1>
+
+      {/* card layout */}
+      <motion.div
+        className="flex w-[99%] md:w-[95%] lg:w-[90%] min-h-[500px] mx-auto gap-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        {/* 30% left column - Profile Image */}
+        <motion.div
+          className="w-[30%] bg-gray-100 p-6 flex flex-col justify-center items-center rounded-lg shadow-lg"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
+        >
+          <motion.img
+            alt="User"
+            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+            className="w-48 h-48 rounded-full shadow-md"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.1 }}
+          />
+          <motion.h2
+            className="text-2xl font-semibold text-center mt-4"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2, delay: 0.15 }}
+          >
+            {user.username}
+          </motion.h2>
+        </motion.div>
+
+        {/* 70% right column */}
+        <motion.div
+          className="w-[70%] bg-gray-100 p-6 flex flex-col justify-center rounded-lg shadow-lg"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
+        >
+          <motion.h2
+            className="text-2xl font-bold text-gray-800 mt-[-290px]"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2, delay: 0.15 }}
+          >
+            User Information
+          </motion.h2>
+          <motion.hr
+            className="border-gray-300 my-4"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.2, delay: 0.2 }}
+            style={{ transformOrigin: "left" }}
+          />
+
+          {/* User Info */}
+          <motion.div
+            className="flex flex-col md:flex-row text-gray-700 font-bold mt-2 md:space-x-6 w-full"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2, delay: 0.2 }}
+          >
+            <p className="text-2xl text-left">
+              Firstname: <span className="font-medium">{user.firstname || "-"}</span>
+            </p>
+            <p className="text-2xl text-left">
+              Lastname: <span className="font-medium">{user.lastname || "-"}</span>
+            </p>
+          </motion.div>
+
+          <motion.p
+            className="text-2xl text-gray-700 font-bold mt-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2, delay: 0.25 }}
+          >
+            Email: <span className="font-medium text-2xl">{user.email || "-"}</span>
+          </motion.p>
+        </motion.div>
+      </motion.div>
     </div>
   );
-};
+}
+
 export default ProfilePage;
+

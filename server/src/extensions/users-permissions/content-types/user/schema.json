@@ -80,6 +80,21 @@
       "relation": "manyToMany",
       "target": "api::course.course",
       "inversedBy": "users"
+    },
+    "user_group": {
+      "type": "string"
+    },
+    "phone_number": {
+      "type": "string"
+    },
+    "birthdate": {
+      "type": "date"
+    },
+    "instructor": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::instructor.instructor",
+      "mappedBy": "instructor"
     }
   }
 }

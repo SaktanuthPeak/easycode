@@ -34,6 +34,12 @@
         "videos",
         "audios"
       ]
+    },
+    "instructor": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "instructor"
     }
   }
 }

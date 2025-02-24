@@ -147,7 +147,8 @@ const PromptPayQR = () => {
           Applied_course: courseName,
           Email: email,
           user_documentid: userDocId,
-          course_documentid: documentIds
+          course_documentid: documentIds,
+          amount: amount
         },
       });
 
