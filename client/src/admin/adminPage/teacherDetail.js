@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
+import ax from "../../conf/ax";
 export default function TeacherDetailPage() {
   const [teacher, setTeacher] = useState(null);
   const { id } = useParams();
@@ -8,21 +8,15 @@ export default function TeacherDetailPage() {
 
   useEffect(() => {
     const fetchTeacherDetails = async () => {
-      const token = localStorage.getItem("jwt");
+      
       try {
-        const response = await fetch(
-          `http://localhost:1337/api/users/${id}?populate[courses][populate][users][populate]=role`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        const response = await ax.get(
+          `/users/${id}?populate[courses][populate][users][populate]=role`
+          
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch teacher details");
-        }
-        const data = await response.json();
-        setTeacher(data);
+       
+        
+      setTeacher(response.data);
       } catch (error) {
         console.error("Error fetching teacher details:", error);
       }
