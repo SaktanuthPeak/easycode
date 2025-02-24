@@ -404,7 +404,7 @@ export interface ApiAdminConfirmationAdminConfirmation
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    user_documentid: Schema.Attribute.String;
+    userId: Schema.Attribute.Integer;
     Username: Schema.Attribute.String;
   };
 }
