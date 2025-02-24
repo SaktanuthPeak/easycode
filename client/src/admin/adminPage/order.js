@@ -31,8 +31,9 @@ function Order() {
     }
   };
 
-  const handleUpdateStatus = async (id) => {
-    if (!selectedStatus[id]) {
+  const handleUpdateStatus = async (item) => {
+    console.log(item);
+    if (!selectedStatus[item.documentId]) {
       toast.warn("Please select a status before submitting.");
       return;
     }
@@ -42,13 +43,45 @@ function Order() {
     );
 
     if (!confirmUpdate) return;
-
     try {
-      await ax.put(`/admin-confirmations/${id}`, {
+      //edit status
+      await ax.put(`/admin-confirmations/${item.documentId}`, {
         data: {
-          order_status: selectedStatus[id],
+          order_status: selectedStatus[item.documentId],
         },
       });
+
+      //add course to relation
+      console.log(selectedStatus[item.documentId] === "confirm");
+      if (selectedStatus[item.documentId] === "confirm") {
+        const listBuyCourse = item.course_documentid
+          .replace(/\[|\]/g, "")
+          .split(",");
+        listBuyCourse.map(async (courseId) => {
+          try {
+            const listOwnCourse = await ax.get(
+              `/courses/${courseId}?populate=users`
+            );
+
+            const addUser = listOwnCourse.data.data.users.map(
+              (user) => user.id
+            );
+            const listBuyUser = [item.userId];
+            const totalUser = addUser.concat(listBuyUser.map(Number));
+
+            await ax.put(`/courses/${courseId}`, {
+              data: {
+                users: totalUser,
+              },
+            });
+
+            console.log("add relation complete");
+          } catch (error) {
+            console.log("this is error", error);
+          }
+        });
+      }
+
       toast.success("Order status updated successfully!");
       fetchOrder();
     } catch (error) {
@@ -165,7 +198,7 @@ function Order() {
                       )}
                       <button
                         className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out flex items-center"
-                        onClick={() => handleUpdateStatus(item.documentId)} // Changed id to item.id
+                        onClick={() => handleUpdateStatus(item)} // Changed id to item.id
                       >
                         <Check className="h-4 w-4 mr-2" />
                         Submit
