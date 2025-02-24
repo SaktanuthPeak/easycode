@@ -31,9 +31,6 @@
     "Email": {
       "type": "string"
     },
-    "user_documentid": {
-      "type": "string"
-    },
     "order_status": {
       "type": "enumeration",
       "enum": [
@@ -47,6 +44,9 @@
       "type": "string"
     },
     "amount": {
+      "type": "integer"
+    },
+    "userId": {
       "type": "integer"
     }
   }

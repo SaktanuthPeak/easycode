@@ -18,7 +18,7 @@ const PromptPayQR = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileContent, setFileContent] = useState(null);
   const [notification, setNotification] = useState("");
-  const [documentIds, setDocumentIds] = useState(null);
+  const [documentIds, setDocumentIds] = useState([]);
 
 
   const notifySuccess = (message) => {
@@ -54,7 +54,7 @@ const PromptPayQR = () => {
     }
 
     if (location.state?.document_ids) {
-      setDocumentIds(location.state.document_ids);
+      setDocumentIds(`[${location.state.document_ids}]`);
       console.log("Document IDs from location:", location.state.document_ids);
     } else {
       console.log("No document IDs found in location.state");
@@ -121,7 +121,7 @@ const PromptPayQR = () => {
       const userResponse = await ax.get(`/users/me`);
       const username = userResponse.data.username;
       const email = userResponse.data.email;
-      const userDocId = userResponse.data.documentId
+      const userId = userResponse.data.id
 
 
       if (!username) {
@@ -146,7 +146,7 @@ const PromptPayQR = () => {
           slip_upload: uploadedFileId,
           Applied_course: courseName,
           Email: email,
-          user_documentid: userDocId,
+          userId: userId,
           course_documentid: documentIds,
           amount: amount
         },
