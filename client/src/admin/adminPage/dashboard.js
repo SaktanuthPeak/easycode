@@ -10,7 +10,7 @@ export default function Dashboard() {
   return (
     <Box p={3}>
       <Typography variant="h4" fontWeight="bold" mb={3}>
-        E-Learning Dashboard
+        EasyCode Dashboard
       </Typography>
       <Grid container spacing={3} mb={3}>
         <Grid item xs={12} md={4}>
