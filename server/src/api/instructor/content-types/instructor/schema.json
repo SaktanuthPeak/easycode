@@ -38,7 +38,7 @@
     "statusT": {
       "type": "enumeration",
       "enum": [
-        "confirm ",
+        "confirm",
         "deny",
         "pending"
       ],

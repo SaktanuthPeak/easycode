@@ -561,7 +561,7 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name_teacher: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    statusT: Schema.Attribute.Enumeration<['confirm ', 'deny', 'pending']> &
+    statusT: Schema.Attribute.Enumeration<['confirm', 'deny', 'pending']> &
       Schema.Attribute.DefaultTo<'pending'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
