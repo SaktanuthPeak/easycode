@@ -682,6 +682,39 @@ export interface ApiReviewReview extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiUserAvatarUserAvatar extends Struct.CollectionTypeSchema {
+  collectionName: 'user_avatars';
+  info: {
+    description: '';
+    displayName: 'user_avatar';
+    pluralName: 'user-avatars';
+    singularName: 'user-avatar';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    avatar_img: Schema.Attribute.Media<'files' | 'images', true>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-avatar.user-avatar'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -1181,6 +1214,10 @@ export interface PluginUsersPermissionsUser
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_avatar: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::user-avatar.user-avatar'
+    >;
     user_group: Schema.Attribute.String;
     username: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -1209,6 +1246,7 @@ declare module '@strapi/strapi' {
       'api::instructor.instructor': ApiInstructorInstructor;
       'api::message.message': ApiMessageMessage;
       'api::review.review': ApiReviewReview;
+      'api::user-avatar.user-avatar': ApiUserAvatarUserAvatar;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
