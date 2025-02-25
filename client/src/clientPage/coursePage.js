@@ -108,7 +108,7 @@ const CoursePage = () => {
                 <img
                   src={
                     courseDetails?.instructor?.img_teacher?.[0]
-                      ? getImageUrl(courseDetails?.instructo?.img_teacher[0])
+                      ? getImageUrl(courseDetails?.instructor?.img_teacher[0])
                       : no_image_available
                   }
                   alt="Instructor"
@@ -130,11 +130,10 @@ const CoursePage = () => {
                       <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
-                        className={`py-2 px-1 border-b-2 font-medium ${
-                          activeTab === tab
-                            ? "border-blue-500 text-blue-600"
-                            : "border-transparent text-gray-500 hover:text-gray-700"
-                        }`}
+                        className={`py-2 px-1 border-b-2 font-medium ${activeTab === tab
+                          ? "border-blue-500 text-blue-600"
+                          : "border-transparent text-gray-500 hover:text-gray-700"
+                          }`}
                       >
                         {tab.charAt(0).toUpperCase() + tab.slice(1)}
                       </button>
@@ -161,8 +160,8 @@ const CoursePage = () => {
                           src={
                             courseDetails?.instructor?.img_teacher?.[0]
                               ? getImageUrl(
-                                  courseDetails?.instructor?.img_teacher[0]
-                                )
+                                courseDetails?.instructor?.img_teacher[0]
+                              )
                               : no_image_available
                           }
                           alt="Instructor"
@@ -210,7 +209,7 @@ const CoursePage = () => {
                         Course Syllabus
                       </h2>
                       {courseDetails.course_chapters &&
-                      courseDetails.course_chapters.length > 0 ? (
+                        courseDetails.course_chapters.length > 0 ? (
                         <ul className="list-disc list-inside text-gray-600">
                           {courseDetails.course_chapters.map(
                             (chapter, index) => (
