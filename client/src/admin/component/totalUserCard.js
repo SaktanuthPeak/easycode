@@ -7,7 +7,6 @@ export default function TotalUserCard() {
   const [usersData, setUsersData] = useState([]);
   const [totalUser, setTotalUser] = useState(0);
   const [currentMonthUsers, setCurrentMonthUsers] = useState(0);
-  const [lastMonthUsers, setLastMonthUsers] = useState(0);
 
   const fetchUsers = async () => {
     try {
@@ -24,14 +23,13 @@ export default function TotalUserCard() {
   }, []);
 
   useEffect(() => {
+    if (totalUser.length === 0) return;
+
     const now = new Date();
     const currentMonth = now.getMonth() + 1; // Months are 0-indexed
-    const lastMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const currentYear = now.getFullYear();
-    const lastYear = lastMonth === 12 ? currentYear - 1 : currentYear;
 
     let currentCount = 0;
-    let lastCount = 0;
 
     usersData.forEach((user) => {
       const createdDate = new Date(user.createdAt);
@@ -40,14 +38,11 @@ export default function TotalUserCard() {
 
       if (userMonth === currentMonth && userYear === currentYear) {
         currentCount++;
-      } else if (userMonth === lastMonth && userYear === lastYear) {
-        lastCount++;
       }
     });
 
     setCurrentMonthUsers(currentCount);
-    setLastMonthUsers(lastCount);
-  }, []);
+  }, [totalUser]);
 
   return (
     <Card>
@@ -62,11 +57,8 @@ export default function TotalUserCard() {
           {totalUser}
         </Typography>
         <Typography color="text.secondary" variant="body2">
-          <span style={{ color: "green" }}>
-            {currentMonthUsers - lastMonthUsers >= 0 ? "+" : "-"}
-            {currentMonthUsers - lastMonthUsers}
-          </span>{" "}
-          from last month
+          <span style={{ color: "green" }}>+{currentMonthUsers}</span> from last
+          month
         </Typography>
       </CardContent>
     </Card>
