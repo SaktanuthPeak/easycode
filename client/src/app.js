@@ -30,6 +30,7 @@ import PreviewAllCoursePage from "./homePreviewPage/previewAllCoursePage";
 import TeacherDashboard from "./teacher/dashboard";
 import CourseDashboard from "./teacher/courseDashboard";
 import ProfilePage from "./clientPage/profilePage";
+import InstructorSignup from "./clientPage/instructorSignup";
 
 //Import admin pages
 import Dashboard from "./admin/adminPage/dashboard";
@@ -142,6 +143,11 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
           path="/client-home/dashboard/:courseId"
           element={<CourseDashboard />}
         />
+        <Route
+          path="/client-home/instructor-signup"
+          element={<InstructorSignup />}
+        />
+
       </Routes>
     );
   }
