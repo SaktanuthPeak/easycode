@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import WebFooter from '../component/webFooter';
 import AdvertisementBanner from '../component/advertisementBanner';
 import computerguy from "./images/computerguy.png"
+import no_image_available from "./images/No_image_available.svg.jpg";
+import conf from '../conf/main';
 
 const iconMap = {
   "Web Development": FolderCode,
@@ -71,10 +73,53 @@ const CategoryCard = ({ icon: Icon, title, courses, onClick }) => {
     </motion.div>
   );
 };
+const CourseCard = ({ course }) => {
+  const getImageUrl = (img) => {
+    if (!img || !img.url) return no_image_available;
+    return img.url.startsWith("/") ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}` : img.url;
+  };
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
+    return (
+      <div className="flex justify-center items-center mt-1">
+        <div className="flex">
+          {[...Array(fullStars)].map((_, i) => (
+            <span key={i} className="text-yellow-500 text-lg">⭐</span>
+          ))}
+          {halfStar && <span className="text-yellow-500 text-lg">⭐️</span>}
+        </div>
+        <span className="text-gray-700 text-sm ml-2">({rating.toFixed(1)})</span>
+      </div>
+    );
+  };
+
+  return (
+
+    <motion.div
+      className="bg-white rounded-lg shadow-lg p-4 flex flex-col items-center"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <img
+        src={getImageUrl(course.image) || no_image_available}
+        alt={course.name}
+        className="w-full h-50 object-cover rounded-lg mb-4"
+      />
+      <h3 className="text-xl font-semibold text-gray-800">{course.name}</h3>
+      <p className="text-gray-600">{course.users} Users</p>
+      <p className="text-sm text-gray-500 mt-1">Created By Me</p>
+      {course.rating ? renderStars(course.rating) : <p className="text-sm text-gray-500 mt-1">No rating</p>}
+      <p className="text-sm text-gray-500 mt-1"></p>
+    </motion.div>
+  );
+}
 
 const ClientHomePage = () => {
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
+  const [topCourses, setTopCourses] = useState([]);
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -91,8 +136,29 @@ const ClientHomePage = () => {
         console.error("Error fetching categories:", error);
       }
     };
+    const fetchTopCourses = async () => {
+      try {
+        const response = await ax.get("courses?populate=users&populate=course_img");
+        const sortedCourses = response.data.data
+          .map(course => ({
+            name: course.Course_name,
+            users: course.users.length,
+            image: course.course_img?.[0] || no_image_available,
+            rating: course.rating,
+          }))
+          .sort((a, b) => b.users - a.users)
+          .slice(0, 4);
+        setTopCourses(sortedCourses);
+      } catch (error) {
+        console.error("Error fetching top courses:", error);
+      }
+    };
     fetchCategory();
+    fetchTopCourses();
   }, [navigate]);
+
+
+
 
   return (
     <div className="min-h-screen ">
@@ -125,6 +191,20 @@ const ClientHomePage = () => {
             <CategoryCard key={index} {...category} />
           ))}
         </motion.div>
+        <motion.div
+          className="mb-12 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="text-2xl font-bold text-gray-800 mt-8">Top Courses</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+            {topCourses.map((course, index) => (
+              <CourseCard key={index} course={course} />
+            ))}
+          </div>
+        </motion.div>
+
         <HeroSection />
       </div>
       <WebFooter />
