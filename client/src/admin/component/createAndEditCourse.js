@@ -16,15 +16,14 @@ function CreateCourse() {
     course_overview: "",
     price: 0,
     course_img: [],
+    instructor: { id: null },
   });
 
   const [categoriesData, setCategoriesData] = useState([]);
-  const [teachersData, setTeacherData] = useState([]);
+  const [teachersData, setTeachersData] = useState([]);
   const [previewUpload, setPreviewUpload] = useState(null);
   const navigate = useNavigate();
   const { courseId } = useParams();
-
-  console.log(categoriesData);
 
   useEffect(() => {
     if (courseId) {
@@ -34,6 +33,7 @@ function CreateCourse() {
           const formattedCourse = {
             ...courseData.data.data,
             category: { id: courseData.data.data.category?.id || null },
+            instructor: { id: courseData.data.data.instructor?.id || null },
             // Ensure proper structure
           };
 
@@ -45,7 +45,15 @@ function CreateCourse() {
       fetchCourseData();
     }
   }, [courseId]);
-  console.log("----------", course);
+
+  const fetchTeacher = async () => {
+    try {
+      const teacherData = await ax.get(`/instructors`);
+      setTeachersData(teacherData.data.data);
+    } catch (error) {
+      console.log("This is error", error);
+    }
+  };
 
   const fetchCategories = async () => {
     try {
@@ -58,11 +66,9 @@ function CreateCourse() {
 
   useEffect(() => {
     fetchCategories();
+    fetchTeacher();
   }, []);
 
-  console.log("Fetched Categories: ", categoriesData);
-
-  console.log(course?.category?.id);
   const handleChange = (e) => {
     const { name, value, type } = e.target;
 
@@ -115,6 +121,7 @@ function CreateCourse() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const confirmCreate = window.confirm(
       courseId
         ? "Are you sure you want to Edit this course"
@@ -122,23 +129,27 @@ function CreateCourse() {
     );
 
     if (!confirmCreate) return;
+    const payload = {
+      data: {
+        Course_name: course.Course_name,
+        course_description: course.course_description,
+        price: course.price,
+        course_overview: course.course_overview,
+        course_hour: course.course_hour,
+        course_minute: course.course_minute,
+        category: course.category,
+        course_img: previewUpload
+          ? course.course_img
+          : course?.course_img[0]?.id,
+        instructor: course.instructor,
+      },
+    };
     try {
       if (courseId) {
-        const editCourse = await ax.put(`/courses/${courseId}`, {
-          data: {
-            Course_name: course.Course_name,
-            course_description: course.course_description,
-            price: course.price,
-            course_overview: course.course_overview,
-            course_hour: course.course_hour,
-            course_minute: course.course_minute,
-            category: course.category,
-            course_img: course.course_img,
-          },
-        });
+        await ax.put(`/courses/${courseId}`, payload);
         toast.success("Course edited successfully!");
       } else {
-        const addCourse = await ax.post(`/courses`, {
+        await ax.post(`/courses`, {
           data: course,
         });
         toast.success("Course created successfully!");
@@ -146,6 +157,20 @@ function CreateCourse() {
       navigate("/courses");
     } catch (error) {
       console.log("This is error", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    const confirmCreate = window.confirm(
+      "Are you sure you want to Delete this course"
+    );
+
+    try {
+      await ax.delete(`/courses/${courseId}`);
+      toast.success("Delete course successfully!");
+      navigate("/courses");
+    } catch (error) {
+      console.log("this is error", error);
     }
   };
 
@@ -199,29 +224,34 @@ function CreateCourse() {
           </div>
 
           {/* teacher */}
-          {/* <div className="space-y-2">
+          <div className="space-y-2">
             <label
-              htmlFor="teacher"
+              htmlFor="instructor"
               className="block text-sm font-medium text-gray-700"
             >
               Teacher
             </label>
             <select
-              id="teacher"
-              name="teacher"
-              value={course.category}
-              onChange={handleChange}
+              id="instructor"
+              name="instructor"
+              value={course?.instructor?.id || ""}
+              onChange={(e) =>
+                setCourse((prev) => ({
+                  ...prev,
+                  instructor: { id: Number(e.target.value) }, // Ensure correct structure
+                }))
+              }
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
               required
             >
               <option value="">Select category</option>
-              {categoriesData.map((category) => (
-                <option value={category.Category_name}>
-                  {category.Category_name}
+              {teachersData.map((teacher) => (
+                <option key={teacher.id} value={teacher.id}>
+                  {teacher.name_teacher}
                 </option>
               ))}
             </select>
-          </div> */}
+          </div>
 
           {/* Course Title */}
           <div className="space-y-2">
@@ -397,6 +427,15 @@ function CreateCourse() {
 
           {/* Submit Button */}
           <div className="flex justify-end pt-4">
+            {courseId && (
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="mr-1 w-full sm:w-auto bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+              >
+                Delete Course
+              </button>
+            )}
             <button
               type="submit"
               className="w-full sm:w-auto bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"

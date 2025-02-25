@@ -40,8 +40,13 @@ import Teacher from "./admin/adminPage/teacher";
 import TeacherSupport from "./admin/adminPage/teacherSupport";
 import Order from "./admin/adminPage/order";
 import CreateCourse from "./admin/component/createAndEditCourse";
+import Chapters from "./admin/adminPage/chapters";
+import CreateAndEditChapter from "./admin/component/createAndEditChapter";
 import Chapter from "./admin/adminPage/chapter";
-
+import Coupons from "./admin/adminPage/coupons";
+import CreateAndEditCoupon from "./admin/component/createAndEditCoupon";
+import TeacherDetailPage from "./admin/adminPage/teacherDetail";
+import TeacherStudent from "./admin/adminPage/teacherStudent";
 // Import components
 import NavbarLogin from "./component/navbarLogin";
 import NavbarPreview from "./component/navbarPreview";
@@ -74,20 +79,43 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
       <Routes>
         {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
         <Route path="/" element={<NavbarAdmin />}>
+          CreateAndEditCoupon
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/order" element={<Order />} />
           <Route path="/teacher" element={<Teacher />} />
+          <Route path="/teacher/:id" element={<TeacherDetailPage />} />
           <Route path="/teacher-support" element={<TeacherSupport />} />
           <Route path="/support" element={<Support />} />
+          {/*Course*/}
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/create-course" element={<CreateCourse />} />
           <Route
             path="/courses/edit-course/:courseId"
             element={<CreateCourse />}
           />
-          <Route path="/order" element={<Order />} />
-          <Route path="/courses/:courseId" element={<Chapter />} />
+          <Route path="/courses/:courseId" element={<Chapters />} />
+          <Route path="/courses/:courseId/:chapterId" element={<Chapter />} />
+          <Route
+            path="/courses/:courseId/create-chapter"
+            element={<CreateAndEditChapter />}
+          />
+          <Route
+            path="/teacherStudent/:courseId"
+            element={<TeacherStudent />}
+          />
+          <Route
+            path="/courses/:courseId/:chapterId/edit"
+            element={<CreateAndEditChapter />}
+          />
+          <Route path="/coupons" element={<Coupons />} />
+          <Route
+            path="/coupons/:couponId/edit"
+            element={<CreateAndEditCoupon />}
+          />
+          <Route path="/coupons/create" element={<CreateAndEditCoupon />} />
         </Route>
+        {/*Coupon */}
       </Routes>
     );
   } else {
@@ -204,6 +232,7 @@ const App = () => {
               <Route path="/home-preview" element={<HomePreviewPage />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<Signup />} />
+
               <Route
                 path="/home-preview/:categoryId"
                 element={<CategoryPreviewPage />}
@@ -212,6 +241,7 @@ const App = () => {
                 path="/home-preview/:categoryId/:courseId"
                 element={<CoursePreviewPage />}
               />
+
               <Route
                 path="/home-preview/all-courses"
                 element={<PreviewAllCoursePage />}

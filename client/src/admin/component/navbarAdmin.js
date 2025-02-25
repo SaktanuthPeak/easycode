@@ -6,6 +6,7 @@ import {
   LaptopMinimal,
   Home,
   Package,
+  Tickets,
   CircleHelp,
   BadgeHelp,
   User,
@@ -22,7 +23,7 @@ export default function NavbarAdmin() {
     window.location.href = "/home-preview";
   };
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen ">
       <Sidebar
         isOpen={isOpen}
         onLogout={logout}
@@ -45,7 +46,7 @@ function Sidebar({ isOpen, toggle, onLogout, navigate }) {
     <div
       className={`bg-gray-900 text-white transition-all duration-300 p-4
         ${isOpen ? "w-64" : "w-20"} 
-        fixed h-screen top-0 left-0 overflow-y-auto`}
+        fixed h-screen top-0 left-0 overflow-y-auto `}
     >
       <nav className="flex flex-col space-y-4">
         {/* <NavItem
@@ -84,6 +85,13 @@ function Sidebar({ isOpen, toggle, onLogout, navigate }) {
           navigate={navigate}
         />
         <NavItem
+          icon={Tickets}
+          label="Coupons"
+          isOpen={isOpen}
+          path="/coupons"
+          navigate={navigate}
+        />
+        <NavItem
           icon={BadgeHelp}
           label="Teacher Support"
           isOpen={isOpen}
@@ -104,13 +112,13 @@ function Sidebar({ isOpen, toggle, onLogout, navigate }) {
           onClick={onLogout}
         />
       </nav>
-      <div className="absolute bottom-6 left-1.5">
+      <div className="border-t mt-auto">
         <button
           onClick={toggle}
           aria-label="Toggle Sidebar"
-          className="mb-6 space-y-4 pl-1.5 mt-100"
+          className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 cursor-pointer"
         >
-          {isOpen ? <ChevronLeft size={24} /> : <Menu size={24} />}
+          {isOpen ? <ChevronLeft size={20} /> : <Menu size={20} />}
         </button>
       </div>
     </div>
