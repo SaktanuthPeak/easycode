@@ -73,6 +73,12 @@
       "relation": "manyToOne",
       "target": "api::instructor.instructor",
       "inversedBy": "courses"
+    },
+    "reviews": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::review.review",
+      "mappedBy": "course"
     }
   }
 }

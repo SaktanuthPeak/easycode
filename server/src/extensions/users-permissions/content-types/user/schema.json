@@ -95,6 +95,12 @@
       "relation": "oneToOne",
       "target": "api::instructor.instructor",
       "mappedBy": "instructor"
+    },
+    "user_avatar": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::user-avatar.user-avatar",
+      "mappedBy": "user"
     }
   }
 }
