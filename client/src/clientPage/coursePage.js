@@ -14,14 +14,14 @@ const CoursePage = () => {
     const { categoryId } = useParams();
     const [courseDetails, setCourseDetails] = useState(null)
     const [activeTab, setActiveTab] = useState("description")
-    const baseURL = "http://localhost:1337";
     const { cart, addToCart, removeFromCart } = useCart();
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourseDetails = async () => {
             try {
-                const response = await ax.get(`courses?filters[documentId][$eq]=${courseId}&populate=*`)
+                const response = await ax.get(`courses?filters[documentId][$eq]=${courseId}&populate=course_img&populate=course_chapters&populate=instructor.img_teacher`)
+                console.log(response.data.data)
                 if (response.data.data.length > 0) {
                     setCourseDetails({
                         ...response.data.data[0],
@@ -88,11 +88,15 @@ const CoursePage = () => {
 
                             {/* Created By */}
                             <div className="flex items-center gap-3 mb-8">
-                                <img src="/placeholder.svg?height=40&width=40" alt="Instructor" className="h-10 w-10 rounded-full" />
+                                <img
+                                    src={courseDetails?.instructor?.img_teacher?.[0] ? getImageUrl(courseDetails.instructor.img_teacher[0]) : no_image_available}
+                                    alt="Instructor"
+                                    className="w-12 h-12 rounded-full object-cover"
+                                />
                                 <div>
                                     <p className="text-sm text-gray-500">Created by</p>
                                     <a href="#" className="text-blue-600 hover:underline">
-                                        Ronal Richards
+                                        {courseDetails.instructor.name_teacher}
                                     </a>
                                 </div>
                             </div>
@@ -127,9 +131,14 @@ const CoursePage = () => {
                                     {activeTab === "instructor" && (
                                         <div className="bg-white p-6 rounded-lg shadow-sm">
                                             <div className="flex items-start gap-6">
-                                                <img src="/placeholder.svg?height=120&width=120" alt="Instructor" className="rounded-full" />
+                                                <img
+                                                    src={courseDetails?.instructor?.img_teacher?.[0] ? getImageUrl(courseDetails.instructor.img_teacher[0]) : no_image_available}
+                                                    alt="Instructor"
+                                                    className="w-20 h-20 rounded-full object-cover"
+                                                />
+
                                                 <div>
-                                                    <h2 className="text-2xl font-semibold mb-4">Ronal Richards</h2>
+                                                    <h2 className="text-2xl font-semibold mb-4"> {courseDetails.instructor.name_teacher}</h2>
                                                     <div className="grid grid-cols-3 gap-4 mb-6">
                                                         <div>
                                                             <p className="text-2xl font-semibold">40,445</p>
@@ -159,7 +168,15 @@ const CoursePage = () => {
                                     {activeTab === "syllabus" && (
                                         <div className="bg-white p-6 rounded-lg shadow-sm">
                                             <h2 className="text-2xl font-semibold mb-4">Course Syllabus</h2>
-                                            <p className="text-gray-600">22 Total Hours, 155 Lectures, All levels</p>
+                                            {courseDetails.course_chapters && courseDetails.course_chapters.length > 0 ? (
+                                                <ul className="list-disc list-inside text-gray-600">
+                                                    {courseDetails.course_chapters.map((chapter, index) => (
+                                                        <li key={index}>{chapter.name_of_chapter}</li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <p className="text-gray-500">No syllabus available.</p>
+                                            )}
                                         </div>
                                     )}
                                 </div>

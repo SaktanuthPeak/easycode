@@ -12,11 +12,11 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "course": {
+    "courses": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToMany",
       "target": "api::course.course",
-      "inversedBy": "instructors"
+      "mappedBy": "instructor"
     },
     "name_teacher": {
       "type": "string"
@@ -28,20 +28,14 @@
       "type": "media",
       "multiple": true,
       "required": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images", "files", "videos", "audios"]
     },
     "statusT": {
       "type": "enumeration",
-      "enum": [
-        "confirm",
-        "deny",
-        "pending"
-      ],
+      "enum": ["confirm", "deny", "pending"],
       "default": "pending"
     },
     "users_permissions_user": {

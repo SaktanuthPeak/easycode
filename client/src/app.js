@@ -26,6 +26,10 @@ import PaymentQRPage from "./clientPage/paymantQrPage";
 import MyLearningPage from "./clientPage/myLearningPage";
 import CourseLearningPage from "./clientPage/courseLearningPage";
 import AllCoursePage from "./clientPage/allCoursePage";
+import PreviewAllCoursePage from "./homePreviewPage/previewAllCoursePage";
+import TeacherDashboard from "./teacher/dashboard";
+import CourseDashboard from "./teacher/courseDashboard";
+import ProfilePage from "./clientPage/profilePage";
 
 //Import admin pages
 import Dashboard from "./admin/adminPage/dashboard";
@@ -35,6 +39,8 @@ import Support from "./admin/adminPage/support";
 import Teacher from "./admin/adminPage/teacher";
 import TeacherSupport from "./admin/adminPage/teacherSupport";
 import Order from "./admin/adminPage/order";
+import CreateCourse from "./admin/component/createAndEditCourse";
+import Chapter from "./admin/adminPage/chapter";
 import TeacherDetailPage from "./admin/adminPage/teacherDetail";
 import TeacherStudent from "./admin/adminPage/teacherStudent";
 // Import components
@@ -43,8 +49,8 @@ import NavbarPreview from "./component/navbarPreview";
 import { useMessageModal } from "./component/messageModal";
 import { MessageCircle } from "lucide-react";
 import NavbarAdmin from "./admin/component/navbarAdmin";
-
-
+import { useSetState } from "react-use";
+import TeacherNavBar from "./teacher/component/teacherNav";
 
 const FloatingMessageButton = () => {
   const { openModal } = useMessageModal();
@@ -76,8 +82,17 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
           <Route path="/teacher-support" element={<TeacherSupport />} />
           <Route path="/support" element={<Support />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/courses/create-course" element={<CreateCourse />} />
+          <Route
+            path="/courses/edit-course/:courseId"
+            element={<CreateCourse />}
+          />
           <Route path="/order" element={<Order />} />
-          <Route path="/teacherStudent/:courseId" element={<TeacherStudent />} />
+          <Route
+            path="/teacherStudent/:courseId"
+            element={<TeacherStudent />}
+          />
+          <Route path="/courses/:courseId" element={<Chapter />} />
         </Route>
       </Routes>
     );
@@ -86,6 +101,7 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
       <Routes>
         {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
         <Route path="/client-home" element={<ClientHomePage />} />
+        <Route path="/client-home/profile-page" element={<ProfilePage />} />
         <Route path="/client-home/:categoryId" element={<CategoryPage />} />
         <Route
           path="/client-home/:categoryId/:courseId"
@@ -94,8 +110,16 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
         <Route path="/client-home/cart" element={<CartPage />} />
         <Route path="/client-home/cart/payment" element={<PaymentQRPage />} />
         <Route path="/client-home/my-learning" element={<MyLearningPage />} />
-        <Route path="/client-home/my-learning/:courseId" element={<CourseLearningPage />} />
+        <Route
+          path="/client-home/my-learning/:courseId"
+          element={<CourseLearningPage />}
+        />
         <Route path="/client-home/all-courses" element={<AllCoursePage />} />
+        <Route path="/client-home/dashboard" element={<TeacherDashboard />} />
+        <Route
+          path="/client-home/dashboard/:courseId"
+          element={<CourseDashboard />}
+        />
       </Routes>
     );
   }
@@ -106,6 +130,7 @@ const App = () => {
   const [userRole, setUserRole] = useState(null);
   const [homePath, setHomePath] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userNavBar, setUserNavBar] = useState(null);
 
   useEffect(() => {
     console.log("isLoggedIn:", state.isLoggedIn);
@@ -124,9 +149,13 @@ const App = () => {
         try {
           const result = await ax.get("users/me?populate=role");
           const role = result.data.role.type;
+          console.log("role=========", role);
           setUserRole(role);
 
           setHomePath(role === "admin" ? "/dashboard" : "/client-home");
+          setUserNavBar(
+            role === "teacher" ? <TeacherNavBar /> : <NavbarLogin />
+          );
         } catch (error) {
           console.error("Error fetching role:", error);
           setUserRole(null);
@@ -144,7 +173,6 @@ const App = () => {
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
 
-
     toast.info("Logout Success!", {
       position: "top-right",
       autoClose: 2000,
@@ -159,7 +187,6 @@ const App = () => {
   return (
     <Router>
       <CartProvider>
-
         <ToastContainer />
         {state.isLoggedIn ? (
           <>
@@ -168,14 +195,12 @@ const App = () => {
             ) : (
               <>
                 <MessageModalProvider>
-                  <NavbarLogin />
+                  {userNavBar}
                   <RouteAfterLogin homePath={homePath} userRole={userRole} />
                   <FloatingMessageButton />
                 </MessageModalProvider>
-
               </>
             )}
-
           </>
         ) : (
           <>
@@ -185,7 +210,7 @@ const App = () => {
               <Route path="/home-preview" element={<HomePreviewPage />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<Signup />} />
-              
+
               <Route
                 path="/home-preview/:categoryId"
                 element={<CategoryPreviewPage />}
@@ -193,16 +218,17 @@ const App = () => {
               <Route
                 path="/home-preview/:categoryId/:courseId"
                 element={<CoursePreviewPage />}
-                
               />
-              
+
+              <Route
+                path="/home-preview/all-courses"
+                element={<PreviewAllCoursePage />}
+              />
             </Routes>
           </>
         )}
-
-
       </CartProvider>
-    </Router >
+    </Router>
   );
 };
 

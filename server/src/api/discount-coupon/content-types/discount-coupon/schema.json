@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "discount_coupons",
+  "info": {
+    "singularName": "discount-coupon",
+    "pluralName": "discount-coupons",
+    "displayName": "discount_coupon",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "coupon": {
+      "type": "string"
+    },
+    "discount_percent": {
+      "required": true,
+      "type": "float"
+    },
+    "expired_date": {
+      "type": "date",
+      "required": true
+    }
+  }
+}

@@ -48,13 +48,13 @@ function Sidebar({ isOpen, toggle, onLogout, navigate }) {
         fixed h-screen top-0 left-0 overflow-y-auto`}
     >
       <nav className="flex flex-col space-y-4">
-        <NavItem
+        {/* <NavItem
           icon={User}
           label="Profile"
           isOpen={isOpen}
           path="profile"
           navigate={navigate}
-        />
+        /> */}
         <NavItem
           icon={LaptopMinimal}
           label="Dashboard"
@@ -124,7 +124,7 @@ function NavItem({ icon: Icon, label, isOpen, path, onClick, navigate }) {
       onClick={() => (onClick ? onClick() : navigate(path))}
     >
       <Icon size={20} />
-      {isOpen && <span className="text-lg">{label}</span>}
+      {isOpen && <span className="text-base">{label}</span>}
     </button>
   );
 }
