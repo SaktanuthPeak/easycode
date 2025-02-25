@@ -158,7 +158,7 @@ const App = () => {
   const [userRole, setUserRole] = useState(null);
   const [homePath, setHomePath] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [userNavBar, setUserNavBar] = useState(null);
+  const [userNavBar, setUserNavBar] = useState(<NavbarLogin />);
 
   useEffect(() => {
     console.log("isLoggedIn:", state.isLoggedIn);
@@ -181,9 +181,7 @@ const App = () => {
           setUserRole(role);
 
           setHomePath(role === "admin" ? "/dashboard" : "/client-home");
-          setUserNavBar(
-            role === "teacher" ? <TeacherNavBar /> : <NavbarLogin />
-          );
+
         } catch (error) {
           console.error("Error fetching role:", error);
           setUserRole(null);
@@ -191,7 +189,19 @@ const App = () => {
           setLoading(false);
         }
       };
+      const fetchInstructor = async () => {
+        const result = await ax.get(`/users/me?populate=instructor`)
+        console.log("fetch================", result.data.instructor)
+        const teacherStatus = result.data.instructor?.statusT
+        if (teacherStatus === "confirm") {
+          setUserNavBar(<TeacherNavBar handleLogout={handleLogout} />)
+        } else {
+          setUserNavBar(<NavbarLogin handleLogout={handleLogout} />)
+        }
 
+      }
+
+      fetchInstructor();
       fetchRole();
     } else {
       setLoading(false);
