@@ -111,12 +111,13 @@ export default function TeacherSupport() {
                 <TableCell>{teacher.email}</TableCell>
                 <TableCell>
                   <FormControl fullWidth>
-                    <InputLabel>Status</InputLabel>
+                    <InputLabel shrink>Status</InputLabel>
                     <Select
                       value={teacher.status}
                       onChange={(e) =>
                         handleStatusChange(teacher.id, e.target.value)
                       }
+                      label="Status"
                     >
                       <MenuItem value="pending">Pending</MenuItem>
                       <MenuItem value="confirm">Confirm</MenuItem>
