@@ -541,7 +541,7 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
     singularName: 'instructor';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     course: Schema.Attribute.Relation<'manyToOne', 'api::course.course'>;
@@ -561,9 +561,15 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name_teacher: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    statusT: Schema.Attribute.Enumeration<['confirm ', 'deny', 'pending']> &
+      Schema.Attribute.DefaultTo<'pending'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1069,6 +1075,10 @@ export interface PluginUsersPermissionsUser
         minLength: 6;
       }>;
     firstname: Schema.Attribute.String;
+    instructor: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::instructor.instructor'
+    >;
     lastname: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<

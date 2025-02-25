@@ -80,6 +80,12 @@
       "relation": "manyToMany",
       "target": "api::course.course",
       "inversedBy": "users"
+    },
+    "instructor": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::instructor.instructor",
+      "mappedBy": "users_permissions_user"
     }
   }
 }

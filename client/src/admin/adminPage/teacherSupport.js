@@ -95,9 +95,9 @@ export default function TeacherSupport() {
                       value={teacher.status}
                       onChange={(e) => handleStatusChange(teacher.id, e.target.value)}
                     >
-                      <MenuItem value="pending">pending</MenuItem>
-                      <MenuItem value="confirm">confirm</MenuItem>
-                      <MenuItem value="deny">deny</MenuItem>
+                      <MenuItem value="pending">Pending</MenuItem>
+                      <MenuItem value="confirm">Confirm</MenuItem>
+                      <MenuItem value="deny">Deny</MenuItem>
                     </Select>
                   </FormControl>
                 </TableCell>
