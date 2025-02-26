@@ -41,7 +41,7 @@ function Teacher() {
         const response = await ax.get(
           "/instructors?filters[statusT][$eq]=confirm&populate=*"
         );
-        console.log(response.data.data)
+        console.log(response.data.data);
         const data = response.data.data;
         setTeachers(data);
         setFilteredTeachers(data);
@@ -77,7 +77,9 @@ function Teacher() {
     const filtered = teachers.filter(
       (teacher) =>
         teacher.users_permissions_user.email.toLowerCase().includes(query) ||
-        teacher.users_permissions_user.firstname.toLowerCase().includes(query) ||
+        teacher.users_permissions_user.firstname
+          .toLowerCase()
+          .includes(query) ||
         teacher.users_permissions_user.lastname.toLowerCase().includes(query)
     );
 
@@ -89,56 +91,28 @@ function Teacher() {
   const handleEditClick = (teacher) => {
     setSelectedTeacher(teacher);
     setEditData({
-      firstname: teacher.users_permissions_user.firstname,
-      lastname: teacher.users_permissions_user.lastname,
-      username: teacher.users_permissions_user.username,
-      email: teacher.users_permissions_user.email,
       courses: teacher.courses.map((x) => x.Course_name) || [],
     });
     setOpenEdit(true);
   };
-  const handleChange = (event) => {
-    setEditData({ ...editData, [event.target.name]: event.target.value });
-  };
+
   const handleSaveEdit = async () => {
     if (selectedTeacher) {
       try {
-        const response = await ax.put(`/users/${selectedTeacher.id}`, {
-          data: {
-            ...editData,
-            courses: editData.courses.map(
-              (x) => courses.find((c) => c.Course_name === x).id
-            ),
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Failed to update student");
-        }
-        const updatedStudent = await response.json();
-        setTeachers(
-          teachers.map((s) =>
-            s.id === selectedTeacher.id
-              ? {
-                  ...updatedStudent,
-                  courses: editData.courses.map((x) =>
-                    courses.find((c) => c.Course_name === x)
-                  ),
-                }
-              : s
-          )
+        const response = await ax.put(
+          `/instructors/${selectedTeacher.documentId}`,
+          {
+            data: {
+              ...editData,
+              courses: editData.courses.map(
+                (x) => courses.find((c) => c.Course_name === x).id
+              ),
+            },
+          }
         );
-        setFilteredTeachers(
-          filteredTeachers.map((s) =>
-            s.id === selectedTeacher.id
-              ? {
-                  ...updatedStudent,
-                  courses: editData.courses.map((x) =>
-                    courses.find((c) => c.Course_name === x)
-                  ),
-                }
-              : s
-          )
-        );
+
+        loadTeachers();
+        loadCourses();
       } catch (error) {
         console.error("Error updating student:", error);
       }
@@ -159,6 +133,7 @@ function Teacher() {
 
   const [openDelete, setOpenDelete] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
+
   const handleDeleteClick = (student) => {
     setSelectedTeacher(student);
     setOpenDelete(true);
@@ -166,20 +141,13 @@ function Teacher() {
   const handleConfirmDelete = async () => {
     if (selectedTeacher) {
       try {
-        const token = localStorage.getItem("jwt");
-        const response = await fetch(
-          `http://localhost:1337/api/users/${selectedTeacher.id}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        console.log("selectedTeacher", selectedTeacher.id);
+        const response = await ax.delete(
+          `/instructors/${selectedTeacher.documentId}`
         );
-        if (!response.ok) {
-          throw new Error("Failed to delete Tea");
-        }
-        setTeachers(teachers.filter((s) => s.id !== selectedTeacher.id));
+
+        loadTeachers();
+        loadCourses();
       } catch (error) {
         console.error("Error deleting student:", error);
       }
@@ -213,11 +181,13 @@ function Teacher() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredTeachers.map((teacher,index) => (
+            {filteredTeachers.map((teacher, index) => (
               <TableRow key={teacher.id} hover style={{ cursor: "pointer" }}>
-                <TableCell>{index+1}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell>{teacher.users_permissions_user.email}</TableCell>
-                <TableCell>{teacher.users_permissions_user.firstname}</TableCell>
+                <TableCell>
+                  {teacher.users_permissions_user.firstname}
+                </TableCell>
                 <TableCell>{teacher.users_permissions_user.lastname}</TableCell>
                 <TableCell>
                   {(teacher.courses || []).map((x) => x.Course_name).join(", ")}
@@ -252,8 +222,9 @@ function Teacher() {
         <DialogTitle>ยืนยันการลบ</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            คุณต้องการลบคุณครู "{selectedTeacher?.firstname}{" "}
-            {selectedTeacher?.lastname}" ใช่หรือไม่?
+            คุณต้องการลบคุณครู "
+            {selectedTeacher?.users_permissions_user?.firstname}{" "}
+            {selectedTeacher?.users_permissions_user?.lastname}" ใช่หรือไม่?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -270,36 +241,6 @@ function Teacher() {
       <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
         <DialogTitle>แก้ไขข้อมูลนักเรียน</DialogTitle>
         <DialogContent>
-          <TextField
-            margin="dense"
-            label="อีเมล"
-            type="email"
-            fullWidth
-            name="email"
-            value={editData.email}
-            onChange={handleChange}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            label="ชื่อ"
-            type="text"
-            fullWidth
-            name="username"
-            value={editData.username}
-            onChange={handleChange}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            label="นามสกุล"
-            type="text"
-            fullWidth
-            name="lastname"
-            value={editData.lastname}
-            onChange={handleChange}
-          />
-
           <FormGroup>
             {courses.map((subject) => (
               <FormControlLabel
