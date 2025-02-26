@@ -39,9 +39,10 @@ function Teacher() {
     const fetchTeachers = async () => {
       try {
         const response = await ax.get(
-          "/users?populate=*&filters[role][name][$eq]=Teacher"
+          "/instructors?filters[statusT][$eq]=confirm&populate=*"
         );
-        const data = response.data;
+        console.log(response.data.data)
+        const data = response.data.data;
         setTeachers(data);
         setFilteredTeachers(data);
       } catch (error) {
@@ -75,9 +76,9 @@ function Teacher() {
 
     const filtered = teachers.filter(
       (teacher) =>
-        teacher.email.toLowerCase().includes(query) ||
-        teacher.firstname.toLowerCase().includes(query) ||
-        teacher.lastname.toLowerCase().includes(query)
+        teacher.users_permissions_user.email.toLowerCase().includes(query) ||
+        teacher.users_permissions_user.firstname.toLowerCase().includes(query) ||
+        teacher.users_permissions_user.lastname.toLowerCase().includes(query)
     );
 
     setFilteredTeachers(filtered);
@@ -88,10 +89,10 @@ function Teacher() {
   const handleEditClick = (teacher) => {
     setSelectedTeacher(teacher);
     setEditData({
-      firstname: teacher.firstname,
-      lastname: teacher.lastname,
-      username: teacher.username,
-      email: teacher.email,
+      firstname: teacher.users_permissions_user.firstname,
+      lastname: teacher.users_permissions_user.lastname,
+      username: teacher.users_permissions_user.username,
+      email: teacher.users_permissions_user.email,
       courses: teacher.courses.map((x) => x.Course_name) || [],
     });
     setOpenEdit(true);
@@ -203,26 +204,28 @@ function Teacher() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>อีเมล</TableCell>
-              <TableCell>ชื่อ</TableCell>
-              <TableCell>นามสกุล</TableCell>
+              <TableCell>id</TableCell>
+              <TableCell>email</TableCell>
+              <TableCell>firstname</TableCell>
+              <TableCell>lastname</TableCell>
               <TableCell>Subject</TableCell>
-              <TableCell>จัดการ</TableCell>
+              <TableCell>action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredTeachers.map((teacher) => (
+            {filteredTeachers.map((teacher,index) => (
               <TableRow key={teacher.id} hover style={{ cursor: "pointer" }}>
-                <TableCell>{teacher.email}</TableCell>
-                <TableCell>{teacher.firstname}</TableCell>
-                <TableCell>{teacher.lastname}</TableCell>
+                <TableCell>{index+1}</TableCell>
+                <TableCell>{teacher.users_permissions_user.email}</TableCell>
+                <TableCell>{teacher.users_permissions_user.firstname}</TableCell>
+                <TableCell>{teacher.users_permissions_user.lastname}</TableCell>
                 <TableCell>
                   {(teacher.courses || []).map((x) => x.Course_name).join(", ")}
                 </TableCell>
                 <TableCell>
                   <IconButton
                     color="primary"
-                    onClick={() => handleRowClick(teacher.id)}
+                    onClick={() => handleRowClick(teacher.documentId)}
                   >
                     <Visibility />
                   </IconButton>

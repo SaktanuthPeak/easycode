@@ -55,7 +55,7 @@ const SlipModal = ({ onClose, selectedOrder }) => {
                 <div className="flex items-center text-sm">
                   <DollarSign className="mr-2 h-4 w-4 text-gray-500" />
                   <span className="font-medium">Amount:</span>
-                  {/* <span className="ml-2">${amount.toFixed(2)}</span> */}
+                  <span className="ml-2">฿{selectedOrder?.amount}</span>
                 </div>
               </div>
               <div className="mt-6 pt-6 border-t border-gray-200">
