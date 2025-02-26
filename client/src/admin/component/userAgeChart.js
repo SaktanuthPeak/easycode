@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader } from "@mui/material";
+import { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -8,13 +9,15 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import ax from "../../conf/ax";
 
 const data = [
-  { age: "18-24", users: 400 },
-  { age: "25-34", users: 300 },
-  { age: "35-44", users: 200 },
-  { age: "45-54", users: 100 },
-  { age: "55+", users: 50 },
+  { age: "0-12", users: 400 },
+  { age: "13-19", users: 400 },
+  { age: "20-35", users: 300 },
+  { age: "36-50", users: 200 },
+  { age: "51-64", users: 100 },
+  { age: "65", users: 50 },
 ];
 
 export default function UserAgeChart() {
