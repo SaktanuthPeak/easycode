@@ -1,14 +1,15 @@
 import { Card, CardContent, CardHeader } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  CartesianGrid,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
+  Line,
   ResponsiveContainer,
 } from "recharts";
+
 import ax from "../../conf/ax";
 
 export default function IncomeChart() {
@@ -59,13 +60,13 @@ export default function IncomeChart() {
       <CardHeader title="Monthly Income (Last 12 Months)" />
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={data}>
+          <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="month" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="income" fill="#2196f3" />
-          </BarChart>
+            <Line type="monotone" dataKey="income" stroke="#2196f3" />
+          </LineChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>
