@@ -24,7 +24,14 @@ function Order() {
     try {
       const orders = await ax.get(`/admin-confirmations?populate=*`);
       const orderData = orders.data.data;
-      setOrdersData(orderData);
+      console.log(orderData);
+      const statusOrder = { pending: 1, "not confirm": 2, confirm: 3 };
+
+      const sortedData = orderData.sort(
+        (a, b) => statusOrder[a.order_status] - statusOrder[b.order_status]
+      );
+
+      setOrdersData(sortedData);
     } catch (error) {
       console.error("Error fetching orders:", error);
       toast.error("Failed to fetch orders. Please try again.");
