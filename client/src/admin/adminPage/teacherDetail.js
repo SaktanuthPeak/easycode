@@ -11,12 +11,10 @@ export default function TeacherDetailPage() {
       
       try {
         const response = await ax.get(
-          `/users/${id}?populate[courses][populate][users][populate]=role`
-          
+          `/instructors/${id}?populate=courses.users`
         );
        
-        
-      setTeacher(response.data);
+      setTeacher(response.data.data);
       } catch (error) {
         console.error("Error fetching teacher details:", error);
       }
@@ -31,13 +29,15 @@ export default function TeacherDetailPage() {
       <h1 className="text-2xl font-bold mb-6">{teacher.firstname} {teacher.lastname}</h1>
       <div className="space-y-4">
         {teacher.courses.map((course) => {
-          const students = course.users.filter((user) => user.role && user.role.name !== "Teacher");
+          const usersInCourse = course.users
           return (
             <div key={course.id} className="p-4 border rounded-lg shadow-md">
-              <h2 className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer" onClick={() => navigate(`/teacherStudent/${course.id}`)}>
+              <h2 className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer" onClick={() => navigate(`/teacherStudent/${course.documentId}`,{
+                state : {value:course.users}
+              } )}>
                 {course.Course_name}
               </h2>
-              <p className="text-gray-600">Number of Students: {students.length}</p>
+              <p className="text-gray-600">Number of Students: {course.users.length}</p>
             </div>
           );
         })}
