@@ -31,7 +31,7 @@ export default function CreateChapterPage() {
   }, [selectedChapter]);
 
   const fullVideoUrl = chapterVideo
-    ? `${conf.apiUrlPrefix.replace("/api", "")}${selectedChapter.video[0].url}`
+    ? `${conf.apiUrlPrefix.replace("/api", "")}${selectedChapter?.video[0]?.url}`
     : null;
 
   const handleVideoChange = async (e) => {
