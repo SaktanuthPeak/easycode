@@ -14,7 +14,6 @@ import ax from "../../conf/ax";
 
 export default function IncomeChart() {
   const [incomeData, setIncomeData] = useState([]);
-  const [incomeByMonth, setIncomeByMonth] = useState([]);
   const fetchTotalIncome = async () => {
     try {
       const response = await ax.get(

@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader } from "@mui/material";
+import { useState, useEffect } from "react";
 import {
   PieChart,
   Pie,
@@ -7,16 +8,57 @@ import {
   Legend,
   Tooltip,
 } from "recharts";
+import ax from "../../conf/ax";
 
-const data = [
-  { name: "High School", value: 400 },
-  { name: "College Student", value: 300 },
-  { name: "Graduated", value: 300 },
-];
-
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28"];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FFA500"];
 
 export default function UserGroupChart() {
+  const [usersData, setUsersData] = useState([]);
+  const [userGroup, setUserGroup] = useState([]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await ax.get(`/users`);
+      setUsersData(response.data);
+    } catch (error) {
+      console.log("This is error", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  console.log(usersData);
+
+  const splitUserGroup = (usersData) => {
+    const splitData = [0, 0, 0, 0]; // Fixed size to match the indices used
+    const groupIndices = {
+      "high-school student": 0,
+      "university/college student": 1,
+      graduated: 2,
+      other: 3,
+    };
+
+    usersData.forEach((user) => {
+      const index = groupIndices[user.user_group];
+      if (index !== undefined) {
+        splitData[index] += 1;
+      }
+    });
+
+    return splitData;
+  };
+
+  console.log(splitUserGroup(usersData));
+
+  const data = [
+    { name: "High-school student", value: splitUserGroup(usersData)[0] },
+    { name: "College Student", value: splitUserGroup(usersData)[1] },
+    { name: "Graduated", value: splitUserGroup(usersData)[2] },
+    { name: "Other", value: splitUserGroup(usersData)[3] },
+  ];
+
   return (
     <Card>
       <CardHeader title="User Groups" />
