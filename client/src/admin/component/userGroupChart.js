@@ -14,7 +14,6 @@ const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FFA500"];
 
 export default function UserGroupChart() {
   const [usersData, setUsersData] = useState([]);
-  const [userGroup, setUserGroup] = useState([]);
 
   const fetchUsers = async () => {
     try {
@@ -28,8 +27,6 @@ export default function UserGroupChart() {
   useEffect(() => {
     fetchUsers();
   }, []);
-
-  console.log(usersData);
 
   const splitUserGroup = (usersData) => {
     const splitData = [0, 0, 0, 0]; // Fixed size to match the indices used
@@ -49,8 +46,6 @@ export default function UserGroupChart() {
 
     return splitData;
   };
-
-  console.log(splitUserGroup(usersData));
 
   const data = [
     { name: "High-school student", value: splitUserGroup(usersData)[0] },
