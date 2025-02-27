@@ -10,6 +10,7 @@ import no_image_available from "./images/No_image_available.svg.jpg";
 import conf from '../conf/main';
 import instructor from "./images/teacher.png"
 import { ArrowRight } from 'lucide-react';
+import { useLoading } from '../context/loadingContext';
 
 const iconMap = {
     "Web Development": FolderCode,
@@ -184,10 +185,12 @@ const ClientHomePage = () => {
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
     const [topCourses, setTopCourses] = useState([]);
+    const { setIsLoading } = useLoading();
 
     useEffect(() => {
         const fetchCategory = async () => {
             try {
+                setIsLoading(true);
                 const response = await ax.get("categories?populate=*");
                 const fetchedCategories = response.data.data.map(item => ({
                     title: item.Category_name,
@@ -198,6 +201,8 @@ const ClientHomePage = () => {
                 setCategories(fetchedCategories);
             } catch (error) {
                 console.error("Error fetching categories:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -225,7 +230,7 @@ const ClientHomePage = () => {
 
         fetchCategory();
         fetchTopCourses();
-    }, [navigate]);
+    }, [navigate, setIsLoading]);
 
     return (
         <div className="min-h-screen">

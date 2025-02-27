@@ -11,6 +11,8 @@ import { AuthContext } from "./context/Auth.context";
 import { CartProvider } from "./context/Cart.context";
 import ax from "./conf/ax";
 import { MessageModalProvider } from "./component/messageModal";
+import { LoadingProvider, useLoading } from "./context/loadingContext";
+import Loading from "./component/loading";
 
 // Import pages
 import LoginForm from "./authenticationPage/login";
@@ -71,53 +73,57 @@ const FloatingMessageButton = () => {
 };
 
 const RouteAfterLogin = ({ homePath, userRole }) => {
+  const { isLoading } = useLoading();
   if (!homePath) {
     return <div>Loading...</div>;
   }
   console.log(userRole);
   if (userRole === "admin") {
     return (
-      <Routes>
-        {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
-        <Route path="/" element={<NavbarAdmin />}>
-          CreateAndEditCoupon
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/order" element={<Order />} />
-          <Route path="/teacher" element={<Teacher />} />
-          <Route path="/teacher/:id" element={<TeacherDetailPage />} />
-          <Route path="/teacher-support" element={<TeacherSupport />} />
-          <Route path="/support" element={<Support />} />
-          {/*Course*/}
-          <Route path="/courses" element={<Courses />} />
-          <Route path="/courses/create-course" element={<CreateCourse />} />
-          <Route
-            path="/courses/edit-course/:courseId"
-            element={<CreateCourse />}
-          />
-          <Route path="/courses/:courseId" element={<Chapters />} />
-          <Route path="/courses/:courseId/:chapterId" element={<Chapter />} />
-          <Route
-            path="/courses/:courseId/create-chapter"
-            element={<CreateAndEditChapter />}
-          />
-          <Route
-            path="/teacherStudent/:courseId"
-            element={<TeacherStudent />}
-          />
-          <Route
-            path="/courses/:courseId/:chapterId/edit"
-            element={<CreateAndEditChapter />}
-          />
-          <Route path="/coupons" element={<Coupons />} />
-          <Route
-            path="/coupons/:couponId/edit"
-            element={<CreateAndEditCoupon />}
-          />
-          <Route path="/coupons/create" element={<CreateAndEditCoupon />} />
-        </Route>
-        {/*Coupon */}
-      </Routes>
+      <>
+        {isLoading && <Loading />}
+        <Routes>
+          {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
+          <Route path="/" element={<NavbarAdmin />}>
+            CreateAndEditCoupon
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/order" element={<Order />} />
+            <Route path="/teacher" element={<Teacher />} />
+            <Route path="/teacher/:id" element={<TeacherDetailPage />} />
+            <Route path="/teacher-support" element={<TeacherSupport />} />
+            <Route path="/support" element={<Support />} />
+            {/*Course*/}
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/courses/create-course" element={<CreateCourse />} />
+            <Route
+              path="/courses/edit-course/:courseId"
+              element={<CreateCourse />}
+            />
+            <Route path="/courses/:courseId" element={<Chapters />} />
+            <Route path="/courses/:courseId/:chapterId" element={<Chapter />} />
+            <Route
+              path="/courses/:courseId/create-chapter"
+              element={<CreateAndEditChapter />}
+            />
+            <Route
+              path="/teacherStudent/:courseId"
+              element={<TeacherStudent />}
+            />
+            <Route
+              path="/courses/:courseId/:chapterId/edit"
+              element={<CreateAndEditChapter />}
+            />
+            <Route path="/coupons" element={<Coupons />} />
+            <Route
+              path="/coupons/:couponId/edit"
+              element={<CreateAndEditCoupon />}
+            />
+            <Route path="/coupons/create" element={<CreateAndEditCoupon />} />
+          </Route>
+          {/*Coupon */}
+        </Routes>
+      </>
     );
   } else {
     return (
@@ -223,50 +229,53 @@ const App = () => {
 
   if (loading) return <div>Loading...</div>;
   return (
-    <Router>
-      <CartProvider>
-        <ToastContainer />
-        {state.isLoggedIn ? (
-          <>
-            {userRole === "admin" ? (
-              <RouteAfterLogin homePath={homePath} userRole={userRole} />
-            ) : (
-              <>
-                <MessageModalProvider>
-                  {userNavBar}
-                  <RouteAfterLogin homePath={homePath} userRole={userRole} />
-                  <FloatingMessageButton />
-                </MessageModalProvider>
-              </>
-            )}
-          </>
-        ) : (
-          <>
-            <NavbarPreview />
-            <Routes>
-              <Route path="*" element={<Navigate to="/home-preview" />} />
-              <Route path="/home-preview" element={<HomePreviewPage />} />
-              <Route path="/login" element={<LoginForm />} />
-              <Route path="/signup" element={<Signup />} />
+    <LoadingProvider>
 
-              <Route
-                path="/home-preview/:categoryId"
-                element={<CategoryPreviewPage />}
-              />
-              <Route
-                path="/home-preview/:categoryId/:courseId"
-                element={<CoursePreviewPage />}
-              />
+      <Router>
+        <CartProvider>
+          <ToastContainer />
+          {state.isLoggedIn ? (
+            <>
+              {userRole === "admin" ? (
+                <RouteAfterLogin homePath={homePath} userRole={userRole} />
+              ) : (
+                <>
+                  <MessageModalProvider>
+                    {userNavBar}
+                    <RouteAfterLogin homePath={homePath} userRole={userRole} />
+                    <FloatingMessageButton />
+                  </MessageModalProvider>
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <NavbarPreview />
+              <Routes>
+                <Route path="*" element={<Navigate to="/home-preview" />} />
+                <Route path="/home-preview" element={<HomePreviewPage />} />
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/signup" element={<Signup />} />
 
-              <Route
-                path="/home-preview/all-courses"
-                element={<PreviewAllCoursePage />}
-              />
-            </Routes>
-          </>
-        )}
-      </CartProvider>
-    </Router>
+                <Route
+                  path="/home-preview/:categoryId"
+                  element={<CategoryPreviewPage />}
+                />
+                <Route
+                  path="/home-preview/:categoryId/:courseId"
+                  element={<CoursePreviewPage />}
+                />
+
+                <Route
+                  path="/home-preview/all-courses"
+                  element={<PreviewAllCoursePage />}
+                />
+              </Routes>
+            </>
+          )}
+        </CartProvider>
+      </Router>
+    </LoadingProvider>
   );
 };
 
