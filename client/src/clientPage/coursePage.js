@@ -7,6 +7,9 @@ import ax from "../conf/ax";
 import conf from "../conf/main";
 import { Star, Globe, ShoppingCart, Trash2 } from "lucide-react";
 import { useCart } from "../context/Cart.context";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import no_image_available from "./images/No_image_available.svg.jpg";
 
 const CoursePage = () => {
@@ -89,19 +92,23 @@ const CoursePage = () => {
       const currentUserId = userResponse.data.documentId;
 
       if (isLiked) {
-        // Unlike: Remove the user from liked_users
+
         await ax.put(`/courses/${courseId}`, {
-          data: { liked_users: { disconnect: [currentUserId] } }, // Send the user ID to remove
+          data: { liked_users: { disconnect: [currentUserId] } },
         });
       } else {
-        // Like: Add the user to liked_users
+
         await ax.put(`/courses/${courseId}`, {
-          data: { liked_users: { connect: [currentUserId] } }, // Add the user ID
+          data: { liked_users: { connect: [currentUserId] } },
         });
       }
 
-      // Toggle the like state
       setIsLiked(!isLiked);
+      if (!isLiked) {
+        toast.success("Added to liked list!");
+      } else {
+        toast.info("Removed from liked list.");
+      }
     } catch (error) {
       console.error("Error updating like status:", error.response || error);
       alert("Failed to update like status. Please try again.");
@@ -155,10 +162,10 @@ const CoursePage = () => {
                   <span className="text-gray-600">English</span>
                   <button
                     onClick={handleLikeButtonClick}
-                    className={`py-2 px-4 rounded-md ${isLiked ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"}`}
-
-                  >{isLiked ? "Liked" : "Like"}
-
+                    className={`py-2 px-4 rounded-md flex items-center gap-2 ${isLiked ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"}`}
+                  >
+                    {isLiked ? <AiFillHeart className="text-red-500" /> : <AiOutlineHeart />}
+                    {isLiked ? "Liked" : "Like"}
                   </button>
                 </div>
               </div>
