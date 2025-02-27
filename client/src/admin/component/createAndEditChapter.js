@@ -59,8 +59,6 @@ export default function CreateChapterPage() {
 
         // Update the state with the uploaded image
         setChapterVideo(uploadedFileId);
-
-        console.log("Image uploaded successfully:", uploadedFileId);
       } catch (error) {
         console.error("Error uploading image:", error);
         setError("Failed to upload video. Please try again.");

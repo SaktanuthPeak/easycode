@@ -35,9 +35,8 @@ function Order() {
       toast.error("Failed to fetch orders. Please try again.");
     }
   };
-  console.log(ordersData);
+
   const handleUpdateStatus = async (item) => {
-    console.log(item);
     if (!selectedStatus[item.documentId]) {
       toast.warn("Please select a status before submitting.");
       return;
@@ -55,7 +54,6 @@ function Order() {
         },
       });
 
-      console.log(selectedStatus[item.documentId] === "confirm");
       if (selectedStatus[item.documentId] === "confirm") {
         const listBuyCourse = item.course_documentid
           .replace(/\[|\]/g, "")
@@ -77,8 +75,6 @@ function Order() {
                 users: totalUser,
               },
             });
-
-            console.log("add relation complete");
           } catch (error) {
             console.log("this is error", error);
           }
@@ -123,7 +119,7 @@ function Order() {
 
       <div className="bg-white shadow-xl rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="min-w-auto w-full divide-y">
             <thead className="bg-gray-50">
               <tr>
                 {["Date", "Name", "Email", "Course", "Status", "Action"].map(

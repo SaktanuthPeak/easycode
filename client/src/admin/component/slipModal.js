@@ -5,8 +5,6 @@ import conf from "../../conf/main";
 import no_image_available from "../../clientPage/images/No_image_available.svg.jpg";
 
 const SlipModal = ({ onClose, selectedOrder }) => {
-  console.log(selectedOrder);
-  console.log(selectedOrder.slip_upload[0].url);
   const getImageUrl = (img) => {
     if (!img || !img.url) return no_image_available;
     return img.url.startsWith("/")

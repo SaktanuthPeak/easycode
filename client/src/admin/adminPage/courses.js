@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import ax from "../../conf/ax";
 import conf from "../../conf/main";
 import no_image_available from "../../clientPage/images/No_image_available.svg.jpg";
-import { Plus, Edit, Search } from "lucide-react";
+import { Plus, Edit, Search, Star, BookOpen } from "lucide-react";
 
 const Courses = () => {
   const [coursesData, setCoursesData] = useState([]);
@@ -115,17 +115,19 @@ const Courses = () => {
                     onClick={() =>
                       navigate(`/courses/${item.documentId}/reviews`)
                     }
-                    className="text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 w-full text-center mr-1"
+                    className="flex items-center justify-center text-xs bg-amber-500 hover:bg-amber-500 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 w-full text-center mr-1"
                   >
-                    View Review
+                    <Star className="w-4 h-4 mr-2" />
+                    <p>View Reviews</p>
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => navigate(`/courses/${item.documentId}`)}
-                    className="text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 w-full text-center"
+                    className="flex items-center justify-center text-xs bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 w-full text-center"
                   >
-                    View Chapter
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    <p>View Chapter</p>
                   </motion.button>
                 </div>
               </div>

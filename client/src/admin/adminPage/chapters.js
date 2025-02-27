@@ -55,7 +55,7 @@ export default function Chapters() {
           <div className="relative">
             <input
               type="text"
-              placeholder="Search courses..."
+              placeholder="Search chapters..."
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -91,7 +91,7 @@ export default function Chapters() {
               No chapters found for this course.
             </p>
           ) : (
-            <ul className="space-y-4">
+            <ul className="space-y-4 px-8">
               {filteredChapter.map((chapter, index) => (
                 <motion.li
                   key={chapter.documetId}

@@ -110,8 +110,6 @@ function CreateCourse() {
           ...prev,
           course_img: [{ id: uploadedFileId }], // Store as array with id object
         }));
-
-        console.log("Image uploaded successfully:", uploadedFileId);
       } catch (error) {
         console.error("Error uploading image:", error);
         alert("Failed to upload image. Please try again.");

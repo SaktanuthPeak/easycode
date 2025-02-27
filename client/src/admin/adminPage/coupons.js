@@ -40,7 +40,7 @@ export default function Coupons() {
       const filteredCoupons = coupons.filter(
         (coupon) => !isBeforeToday(coupon)
       );
-      console.log("This is filtered coupons", filteredCoupons);
+
       setCoupons(coupons);
     } catch (error) {
       console.log("This is an error:", error);
@@ -48,7 +48,6 @@ export default function Coupons() {
   };
 
   const handleDelete = async (coupon, isBefore) => {
-    console.log("This is coupon", isBefore);
     if (isBefore) {
     } else {
       const confirmCreate = window.confirm(
