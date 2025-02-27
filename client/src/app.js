@@ -34,6 +34,7 @@ import CourseDashboard from "./teacher/courseDashboard";
 import ProfilePage from "./clientPage/profilePage";
 import InstructorSignup from "./clientPage/instructorSignup";
 import NotificationPage from "./clientPage/notificationPage";
+import LikedPage from "./clientPage/likedPage";
 
 //Import admin pages
 import Dashboard from "./admin/adminPage/dashboard";
@@ -158,6 +159,7 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
           path="/client-home/notifications"
           element={<NotificationPage />}
         />
+        <Route path="/client-home/liked-page" element={<LikedPage />} />
 
 
       </Routes>
