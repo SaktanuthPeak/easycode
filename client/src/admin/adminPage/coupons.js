@@ -136,6 +136,7 @@ export default function Coupons() {
             <p className="text-gray-600">
               Discount: {coupon.discount_percent}%
             </p>
+            <p className="text-gray-600">Start At: {coupon.start_date}</p>
             <p className="text-gray-600">Expires: {coupon.expired_date}</p>
           </div>
         ))}

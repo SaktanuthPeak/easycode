@@ -47,7 +47,7 @@ export default function Chapters() {
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row items-center justify-between mb-8">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-8 py-8 px-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
           Chapters Management
         </h1>

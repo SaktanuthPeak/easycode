@@ -550,7 +550,7 @@ export interface ApiDiscountCouponDiscountCoupon
     singularName: 'discount-coupon';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     coupon: Schema.Attribute.String;
@@ -566,6 +566,7 @@ export interface ApiDiscountCouponDiscountCoupon
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    start_date: Schema.Attribute.Date;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
