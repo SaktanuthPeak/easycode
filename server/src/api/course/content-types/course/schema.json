@@ -79,6 +79,12 @@
       "relation": "oneToMany",
       "target": "api::review.review",
       "mappedBy": "course"
+    },
+    "liked_users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "liked_courses"
     }
   }
 }

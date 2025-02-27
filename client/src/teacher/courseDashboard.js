@@ -12,7 +12,6 @@ const CourseDashboard = () => {
     const fetchCourseData = async () => {
       try {
         const response = await ax.get(`/courses/${courseId}?populate=users`);
-        console.log("Course Data:", response.data.data);
         setCourseData(response.data.data);
       } catch (error) {
         console.error("Error fetching course data:", error);

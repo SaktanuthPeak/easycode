@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Menu, MenuItem, MenuItems, MenuButton } from "@headlessui/react";
 import { BellIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from 'react-router-dom';
 
 const dropdownVariants = {
     hidden: { opacity: 0, y: -10, scale: 0.95 },
@@ -16,6 +17,16 @@ const notificationItemVariants = {
 };
 
 const Notification = ({ notifications, fetchNotifications, deleteNotification }) => {
+
+    const MAX_NOTIFICATIONS = 5;
+
+
+    const validNotifications = notifications.filter(notification => notification);
+    const hasMoreNotifications = notifications.length > MAX_NOTIFICATIONS;
+    const displayedNotifications = notifications.slice(0, MAX_NOTIFICATIONS);
+
+    const navigate = useNavigate();
+
     return (
         <Menu as="div" className="relative">
             {({ open }) => (
@@ -43,40 +54,46 @@ const Notification = ({ notifications, fetchNotifications, deleteNotification })
                                     </div>
                                     <div className="max-h-96 overflow-y-auto">
                                         <AnimatePresence>
-                                            {notifications.length > 0 ? (
-                                                notifications.map((notification, index) => {
+                                            {displayedNotifications.length > 0 ? (
+                                                displayedNotifications.map((notification, index) => {
                                                     const adminContext = notification?.admin_context;
                                                     const contextMessage = notification?.context;
 
-                                                    if (adminContext) {
-                                                        return (
-                                                            <motion.div
-                                                                key={notification.documentId}
-                                                                custom={index}
-                                                                initial="hidden"
-                                                                animate="visible"
-                                                                exit="exit"
-                                                                variants={notificationItemVariants}
-                                                                className="flex justify-between items-center px-4 py-2 hover:bg-gray-100"
-                                                            >
-                                                                <div>
+                                                    return (
+                                                        <motion.div
+                                                            key={notification.documentId || index}
+                                                            custom={index}
+                                                            initial="hidden"
+                                                            animate="visible"
+                                                            exit="exit"
+                                                            variants={notificationItemVariants}
+                                                            className="flex justify-between items-center px-4 py-2 hover:bg-gray-100"
+                                                        >
+                                                            <div>
+                                                                {contextMessage && (
                                                                     <p className="text-sm text-gray-800">
                                                                         💬 <span className="font-semibold">{contextMessage}</span>
                                                                     </p>
+                                                                )}
+                                                                {adminContext && (
                                                                     <p className="text-sm text-gray-800">
                                                                         Reply from admin 🛡️: <span className="font-semibold">{adminContext}</span>
                                                                     </p>
-                                                                </div>
-                                                                <button
-                                                                    className="text-red-500 hover:text-red-700"
-                                                                    onClick={() => deleteNotification(notification.documentId)}
-                                                                >
-                                                                    <TrashIcon className="h-5 w-5" />
-                                                                </button>
-                                                            </motion.div>
-                                                        );
-                                                    }
-                                                    return null;
+                                                                )}
+                                                                {!contextMessage && !adminContext && (
+                                                                    <p className="text-sm text-gray-800">
+                                                                        New notification received
+                                                                    </p>
+                                                                )}
+                                                            </div>
+                                                            <button
+                                                                className="text-red-500 hover:text-red-700"
+                                                                onClick={() => deleteNotification(notification.documentId)}
+                                                            >
+                                                                <TrashIcon className="h-5 w-5" />
+                                                            </button>
+                                                        </motion.div>
+                                                    );
                                                 })
                                             ) : (
                                                 <motion.div
@@ -92,6 +109,18 @@ const Notification = ({ notifications, fetchNotifications, deleteNotification })
                                             )}
                                         </AnimatePresence>
                                     </div>
+
+                                    {/* View More button - only shows if there are more than 5 notifications */}
+                                    {hasMoreNotifications && (
+                                        <div className="px-4 py-2 border-t border-gray-200">
+                                            <button
+                                                onClick={() => navigate('client-home/notifications')}
+                                                className="w-full text-center py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-md transition-colors"
+                                            >
+                                                View More Notifications
+                                            </button>
+                                        </div>
+                                    )}
                                 </MenuItems>
                             </motion.div>
                         )}

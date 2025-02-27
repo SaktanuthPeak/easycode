@@ -28,7 +28,6 @@ function TeacherDashboard() {
         const instructor = allInstructors.find(
           (instructor) => instructor.name_teacher === username
         );
-        console.log("instructors====", instructor)
 
         setInstructorData(instructor || null);
 
@@ -37,7 +36,6 @@ function TeacherDashboard() {
             return sum + (course.price * (course.users?.length || 0));
           }, 0);
           setTotal(totalPrice);
-          console.log("total price === ", totalPrice)
           const courseCount = instructor.courses.length
           setCourseTotal(courseCount)
 

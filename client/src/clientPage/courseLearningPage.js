@@ -54,7 +54,6 @@ const CourseLearningPage = () => {
                 const fetchName = await ax.get(`users/me`);
                 const fullName = `${fetchName.data.firstname} ${fetchName.data.lastname}`;
                 const user = fetchName.data.username
-                console.log("user========", user)
                 setName(fullName);
                 setUsername(user)
             } catch (error) {
@@ -114,7 +113,6 @@ const CourseLearningPage = () => {
                     username: username,
                 },
             });
-            console.log("Review submitted:", response.data);
             setIsReviewModalOpen(false);
             setReviewText("");
             setReviewStars(0);

@@ -101,6 +101,12 @@
       "relation": "oneToOne",
       "target": "api::user-avatar.user-avatar",
       "mappedBy": "user"
+    },
+    "liked_courses": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::course.course",
+      "inversedBy": "liked_users"
     }
   }
 }
