@@ -11,7 +11,6 @@ import { AuthContext } from "./context/Auth.context";
 import { CartProvider } from "./context/Cart.context";
 import ax from "./conf/ax";
 import { MessageModalProvider } from "./component/messageModal";
-import { LoadingProvider, useLoading } from "./context/loadingContext";
 import Loading from "./component/loading";
 
 // Import pages
@@ -56,7 +55,6 @@ import NavbarPreview from "./component/navbarPreview";
 import { useMessageModal } from "./component/messageModal";
 import { MessageCircle } from "lucide-react";
 import NavbarAdmin from "./admin/component/navbarAdmin";
-import { useSetState } from "react-use";
 import TeacherNavBar from "./teacher/component/teacherNav";
 
 const FloatingMessageButton = () => {
@@ -73,7 +71,6 @@ const FloatingMessageButton = () => {
 };
 
 const RouteAfterLogin = ({ homePath, userRole }) => {
-  const { isLoading } = useLoading();
   if (!homePath) {
     return <div>Loading...</div>;
   }
@@ -81,7 +78,6 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
   if (userRole === "admin") {
     return (
       <>
-        {isLoading && <Loading />}
         <Routes>
           {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
           <Route path="/" element={<NavbarAdmin />}>
