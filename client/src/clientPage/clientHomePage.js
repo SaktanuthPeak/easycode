@@ -185,12 +185,10 @@ const ClientHomePage = () => {
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
     const [topCourses, setTopCourses] = useState([]);
-    const { setIsLoading } = useLoading();
 
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                setIsLoading(true);
                 const response = await ax.get("categories?populate=*");
                 const fetchedCategories = response.data.data.map(item => ({
                     title: item.Category_name,
@@ -230,7 +228,7 @@ const ClientHomePage = () => {
 
         fetchCategory();
         fetchTopCourses();
-    }, [navigate, setIsLoading]);
+    }, [navigate]);
 
     return (
         <div className="min-h-screen">
