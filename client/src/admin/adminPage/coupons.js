@@ -2,35 +2,7 @@ import { useEffect, useState } from "react";
 import { PlusCircle, Pencil, Trash2, Search } from "lucide-react";
 import ax from "../../conf/ax";
 import CreateAndEditCoupon from "../component/createAndEditCoupon";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
-const CouponCard = ({ coupon, onEdit, onDelete, openModal }) => {
-  const navigate = useNavigate();
-  return (
-    <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold text-gray-800">{coupon.coupon}</h3>
-        <div className="space-x-2">
-          <button
-            onClick={() => onEdit(coupon)}
-            className="text-indigo-600 hover:text-indigo-800"
-          >
-            <Pencil className="w-5 h-5" />
-          </button>
-          <button
-            onClick={() => onDelete(coupon.documentId)}
-            className="text-red-600 hover:text-red-800"
-          >
-            <Trash2 className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
-      <p className="text-gray-600">Discount: {coupon.discount_percent}%</p>
-      <p className="text-gray-600">Expires: {coupon.expired_date}</p>
-    </div>
-  );
-};
 
 export default function Coupons() {
   const [coupons, setCoupons] = useState([]);
@@ -52,29 +24,47 @@ export default function Coupons() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (coupon) => {
-    console.log(coupon);
-    try {
-      const deleteCoupon = await ax.delete(`/discount-coupons/${coupon}`);
-      console.log(deleteCoupon);
-
-      if (deleteCoupon.status === 204) {
-        console.log("Coupon created successfully but no content returned.");
-        toast.success("Delete coupon successfully!");
-        fetchCoupon();
-      }
-    } catch (error) {
-      toast.error("Fail to delete coupon");
-      console.log("this is error", error);
+  const isBeforeToday = (coupon) => {
+    const orderDate = new Date(coupon.expired_date).setHours(0, 0, 0, 0);
+    const today = new Date().setHours(0, 0, 0, 0);
+    const isBefore = orderDate < today;
+    if (isBefore) {
+      handleDelete(coupon.documentId, isBefore);
     }
   };
 
   const fetchCoupon = async () => {
     try {
-      const coupons = await ax.get(`/discount-coupons`);
-      setCoupons(coupons.data.data);
+      const response = await ax.get(`/discount-coupons`);
+      const coupons = response.data.data;
+      const filteredCoupons = coupons.filter(
+        (coupon) => !isBeforeToday(coupon)
+      );
+      console.log("This is filtered coupons", filteredCoupons);
+      setCoupons(coupons);
     } catch (error) {
       console.log("This is an error:", error);
+    }
+  };
+
+  const handleDelete = async (coupon, isBefore) => {
+    console.log("This is coupon", isBefore);
+    if (isBefore) {
+    } else {
+      const confirmCreate = window.confirm(
+        "Are you sure you want to delete this coupon"
+      );
+      if (!confirmCreate) return;
+    }
+    try {
+      await ax.delete(`/discount-coupons/${coupon}`);
+      isBefore
+        ? toast.error("Coupon is expired!")
+        : toast.success("Delete coupon successfully!");
+      fetchCoupon();
+    } catch (error) {
+      toast.error("Fail to delete coupon");
+      console.log("this is error", error);
     }
   };
 
@@ -102,7 +92,7 @@ export default function Coupons() {
         <div className="relative">
           <input
             type="text"
-            placeholder="Search courses..."
+            placeholder="Search coupons..."
             className="pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -123,13 +113,31 @@ export default function Coupons() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCoupons.map((coupon) => (
-          <CouponCard
-            key={coupon.id}
-            coupon={coupon}
-            openModal={openModal}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
+          <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-gray-800">
+                {coupon.coupon}
+              </h3>
+              <div className="space-x-2">
+                <button
+                  onClick={() => handleEdit(coupon)}
+                  className="text-indigo-600 hover:text-indigo-800"
+                >
+                  <Pencil className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => handleDelete(coupon.documentId)}
+                  className="text-red-600 hover:text-red-800"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+            <p className="text-gray-600">
+              Discount: {coupon.discount_percent}%
+            </p>
+            <p className="text-gray-600">Expires: {coupon.expired_date}</p>
+          </div>
         ))}
       </div>
     </div>

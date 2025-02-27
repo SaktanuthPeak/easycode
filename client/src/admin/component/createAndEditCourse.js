@@ -183,7 +183,7 @@ function CreateCourse() {
 
   return (
     <div className="min-h-screen  py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+      <div className="mx-auto">
         <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
           {courseId
             ? `Edit a ${course.Course_name} Course`

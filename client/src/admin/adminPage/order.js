@@ -3,7 +3,7 @@ import ax from "../../conf/ax";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
-import { ChevronDown, FileText, Check } from "lucide-react";
+import { ChevronDown, FileText, Check, Search } from "lucide-react";
 import SlipModal from "../component/slipModal";
 
 function Order() {
@@ -11,7 +11,7 @@ function Order() {
   const [selectedStatus, setSelectedStatus] = useState({});
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [searchDate, setSearchDate] = useState("");
   const dayjs = require("dayjs");
 
   const openModal = (order) => {
@@ -24,10 +24,9 @@ function Order() {
     try {
       const orders = await ax.get(`/admin-confirmations?populate=*`);
       const orderData = orders.data.data;
-      const statusOrder = { pending: 1, "not confirm": 2, confirm: 3 };
 
       const sortedData = orderData.sort(
-        (a, b) => statusOrder[a.order_status] - statusOrder[b.order_status]
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
 
       setOrdersData(sortedData);
@@ -36,7 +35,7 @@ function Order() {
       toast.error("Failed to fetch orders. Please try again.");
     }
   };
-
+  console.log(ordersData);
   const handleUpdateStatus = async (item) => {
     console.log(item);
     if (!selectedStatus[item.documentId]) {
@@ -50,14 +49,12 @@ function Order() {
 
     if (!confirmUpdate) return;
     try {
-      //edit status
       await ax.put(`/admin-confirmations/${item.documentId}`, {
         data: {
           order_status: selectedStatus[item.documentId],
         },
       });
 
-      //add course to relation
       console.log(selectedStatus[item.documentId] === "confirm");
       if (selectedStatus[item.documentId] === "confirm") {
         const listBuyCourse = item.course_documentid
@@ -100,6 +97,12 @@ function Order() {
     fetchOrder();
   }, []);
 
+  const filteredOrders = ordersData.filter((order) => {
+    if (!searchDate) return true;
+    const orderDate = new Date(order.createdAt).toISOString().split("T")[0];
+    return orderDate === searchDate;
+  });
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -111,9 +114,11 @@ function Order() {
         <h1 className="text-4xl font-bold text-gray-900 mb-2">
           Order Management
         </h1>
-        <p className="text-gray-600">
-          Efficiently manage and update order statuses
-        </p>
+        <div>
+          <p className="text-gray-600">
+            Efficiently manage and update order statuses
+          </p>
+        </div>
       </div>
 
       <div className="bg-white shadow-xl rounded-lg overflow-hidden">
@@ -134,7 +139,7 @@ function Order() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {ordersData.map((item) => (
+              {filteredOrders.map((item) => (
                 <motion.tr
                   key={item.id} // Changed key to item.id
                   initial={{ opacity: 0, y: 20 }}

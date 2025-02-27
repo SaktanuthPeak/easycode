@@ -37,12 +37,12 @@ const Courses = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen py-8">
-      <div className="container mx-auto px-4">
+      <div className="mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">
             Courses Management
           </h1>
-          <div className="flex items-center  space-x-4">
+          <div className="flex items-center space-x-4">
             <div className="relative">
               <input
                 type="text"
