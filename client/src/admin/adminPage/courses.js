@@ -22,7 +22,7 @@ const Courses = () => {
 
   useEffect(() => {
     fetchCourses();
-  }, []); // Removed searchTerm from dependencies
+  }, []); 
 
   const getImageUrl = (img) => {
     if (!img || !img.url) return no_image_available;

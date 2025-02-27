@@ -1,42 +1,71 @@
 import { Card, CardContent, CardHeader } from "@mui/material";
+import { useEffect, useState } from "react";
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  CartesianGrid,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
+  Line,
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { month: "Jan", income: 4000 },
-  { month: "Feb", income: 3000 },
-  { month: "Mar", income: 5000 },
-  { month: "Apr", income: 4500 },
-  { month: "May", income: 5500 },
-  { month: "Jun", income: 6000 },
-  { month: "Jul", income: 6500 },
-  { month: "Aug", income: 7000 },
-  { month: "Sep", income: 6800 },
-  { month: "Oct", income: 7200 },
-  { month: "Nov", income: 7500 },
-  { month: "Dec", income: 8000 },
-];
+import ax from "../../conf/ax";
 
 export default function IncomeChart() {
+  const [incomeData, setIncomeData] = useState([]);
+  const fetchTotalIncome = async () => {
+    try {
+      const response = await ax.get(
+        `/admin-confirmations?filters[order_status][$eq]=confirm`
+      );
+      setIncomeData(response.data.data);
+    } catch (error) {
+      console.log("This is error", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTotalIncome();
+  }, []);
+
+  const splitDataByMonth = (incomeData) => {
+    const groupedData = new Array(12).fill(0); // Initialize an array with 12 zeros
+
+    incomeData.forEach((item) => {
+      const month = new Date(item.createdAt).getMonth(); // Get month (0–11)
+      groupedData[month] += item.amount; // Add the amount to the corresponding month
+    });
+
+    return groupedData;
+  };
+
+  const data = [
+    { month: "Jan", income: splitDataByMonth(incomeData)[0] },
+    { month: "Feb", income: splitDataByMonth(incomeData)[1] },
+    { month: "Mar", income: splitDataByMonth(incomeData)[2] },
+    { month: "Apr", income: splitDataByMonth(incomeData)[3] },
+    { month: "May", income: splitDataByMonth(incomeData)[4] },
+    { month: "Jun", income: splitDataByMonth(incomeData)[5] },
+    { month: "Jul", income: splitDataByMonth(incomeData)[6] },
+    { month: "Aug", income: splitDataByMonth(incomeData)[7] },
+    { month: "Sep", income: splitDataByMonth(incomeData)[8] },
+    { month: "Oct", income: splitDataByMonth(incomeData)[9] },
+    { month: "Nov", income: splitDataByMonth(incomeData)[10] },
+    { month: "Dec", income: splitDataByMonth(incomeData)[11] },
+  ];
   return (
     <Card>
       <CardHeader title="Monthly Income (Last 12 Months)" />
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={data}>
+          <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="month" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="income" fill="#2196f3" />
-          </BarChart>
+            <Line type="monotone" dataKey="income" stroke="#2196f3" />
+          </LineChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>
