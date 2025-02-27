@@ -10,7 +10,6 @@ import no_image_available from "./images/No_image_available.svg.jpg";
 import conf from '../conf/main';
 import instructor from "./images/teacher.png"
 import { ArrowRight } from 'lucide-react';
-import { useLoading } from '../context/loadingContext';
 
 const iconMap = {
     "Web Development": FolderCode,
