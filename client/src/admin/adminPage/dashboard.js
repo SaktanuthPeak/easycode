@@ -8,7 +8,7 @@ import IncomeChart from "../component/incomeChart";
 
 export default function Dashboard() {
   return (
-    <Box p={3}>
+    <Box p={3} className="min-h-screen bg-gray-50">
       <Typography variant="h4" fontWeight="bold" mb={3}>
         EasyCode Dashboard
       </Typography>

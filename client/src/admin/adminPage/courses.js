@@ -22,7 +22,7 @@ const Courses = () => {
 
   useEffect(() => {
     fetchCourses();
-  }, []); 
+  }, []);
 
   const getImageUrl = (img) => {
     if (!img || !img.url) return no_image_available;
@@ -36,7 +36,7 @@ const Courses = () => {
   );
 
   return (
-    <div className=" min-h-screen py-8">
+    <div className="bg-gray-50 min-h-screen py-8">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
@@ -108,14 +108,26 @@ const Courses = () => {
                 <p className="text-gray-600 text-sm mb-4 line-clamp-3">
                   {item.course_description}
                 </p>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => navigate(`/courses/${item.documentId}`)}
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 w-full text-center"
-                >
-                  View Details
-                </motion.button>
+                <div className="flex">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() =>
+                      navigate(`/courses/${item.documentId}/reviews`)
+                    }
+                    className="text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 w-full text-center mr-1"
+                  >
+                    View Review
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => navigate(`/courses/${item.documentId}`)}
+                    className="text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 w-full text-center"
+                  >
+                    View Chapter
+                  </motion.button>
+                </div>
               </div>
             </motion.div>
           ))}

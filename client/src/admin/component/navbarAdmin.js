@@ -33,7 +33,7 @@ export default function NavbarAdmin() {
       <div
         className={`flex-1 transition-all duration-300 ${
           isOpen ? "ml-64" : "ml-20"
-        } p-6`}
+        } `}
       >
         <Outlet />
       </div>
