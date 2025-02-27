@@ -229,53 +229,51 @@ const App = () => {
 
   if (loading) return <div>Loading...</div>;
   return (
-    <LoadingProvider>
 
-      <Router>
-        <CartProvider>
-          <ToastContainer />
-          {state.isLoggedIn ? (
-            <>
-              {userRole === "admin" ? (
-                <RouteAfterLogin homePath={homePath} userRole={userRole} />
-              ) : (
-                <>
-                  <MessageModalProvider>
-                    {userNavBar}
-                    <RouteAfterLogin homePath={homePath} userRole={userRole} />
-                    <FloatingMessageButton />
-                  </MessageModalProvider>
-                </>
-              )}
-            </>
-          ) : (
-            <>
-              <NavbarPreview />
-              <Routes>
-                <Route path="*" element={<Navigate to="/home-preview" />} />
-                <Route path="/home-preview" element={<HomePreviewPage />} />
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/signup" element={<Signup />} />
+    <Router>
+      <CartProvider>
+        <ToastContainer />
+        {state.isLoggedIn ? (
+          <>
+            {userRole === "admin" ? (
+              <RouteAfterLogin homePath={homePath} userRole={userRole} />
+            ) : (
+              <>
+                <MessageModalProvider>
+                  {userNavBar}
+                  <RouteAfterLogin homePath={homePath} userRole={userRole} />
+                  <FloatingMessageButton />
+                </MessageModalProvider>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            <NavbarPreview />
+            <Routes>
+              <Route path="*" element={<Navigate to="/home-preview" />} />
+              <Route path="/home-preview" element={<HomePreviewPage />} />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/signup" element={<Signup />} />
 
-                <Route
-                  path="/home-preview/:categoryId"
-                  element={<CategoryPreviewPage />}
-                />
-                <Route
-                  path="/home-preview/:categoryId/:courseId"
-                  element={<CoursePreviewPage />}
-                />
+              <Route
+                path="/home-preview/:categoryId"
+                element={<CategoryPreviewPage />}
+              />
+              <Route
+                path="/home-preview/:categoryId/:courseId"
+                element={<CoursePreviewPage />}
+              />
 
-                <Route
-                  path="/home-preview/all-courses"
-                  element={<PreviewAllCoursePage />}
-                />
-              </Routes>
-            </>
-          )}
-        </CartProvider>
-      </Router>
-    </LoadingProvider>
+              <Route
+                path="/home-preview/all-courses"
+                element={<PreviewAllCoursePage />}
+              />
+            </Routes>
+          </>
+        )}
+      </CartProvider>
+    </Router>
   );
 };
 
