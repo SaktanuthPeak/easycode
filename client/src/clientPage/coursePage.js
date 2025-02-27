@@ -15,8 +15,31 @@ const CoursePage = () => {
   const [courseDetails, setCourseDetails] = useState(null);
   const [activeTab, setActiveTab] = useState("description");
   const { cart, addToCart, removeFromCart } = useCart();
+  const [isLiked, setIsLiked] = useState(false);
   const navigate = useNavigate();
 
+  const checkUserLikeStatus = async () => {
+    try {
+      const userResponse = await ax.get(`/users/me?populate=liked_courses`);
+      console.log("userResponse:", userResponse);
+
+      if (!userResponse.data) {
+        throw new Error("User data not found");
+      }
+
+      const likedCourses = userResponse.data?.liked_courses || [];
+      console.log("likedCourses:", likedCourses);
+
+      const hasLiked = likedCourses.some(
+        (course) => course.documentId === courseId
+      );
+      setIsLiked(hasLiked);
+    } catch (error) {
+      console.error("Error checking like status:", error);
+      alert("Failed to check like status. Please try again.");
+    }
+  };
+  checkUserLikeStatus();
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
@@ -30,6 +53,7 @@ const CoursePage = () => {
             ...response.data.data[0],
             id: response.data.data[0].documentId,
           });
+
         } else {
           setCourseDetails("Course not found eieieieiei");
         }
@@ -39,8 +63,11 @@ const CoursePage = () => {
       }
     };
 
+
+
     fetchCourseDetails();
-  }, [courseId]);
+  }
+    , [courseId]);
 
   if (!courseDetails || typeof courseDetails === "string") {
     return (
@@ -56,6 +83,31 @@ const CoursePage = () => {
       ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}`
       : img.url;
   };
+  const handleLikeButtonClick = async () => {
+    try {
+      const userResponse = await ax.get(`/users/me`);
+      const currentUserId = userResponse.data.documentId;
+
+      if (isLiked) {
+        // Unlike: Remove the user from liked_users
+        await ax.put(`/courses/${courseId}`, {
+          data: { liked_users: { disconnect: [currentUserId] } }, // Send the user ID to remove
+        });
+      } else {
+        // Like: Add the user to liked_users
+        await ax.put(`/courses/${courseId}`, {
+          data: { liked_users: { connect: [currentUserId] } }, // Add the user ID
+        });
+      }
+
+      // Toggle the like state
+      setIsLiked(!isLiked);
+    } catch (error) {
+      console.error("Error updating like status:", error.response || error);
+      alert("Failed to update like status. Please try again.");
+    }
+  };
+
 
   return (
     <div className="min-h-screen ">
@@ -101,6 +153,13 @@ const CoursePage = () => {
                 <div className="flex items-center gap-2">
                   <Globe className="h-5 w-5 text-gray-400" />
                   <span className="text-gray-600">English</span>
+                  <button
+                    onClick={handleLikeButtonClick}
+                    className={`py-2 px-4 rounded-md ${isLiked ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"}`}
+
+                  >{isLiked ? "Liked" : "Like"}
+
+                  </button>
                 </div>
               </div>
 
@@ -344,5 +403,6 @@ const CoursePage = () => {
     </div>
   );
 };
+
 
 export default CoursePage;

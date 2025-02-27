@@ -513,6 +513,10 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
       'manyToOne',
       'api::instructor.instructor'
     >;
+    liked_users: Schema.Attribute.Relation<
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1187,6 +1191,10 @@ export interface PluginUsersPermissionsUser
       'api::instructor.instructor'
     >;
     lastname: Schema.Attribute.String;
+    liked_courses: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::course.course'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',

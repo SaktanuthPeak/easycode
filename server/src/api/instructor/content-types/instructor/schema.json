@@ -28,14 +28,20 @@
       "type": "media",
       "multiple": true,
       "required": false,
-      "type": "media",
-      "multiple": true,
-      "required": false,
-      "allowedTypes": ["images", "files", "videos", "audios"]
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     },
     "statusT": {
       "type": "enumeration",
-      "enum": ["confirm", "deny", "pending"],
+      "enum": [
+        "confirm",
+        "deny",
+        "pending"
+      ],
       "default": "pending"
     },
     "users_permissions_user": {
