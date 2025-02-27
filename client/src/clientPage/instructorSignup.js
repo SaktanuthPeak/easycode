@@ -22,7 +22,6 @@ const InstructorSignup = () => {
         const fetchUserInfo = async () => {
             try {
                 const response = await ax.get("/users/me");
-                console.log("User info:", response.data);
                 setFormData({
                     name_teacher: response.data.username,
                     users_permissions_user: response.data.documentId,
@@ -109,13 +108,11 @@ const InstructorSignup = () => {
                 img_teacher: imageId,
             };
 
-            console.log("Data to send:", dataToSend);
 
             const response = await ax.post("/instructors", {
                 data: dataToSend,
             });
 
-            console.log("Signup successful:", response.data);
             notifySuccess("Successfully requesting the right to become an instructor!");
             setTimeout(() => {
                 navigate("/client-home");

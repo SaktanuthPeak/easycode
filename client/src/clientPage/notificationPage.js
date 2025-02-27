@@ -23,7 +23,6 @@ const NotificationPage = () => {
         const fetchNotifications = async () => {
             try {
                 const fetchMessage = await ax.get(`/messages?filters[username][$eq]=${username}&populate=*`);
-                console.log(fetchMessage.data.data);
 
                 setNotifications(fetchMessage.data.data);
             } catch (error) {

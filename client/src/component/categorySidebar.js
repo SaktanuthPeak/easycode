@@ -11,7 +11,6 @@ const CategorySidebar = () => {
     const fetchCategory = async () => {
         try {
             const response = await ax.get('categories?populate=*');
-            console.log("Fetched categories:", response.data);
 
 
             if (Array.isArray(response.data.data)) {
@@ -40,7 +39,6 @@ const CategorySidebar = () => {
         navigate(`/client-home/${categoryId}`);
     };
 
-    console.log("Categories to render:", categories);
 
     return (
         <div className="w-64 bg-white rounded-lg shadow-md p-4">

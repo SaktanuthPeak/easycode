@@ -78,7 +78,6 @@ const CartPage = () => {
             const fetchCoupon = await ax.get(`/discount-coupons?filters[coupon][$eq]=${couponCode}&populate=*`); // Assuming 'coupon' is the field for coupon code in backend
             if (fetchCoupon.data.data.length > 0) {
                 const couponData = fetchCoupon.data.data[0];
-                console.log("coupondata", couponData)
                 if (couponData) {
                     if (couponData.expired_date) {
                         const expiryDate = dayjs(couponData.expired_date);

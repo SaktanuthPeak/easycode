@@ -18,7 +18,6 @@ const MyLearningPage = () => {
                 const userCoursesData = userResponse.data.courses || [];
 
                 const courseResponse = await ax.get("courses?populate=course_img&populate=course_chapters");
-                console.log(courseResponse.data)
                 const allCoursesData = courseResponse.data.data || [];
 
                 const matchedCourses = allCoursesData.filter(course =>

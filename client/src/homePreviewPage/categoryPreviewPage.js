@@ -10,15 +10,12 @@ import conf from "../conf/main";
 const CategoryPreviewPage = () => {
     const { categoryId } = useParams();
     const [categoryData, setCategoryData] = useState(null);
-    // const baseURL = "http://localhost:1337";
     const baseURL = conf.apiUrlPrefix;
-    console.log(baseURL)
     const navigate = useNavigate();
     useEffect(() => {
         const fetchCategoryDetails = async () => {
             try {
                 const response = await ax.get(`categories/${categoryId}?populate=courses.course_img`);
-                console.log(response.data.data.courses[0].documentId)
                 setCategoryData(response.data.data);
             } catch (error) {
                 console.error("Error fetching category details:", error);

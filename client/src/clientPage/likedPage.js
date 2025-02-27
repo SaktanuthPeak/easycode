@@ -16,7 +16,6 @@ const LikedPage = () => {
         const fetchLikedCourses = async () => {
             try {
                 const response = await ax.get(`users/me?populate=liked_courses.course_img&populate=liked_courses.category`);
-                console.log(response.data);
                 setLikedCourses(response.data?.liked_courses || []);
                 setLoading(false);
             } catch (error) {

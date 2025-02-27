@@ -43,7 +43,6 @@ export const ContextProvider = props => {
     }
 
     useEffect(() => {
-        console.log(state)
     }, [state])
 
     useEffect(() => {
@@ -80,23 +79,23 @@ export const ContextProvider = props => {
 };
 
 const fetchLogin = async (username, password, callback) => {
-	try {
-		const response = await ax.post(
-			"http://localhost:1337/api/auth/local" ,
-			{
-				identifier: username,
-				password,
-			}
-		);
-		if (response.data.jwt && response.data.user.id > 0) {
+    try {
+        const response = await ax.post(
+            "http://localhost:1337/api/auth/local",
+            {
+                identifier: username,
+                password,
+            }
+        );
+        if (response.data.jwt && response.data.user.id > 0) {
             localStorage.setItem("jwt", response.data.jwt)
-			callback(null, response.data);
-		} else {
-			callback(new Error("Invalid username and password"));
-		}
-	} catch (e) {
-		callback(new Error("Fail to initiate login"));
-	}
+            callback(null, response.data);
+        } else {
+            callback(new Error("Invalid username and password"));
+        }
+    } catch (e) {
+        callback(new Error("Fail to initiate login"));
+    }
 };
 
 const loadPersistedJwt = async (callback) => {

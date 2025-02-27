@@ -14,7 +14,6 @@ const CategoryPage = () => {
         const fetchCategoryDetails = async () => {
             try {
                 const response = await ax.get(`categories/${categoryId}?populate=courses.course_img`);
-                console.log("dddddd", response.data.data)
                 setCategoryData(response.data.data);
             } catch (error) {
                 console.error("Error fetching category details:", error);

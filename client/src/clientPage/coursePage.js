@@ -24,14 +24,12 @@ const CoursePage = () => {
   const checkUserLikeStatus = async () => {
     try {
       const userResponse = await ax.get(`/users/me?populate=liked_courses`);
-      console.log("userResponse:", userResponse);
 
       if (!userResponse.data) {
         throw new Error("User data not found");
       }
 
       const likedCourses = userResponse.data?.liked_courses || [];
-      console.log("likedCourses:", likedCourses);
 
       const hasLiked = likedCourses.some(
         (course) => course.documentId === courseId

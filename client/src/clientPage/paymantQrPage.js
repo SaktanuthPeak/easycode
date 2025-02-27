@@ -48,14 +48,12 @@ const PromptPayQR = () => {
 
     if (location.state?.course_name) {
       setCourseName(location.state.course_name);
-      console.log("Course Name from location:", location.state.course_name);
     } else {
       console.log("No course name found in location.state");
     }
 
     if (location.state?.document_ids) {
       setDocumentIds(`[${location.state.document_ids}]`);
-      console.log("Document IDs from location:", location.state.document_ids);
     } else {
       console.log("No document IDs found in location.state");
     }
@@ -92,7 +90,6 @@ const PromptPayQR = () => {
         const content = e.target.result;
         setFileContent(content);
 
-        console.log("File content:", content);
       };
 
       if (file.type.startsWith("text/")) {
