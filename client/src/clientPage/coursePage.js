@@ -162,9 +162,9 @@ const CoursePage = () => {
                   <span className="text-gray-600">English</span>
                   <button
                     onClick={handleLikeButtonClick}
-                    className={`py-2 px-4 rounded-md flex items-center gap-2 ${isLiked ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"}`}
+                    className={`py-2 px-4 rounded-md flex items-center gap-2 `}
                   >
-                    {isLiked ? <AiFillHeart className="text-red-500" /> : <AiOutlineHeart />}
+                    {isLiked ? <AiFillHeart className="text-red-500 w-6 h-6 " /> : <AiOutlineHeart className="w-6 h-6 " />}
                     {isLiked ? "Liked" : "Like"}
                   </button>
                 </div>
