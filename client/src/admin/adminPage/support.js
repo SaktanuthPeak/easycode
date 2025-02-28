@@ -18,7 +18,6 @@ function Support() {
   const [newMessageContent, setNewMessageContent] = useState("")
   const [isNewMessageMode, setIsNewMessageMode] = useState(false)
 
-  // for custom alert and confirm modals
   const [alertModalOpen, setAlertModalOpen] = useState(false)
   const [alertModalMessage, setAlertModalMessage] = useState("")
   const [confirmModalOpen, setConfirmModalOpen] = useState(false)
@@ -269,7 +268,6 @@ function Support() {
         await fetchMessages(selectedUser.username)
       }
 
-      // Show success message modal
       showAlert("The message sent successfully to all users!")
     } catch (error) {
       console.error("Error sending message:", error)
@@ -282,7 +280,7 @@ function Support() {
   const deleteMessage = (messageId) => {
     if (!messageId) return
 
-    // Use custom confirm modal 
+    // Use confirm modal 
     showConfirm("Are you sure for delete this message?", async () => {
       const yourToken = localStorage.getItem("jwt")
 
@@ -532,7 +530,7 @@ function Support() {
       {alertModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg w-1/3 max-w-md">
-            <h2 className="text-xl font-bold mb-4">Notification</h2>
+            <h2 className="text-xl font-bold mb-4">Notification!</h2>
             <p>{alertModalMessage}</p>
             <div className="mt-4 flex justify-end">
               <button
