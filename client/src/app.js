@@ -11,8 +11,6 @@ import { AuthContext } from "./context/Auth.context";
 import { CartProvider } from "./context/Cart.context";
 import ax from "./conf/ax";
 import { MessageModalProvider } from "./component/messageModal";
-import { LoadingProvider, useLoading } from "./context/loadingContext";
-import Loading from "./component/loading";
 
 // Import pages
 import LoginForm from "./authenticationPage/login";
@@ -33,8 +31,6 @@ import TeacherDashboard from "./teacher/dashboard";
 import CourseDashboard from "./teacher/courseDashboard";
 import ProfilePage from "./clientPage/profilePage";
 import InstructorSignup from "./clientPage/instructorSignup";
-import NotificationPage from "./clientPage/notificationPage";
-import LikedPage from "./clientPage/likedPage";
 
 //Import admin pages
 import Dashboard from "./admin/adminPage/dashboard";
@@ -58,7 +54,6 @@ import NavbarPreview from "./component/navbarPreview";
 import { useMessageModal } from "./component/messageModal";
 import { MessageCircle } from "lucide-react";
 import NavbarAdmin from "./admin/component/navbarAdmin";
-import { useSetState } from "react-use";
 import TeacherNavBar from "./teacher/component/teacherNav";
 
 const FloatingMessageButton = () => {
@@ -75,7 +70,6 @@ const FloatingMessageButton = () => {
 };
 
 const RouteAfterLogin = ({ homePath, userRole }) => {
-  const { isLoading } = useLoading();
   if (!homePath) {
     return <div>Loading...</div>;
   }
@@ -83,7 +77,6 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
   if (userRole === "admin") {
     return (
       <>
-        {isLoading && <Loading />}
         <Routes>
           {homePath && <Route path="*" element={<Navigate to={homePath} />} />}
           <Route path="/" element={<NavbarAdmin />}>
@@ -155,12 +148,6 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
           path="/client-home/instructor-signup"
           element={<InstructorSignup />}
         />
-        <Route
-          path="/client-home/notifications"
-          element={<NotificationPage />}
-        />
-        <Route path="/client-home/liked-page" element={<LikedPage />} />
-
 
       </Routes>
     );
@@ -237,53 +224,51 @@ const App = () => {
 
   if (loading) return <div>Loading...</div>;
   return (
-    <LoadingProvider>
 
-      <Router>
-        <CartProvider>
-          <ToastContainer />
-          {state.isLoggedIn ? (
-            <>
-              {userRole === "admin" ? (
-                <RouteAfterLogin homePath={homePath} userRole={userRole} />
-              ) : (
-                <>
-                  <MessageModalProvider>
-                    {userNavBar}
-                    <RouteAfterLogin homePath={homePath} userRole={userRole} />
-                    <FloatingMessageButton />
-                  </MessageModalProvider>
-                </>
-              )}
-            </>
-          ) : (
-            <>
-              <NavbarPreview />
-              <Routes>
-                <Route path="*" element={<Navigate to="/home-preview" />} />
-                <Route path="/home-preview" element={<HomePreviewPage />} />
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/signup" element={<Signup />} />
+    <Router>
+      <CartProvider>
+        <ToastContainer />
+        {state.isLoggedIn ? (
+          <>
+            {userRole === "admin" ? (
+              <RouteAfterLogin homePath={homePath} userRole={userRole} />
+            ) : (
+              <>
+                <MessageModalProvider>
+                  {userNavBar}
+                  <RouteAfterLogin homePath={homePath} userRole={userRole} />
+                  <FloatingMessageButton />
+                </MessageModalProvider>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            <NavbarPreview />
+            <Routes>
+              <Route path="*" element={<Navigate to="/home-preview" />} />
+              <Route path="/home-preview" element={<HomePreviewPage />} />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/signup" element={<Signup />} />
 
-                <Route
-                  path="/home-preview/:categoryId"
-                  element={<CategoryPreviewPage />}
-                />
-                <Route
-                  path="/home-preview/:categoryId/:courseId"
-                  element={<CoursePreviewPage />}
-                />
+              <Route
+                path="/home-preview/:categoryId"
+                element={<CategoryPreviewPage />}
+              />
+              <Route
+                path="/home-preview/:categoryId/:courseId"
+                element={<CoursePreviewPage />}
+              />
 
-                <Route
-                  path="/home-preview/all-courses"
-                  element={<PreviewAllCoursePage />}
-                />
-              </Routes>
-            </>
-          )}
-        </CartProvider>
-      </Router>
-    </LoadingProvider>
+              <Route
+                path="/home-preview/all-courses"
+                element={<PreviewAllCoursePage />}
+              />
+            </Routes>
+          </>
+        )}
+      </CartProvider>
+    </Router>
   );
 };
 
