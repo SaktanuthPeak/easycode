@@ -349,7 +349,7 @@ function Support() {
           onClick={() => setIsBroadcastModalOpen(true)}
           disabled={loading}
         >
-          {loading ? "Sending..." : "Send Broadcast Message"}
+          {loading ? "Sending..." : "Send Message 📤"}
         </button>
         <ul>
           {users.map((user) => (
@@ -393,7 +393,7 @@ function Support() {
               onClick={openNewMessageModal}
             >
               <LuMessageCirclePlus size={20} />
-              Send Message
+              New Message
             </button>
 
             {/* Message list */}
@@ -485,23 +485,23 @@ function Support() {
       {isBroadcastModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg w-1/3 max-w-md">
-            <h2 className="text-xl font-bold mb-4">Send Broadcast Message</h2>
+            <h2 className="text-xl font-bold mb-4">Send Message</h2>
             <textarea
               className="w-full border p-2 mt-2 rounded"
               rows="4"
-              placeholder="Type your broadcast message..."
+              placeholder="Type your message..."
               value={broadcastMessage}
               onChange={(e) => setBroadcastMessage(e.target.value)}
             />
             <div className="mt-4 flex justify-end">
               <button
-                className="bg-gray-400 text-white px-4 py-2 rounded-lg mr-2 hover:bg-gray-500 transition"
+                className="bg-gray-400 text-white px-3 py-2 rounded-lg mr-2 hover:bg-gray-500 transition"
                 onClick={() => setIsBroadcastModalOpen(false)}
               >
                 Cancel
               </button>
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                className="bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 transition"
                 onClick={sendBroadcastMessage}
               >
                 Send to All
