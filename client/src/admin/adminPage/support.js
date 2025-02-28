@@ -18,6 +18,25 @@ function Support() {
   const [newMessageContent, setNewMessageContent] = useState("")
   const [isNewMessageMode, setIsNewMessageMode] = useState(false)
 
+  // for custom alert and confirm modals
+  const [alertModalOpen, setAlertModalOpen] = useState(false)
+  const [alertModalMessage, setAlertModalMessage] = useState("")
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false)
+  const [confirmModalMessage, setConfirmModalMessage] = useState("")
+  const [onConfirmAction, setOnConfirmAction] = useState(null)
+
+  
+  const showAlert = (message) => {
+    setAlertModalMessage(message)
+    setAlertModalOpen(true)
+  }
+
+  const showConfirm = (message, action) => {
+    setConfirmModalMessage(message)
+    setOnConfirmAction(() => action) 
+    setConfirmModalOpen(true)
+  }
+
   // get user
   const fetchUsers = useCallback(async () => {
     const yourToken = localStorage.getItem("jwt")
@@ -52,7 +71,7 @@ function Support() {
 
       if (response.data && response.data.data) {
         const validMessages = response.data.data.filter((message) => message.id)
-        // Sort messages: by message timing and timestamp
+        // Sort messages by timestamp
         const sortedMessages = validMessages.sort((a, b) => {
           if (a.admin_context && !b.admin_context) return 1
           if (!a.admin_context && b.admin_context) return -1
@@ -60,7 +79,7 @@ function Support() {
         })
         setMessages(sortedMessages)
 
-        //Check new Massage
+        // Check new messages
         setNewMessages((prev) => ({
           ...prev,
           [username]: validMessages.some((msg) => !msg.admin_context),
@@ -100,7 +119,7 @@ function Support() {
       }
     }
     checkNewMessages()
-    const interval = setInterval(checkNewMessages, 10000) 
+    const interval = setInterval(checkNewMessages, 10000)
 
     return () => clearInterval(interval)
   }, [fetchUsers])
@@ -191,7 +210,7 @@ function Support() {
             username: selectedUser.username,
             context: newMessageContent,
             admin_context: newMessageContent,
-            timestamp: new Date().toISOString(), 
+            timestamp: new Date().toISOString(),
           },
         },
         {
@@ -202,7 +221,7 @@ function Support() {
         },
       )
       console.log("Message sent successfully:", response.data)
-      setNewMessageContent("") // Clear message content after sending
+      setNewMessageContent("")
       setIsModalOpen(false)
       fetchMessages(selectedUser.username)
     } catch (error) {
@@ -242,7 +261,7 @@ function Support() {
       }
 
       console.log("Broadcast message sent successfully to all users")
-      setBroadcastMessage("") // Clear message content after sending
+      setBroadcastMessage("")
       setIsBroadcastModalOpen(false)
 
       // Refresh messages for the currently selected user
@@ -250,44 +269,41 @@ function Support() {
         await fetchMessages(selectedUser.username)
       }
 
-      // Show success message
-      alert("Broadcast message sent successfully to all users!")
+      // Show success message modal
+      showAlert("The message sent successfully to all users!")
     } catch (error) {
-      console.error("Error sending broadcast message:", error)
-      alert("Failed to send broadcast message. Please try again.")
+      console.error("Error sending message:", error)
+      showAlert("Failed to send message. Please try again.")
     } finally {
       setLoading(false)
     }
   }
 
-  const deleteMessage = async (messageId) => {
+  const deleteMessage = (messageId) => {
     if (!messageId) return
 
-    // Confirmation alert before deleting
-    if (!window.confirm("Are you sure for delete this message?")) {
-      return
-    }
+    // Use custom confirm modal 
+    showConfirm("Are you sure for delete this message?", async () => {
+      const yourToken = localStorage.getItem("jwt")
 
-    const yourToken = localStorage.getItem("jwt")
+      try {
+        await ax.delete(`/messages/${messageId}`, {
+          headers: {
+            Authorization: `Bearer ${yourToken}`,
+          },
+        })
 
-    try {
-      await ax.delete(`/messages/${messageId}`, {
-        headers: {
-          Authorization: `Bearer ${yourToken}`,
-        },
-      })
+        console.log("Message deleted successfully")
 
-      console.log("Message deleted successfully")
+        // Remove the deleted message from the state
+        setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== messageId))
 
-      // Remove the deleted message from the state
-      setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== messageId))
-
-      // Show success message
-      alert("Message deleted successfully")
-    } catch (error) {
-      console.error("Error deleting message:", error)
-      alert("Failed to delete message. Please try again.")
-    }
+        showAlert("Message deleted successfully")
+      } catch (error) {
+        console.error("Error deleting message:", error)
+        showAlert("Failed to delete message. Please try again.")
+      }
+    })
   }
 
   const renderMessageList = (messages, isUnanswered) => (
@@ -329,7 +345,7 @@ function Support() {
     </ul>
   )
 
-  //generate a color based on the username
+  // generate a color based on the username(userprofile)
   const generateColor = (username) => {
     let hash = 0
     for (let i = 0; i < username.length; i++) {
@@ -387,7 +403,7 @@ function Support() {
         {selectedUser ? (
           <>
             <h2 className="text-2xl font-bold mb-4">Messages from {selectedUser.username}</h2>
-            {/* Button to send new message */}
+            {/* Button to send new message for each user */}
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 flex items-center gap-2 mb-4"
               onClick={openNewMessageModal}
@@ -481,7 +497,8 @@ function Support() {
           </div>
         </div>
       )}
-      {/* Broadcast Modal */}
+
+      {/* Broadcast Message Modal */}
       {isBroadcastModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg w-1/3 max-w-md">
@@ -510,9 +527,53 @@ function Support() {
           </div>
         </div>
       )}
+
+      {/* Alert Modal */}
+      {alertModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-1/3 max-w-md">
+            <h2 className="text-xl font-bold mb-4">Notification</h2>
+            <p>{alertModalMessage}</p>
+            <div className="mt-4 flex justify-end">
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                onClick={() => setAlertModalOpen(false)}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm Modal */}
+      {confirmModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-1/3 max-w-md">
+            <h2 className="text-xl font-bold mb-4">Confirmation</h2>
+            <p>{confirmModalMessage}</p>
+            <div className="mt-4 flex justify-end space-x-2">
+              <button
+                className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition"
+                onClick={() => setConfirmModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+                onClick={() => {
+                  setConfirmModalOpen(false)
+                  if (onConfirmAction) onConfirmAction()
+                }}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
 export default Support
-
