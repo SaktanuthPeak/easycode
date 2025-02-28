@@ -289,11 +289,9 @@ const CoursePage = () => {
                   )}
                   {activeTab === "review" && (
                     <div className="bg-white p-6 rounded-lg shadow-sm">
-                      <h2 className="text-2xl font-semibold mb-4">
-                        Reviews from users
-                      </h2>
+                      <h2 className="text-2xl font-semibold mb-4">Reviews from users</h2>
                       {courseDetails.reviews && courseDetails.reviews.length > 0 ? (
-                        <div className="space-y-4">
+                        <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2"> {/* เพิ่ม max-height และ overflow-y-auto */}
                           {courseDetails.reviews.map((review, index) => (
                             <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 transition-all hover:shadow-md">
                               <div className="flex items-start">
