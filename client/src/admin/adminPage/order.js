@@ -164,7 +164,16 @@ function Order() {
                   </td>{" "}
                   {/* Accessing nested attributes */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {item.Applied_course}
+                    {item.Applied_course.length > 70
+                      ? item.Applied_course.match(/.{1,70}/g).map(
+                          (chunk, i) => (
+                            <span key={i}>
+                              {chunk}
+                              <br />
+                            </span>
+                          )
+                        )
+                      : item.Applied_course}
                   </td>{" "}
                   {/* Accessing nested attributes */}
                   <td className="px-6 py-4 whitespace-nowrap">

@@ -12,6 +12,7 @@ import {
   User,
   Settings,
   School,
+  LogOut,
 } from "lucide-react";
 import { Outlet, useNavigate } from "react-router-dom";
 
@@ -106,7 +107,7 @@ function Sidebar({ isOpen, toggle, onLogout, navigate }) {
           navigate={navigate}
         />
         <NavItem
-          icon={Settings}
+          icon={LogOut}
           label="Logout"
           isOpen={isOpen}
           onClick={onLogout}
