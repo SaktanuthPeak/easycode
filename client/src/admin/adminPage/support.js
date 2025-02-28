@@ -51,7 +51,7 @@ function Support() {
 
       if (response.data && response.data.data) {
         const validMessages = response.data.data.filter((message) => message.id)
-        // Sort messages
+        // Sort messages: unanswered first, then by timestamp
         const sortedMessages = validMessages.sort((a, b) => {
           if (a.admin_context && !b.admin_context) return 1
           if (!a.admin_context && b.admin_context) return -1
@@ -99,7 +99,7 @@ function Support() {
       }
     }
     checkNewMessages()
-    const interval = setInterval(checkNewMessages, 10000) 
+    const interval = setInterval(checkNewMessages, 10000) // Check every 10 seconds
 
     return () => clearInterval(interval)
   }, [fetchUsers])
@@ -151,6 +151,7 @@ function Support() {
     const yourToken = localStorage.getItem("jwt")
 
     try {
+      // Support both id and documentId for backward compatibility
       const messageId = replyToMessage.documentId || replyToMessage.id
 
       const response = await ax.put(
@@ -241,20 +242,47 @@ function Support() {
     </ul>
   )
 
+  // New function to generate a color based on the username
+  const generateColor = (username) => {
+    let hash = 0
+    for (let i = 0; i < username.length; i++) {
+      hash = username.charCodeAt(i) + ((hash << 5) - hash)
+    }
+    const color = `hsl(${hash % 360}, 70%, 70%)`
+    return color
+  }
+
   return (
-    <div className="flex h-screen p-6">
-      {/* Left column */}
-      <div className="w-1/3 bg-gray-100 p-4 overflow-y-auto rounded-lg">
-        <h2 className="text-2xl font-bold mb-4">Users🚹</h2>
+    <div className="flex h-screen">
+      {/* Left column - Updated to resemble messenger chat UI */}
+      <div className="w-1/3 bg-gray-100 overflow-y-auto border-r">
+        <h2 className="text-2xl font-bold p-4 border-b">Chats</h2>
         <ul>
           {users.map((user) => (
             <li
               key={user.id}
-              className={`p-2 cursor-pointer rounded-lg ${selectedUser?.id === user.id ? "bg-blue-200" : "bg-white"}`}
+              className={`p-4 cursor-pointer hover:bg-gray-200 flex items-center ${
+                selectedUser?.id === user.id ? "bg-blue-100" : ""
+              }`}
               onClick={() => handleUserClick(user)}
             >
-              {user.username}
-              {newMessages[user.username] && <span className="text-red-500 font-bold ml-2">🔴</span>}
+              <div
+                className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold mr-3"
+                style={{ backgroundColor: generateColor(user.username) }}
+              >
+                {user.username.charAt(0).toUpperCase()}
+              </div>
+              <div className="flex-grow">
+                <p className="font-semibold">{user.username}</p>
+                <p className="text-sm text-gray-500 truncate">
+                  {newMessages[user.username] ? "New message" : "No new messages"}
+                </p>
+              </div>
+              {newMessages[user.username] && (
+                <span className="bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  !
+                </span>
+              )}
             </li>
           ))}
         </ul>
