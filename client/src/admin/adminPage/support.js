@@ -1,11 +1,11 @@
-"use client"
-
 import { useState, useEffect, useCallback } from "react"
 import ax from "../../conf/ax"
 import { SlActionRedo } from "react-icons/sl"
 import { LuMessageCirclePlus } from "react-icons/lu"
 
 function Support() {
+  const [isBroadcastModalOpen, setIsBroadcastModalOpen] = useState(false)
+  const [broadcastMessage, setBroadcastMessage] = useState("")
   const [users, setUsers] = useState([])
   const [selectedUser, setSelectedUser] = useState(null)
   const [messages, setMessages] = useState([])
@@ -51,7 +51,7 @@ function Support() {
 
       if (response.data && response.data.data) {
         const validMessages = response.data.data.filter((message) => message.id)
-        // Sort messages: unanswered first, then by timestamp
+        // Sort messages by answeredtime and timestamp
         const sortedMessages = validMessages.sort((a, b) => {
           if (a.admin_context && !b.admin_context) return 1
           if (!a.admin_context && b.admin_context) return -1
@@ -99,8 +99,7 @@ function Support() {
       }
     }
     checkNewMessages()
-    const interval = setInterval(checkNewMessages, 10000) // Check every 10 seconds
-
+    const interval = setInterval(checkNewMessages, 10000) 
     return () => clearInterval(interval)
   }, [fetchUsers])
 
@@ -151,7 +150,6 @@ function Support() {
     const yourToken = localStorage.getItem("jwt")
 
     try {
-      // Support both id and documentId for backward compatibility
       const messageId = replyToMessage.documentId || replyToMessage.id
 
       const response = await ax.put(
@@ -191,7 +189,7 @@ function Support() {
             username: selectedUser.username,
             context: newMessageContent,
             admin_context: newMessageContent,
-            timestamp: new Date().toISOString(), // Add timestamp for admin messages
+            timestamp: new Date().toISOString(), 
           },
         },
         {
@@ -207,6 +205,55 @@ function Support() {
       fetchMessages(selectedUser.username)
     } catch (error) {
       console.error("Error sending direct message:", error)
+    }
+  }
+
+  const sendBroadcastMessage = async () => {
+    if (!broadcastMessage.trim()) return
+
+    const yourToken = localStorage.getItem("jwt")
+
+    try {
+      setLoading(true)
+
+      await fetchUsers()
+
+      // Send message to each user
+      for (const user of users) {
+        await ax.post(
+          "/messages",
+          {
+            data: {
+              username: user.username,
+              context: broadcastMessage,
+              admin_context: broadcastMessage,
+              timestamp: new Date().toISOString(),
+            },
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${yourToken}`,
+            },
+          },
+        )
+      }
+
+      console.log("Broadcast message sent successfully to all users")
+      setBroadcastMessage("") // Clear message content after sending
+      setIsBroadcastModalOpen(false)
+
+      if (selectedUser) {
+        await fetchMessages(selectedUser.username)
+      }
+
+      // Show success message
+      alert("Broadcast message sent successfully to all users!")
+    } catch (error) {
+      console.error("Error sending broadcast message:", error)
+      alert("Failed to send broadcast message. Please try again.")
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -242,7 +289,7 @@ function Support() {
     </ul>
   )
 
-  // New function to generate a color based on the username
+  //generate a color based on the username(userprofile)
   const generateColor = (username) => {
     let hash = 0
     for (let i = 0; i < username.length; i++) {
@@ -257,6 +304,13 @@ function Support() {
       {/* Left column - Updated to resemble messenger chat UI */}
       <div className="w-1/3 bg-gray-100 overflow-y-auto border-r">
         <h2 className="text-2xl font-bold p-4 border-b">Chats</h2>
+        <button
+          className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mb-4"
+          onClick={() => setIsBroadcastModalOpen(true)}
+          disabled={loading}
+        >
+          {loading ? "Sending..." : "Send Broadcast Message"}
+        </button>
         <ul>
           {users.map((user) => (
             <li
@@ -299,7 +353,7 @@ function Support() {
               onClick={openNewMessageModal}
             >
               <LuMessageCirclePlus size={20} />
-              Send Message
+              New Message
             </button>
 
             {/* Message list */}
@@ -384,6 +438,35 @@ function Support() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+      {/* Broadcast Modal */}
+      {isBroadcastModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-1/3 max-w-md">
+            <h2 className="text-xl font-bold mb-4">Send Message</h2>
+            <textarea
+              className="w-full border p-2 mt-2 rounded"
+              rows="4"
+              placeholder="Type your broadcast message..."
+              value={broadcastMessage}
+              onChange={(e) => setBroadcastMessage(e.target.value)}
+            />
+            <div className="mt-4 flex justify-end">
+              <button
+                className="bg-gray-400 text-white px-4 py-2 rounded-lg mr-2 hover:bg-gray-500 transition"
+                onClick={() => setIsBroadcastModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                onClick={sendBroadcastMessage}
+              >
+                Send to All
+              </button>
+            </div>
           </div>
         </div>
       )}
