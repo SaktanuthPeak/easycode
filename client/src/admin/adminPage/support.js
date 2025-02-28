@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react"
 import ax from "../../conf/ax"
 import { SlActionRedo } from "react-icons/sl"
 import { LuMessageCirclePlus } from "react-icons/lu"
+import { FiTrash2 } from "react-icons/fi"
 
 function Support() {
   const [isBroadcastModalOpen, setIsBroadcastModalOpen] = useState(false)
@@ -51,7 +52,7 @@ function Support() {
 
       if (response.data && response.data.data) {
         const validMessages = response.data.data.filter((message) => message.id)
-        // Sort messages by answeredtime and timestamp
+        // Sort messages: by message timing and timestamp
         const sortedMessages = validMessages.sort((a, b) => {
           if (a.admin_context && !b.admin_context) return 1
           if (!a.admin_context && b.admin_context) return -1
@@ -100,6 +101,7 @@ function Support() {
     }
     checkNewMessages()
     const interval = setInterval(checkNewMessages, 10000) 
+
     return () => clearInterval(interval)
   }, [fetchUsers])
 
@@ -243,6 +245,7 @@ function Support() {
       setBroadcastMessage("") // Clear message content after sending
       setIsBroadcastModalOpen(false)
 
+      // Refresh messages for the currently selected user
       if (selectedUser) {
         await fetchMessages(selectedUser.username)
       }
@@ -254,6 +257,36 @@ function Support() {
       alert("Failed to send broadcast message. Please try again.")
     } finally {
       setLoading(false)
+    }
+  }
+
+  const deleteMessage = async (messageId) => {
+    if (!messageId) return
+
+    // Confirmation alert before deleting
+    if (!window.confirm("Are you sure for delete this message?")) {
+      return
+    }
+
+    const yourToken = localStorage.getItem("jwt")
+
+    try {
+      await ax.delete(`/messages/${messageId}`, {
+        headers: {
+          Authorization: `Bearer ${yourToken}`,
+        },
+      })
+
+      console.log("Message deleted successfully")
+
+      // Remove the deleted message from the state
+      setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== messageId))
+
+      // Show success message
+      alert("Message deleted successfully")
+    } catch (error) {
+      console.error("Error deleting message:", error)
+      alert("Failed to delete message. Please try again.")
     }
   }
 
@@ -276,12 +309,19 @@ function Support() {
             )}
           </div>
 
-          {isUnanswered && (
+          {isUnanswered ? (
             <button
               className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition flex-shrink-0"
               onClick={() => openReplyModal(message)}
             >
               <SlActionRedo size={20} />
+            </button>
+          ) : (
+            <button
+              className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition flex-shrink-0"
+              onClick={() => deleteMessage(message.id)}
+            >
+              <FiTrash2 size={20} />
             </button>
           )}
         </li>
@@ -289,7 +329,7 @@ function Support() {
     </ul>
   )
 
-  //generate a color based on the username(userprofile)
+  //generate a color based on the username
   const generateColor = (username) => {
     let hash = 0
     for (let i = 0; i < username.length; i++) {
@@ -301,7 +341,7 @@ function Support() {
 
   return (
     <div className="flex h-screen">
-      {/* Left column - Updated to resemble messenger chat UI */}
+      {/* Left column */}
       <div className="w-1/3 bg-gray-100 overflow-y-auto border-r">
         <h2 className="text-2xl font-bold p-4 border-b">Chats</h2>
         <button
@@ -353,7 +393,7 @@ function Support() {
               onClick={openNewMessageModal}
             >
               <LuMessageCirclePlus size={20} />
-              New Message
+              Send Message
             </button>
 
             {/* Message list */}
@@ -445,7 +485,7 @@ function Support() {
       {isBroadcastModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg w-1/3 max-w-md">
-            <h2 className="text-xl font-bold mb-4">Send Message</h2>
+            <h2 className="text-xl font-bold mb-4">Send Broadcast Message</h2>
             <textarea
               className="w-full border p-2 mt-2 rounded"
               rows="4"
