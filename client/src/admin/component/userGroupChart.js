@@ -10,7 +10,7 @@ import {
 } from "recharts";
 import ax from "../../conf/ax";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FFA500"];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#808080"];
 
 export default function UserGroupChart() {
   const [usersData, setUsersData] = useState([]);

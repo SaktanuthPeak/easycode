@@ -3,7 +3,7 @@ import ax from "../../conf/ax";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
-import { ChevronDown, FileText, Check, Search } from "lucide-react";
+import { ChevronDown, FileText, Check } from "lucide-react";
 import SlipModal from "../component/slipModal";
 
 function Order() {
@@ -11,13 +11,28 @@ function Order() {
   const [selectedStatus, setSelectedStatus] = useState({});
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchDate, setSearchDate] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(ordersData?.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const displayedItems = ordersData?.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   const dayjs = require("dayjs");
 
   const openModal = (order) => {
     setSelectedOrder(order);
     setIsModalOpen(true);
   };
+
   const closeModal = () => setIsModalOpen(false);
 
   const fetchOrder = async () => {
@@ -93,12 +108,6 @@ function Order() {
     fetchOrder();
   }, []);
 
-  const filteredOrders = ordersData.filter((order) => {
-    if (!searchDate) return true;
-    const orderDate = new Date(order.createdAt).toISOString().split("T")[0];
-    return orderDate === searchDate;
-  });
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -135,7 +144,7 @@ function Order() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredOrders.map((item) => (
+              {displayedItems.map((item) => (
                 <motion.tr
                   key={item.id} // Changed key to item.id
                   initial={{ opacity: 0, y: 20 }}
@@ -168,7 +177,7 @@ function Order() {
                         onChange={(e) =>
                           setSelectedStatus({
                             ...selectedStatus,
-                            [item.documentId]: e.target.value, // Changed key to item.id
+                            [item.documentId]: e.target.value,
                           })
                         }
                         className={`appearance-none w-full border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${
@@ -217,6 +226,37 @@ function Order() {
             </tbody>
           </table>
         </div>
+      </div>
+      <div className="flex justify-end mt-4 space-x-2">
+        <button
+          onClick={() => goToPage(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-3 py-1 border bg-white rounded disabled:opacity-50"
+        >
+          Prev
+        </button>
+
+        {[...Array(totalPages)].map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goToPage(i + 1)}
+            className={`px-3 py-1 border rounded ${
+              currentPage === i + 1
+                ? "bg-blue-500 text-white"
+                : "hover:bg-gray-200 bg-white"
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
+
+        <button
+          onClick={() => goToPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-3 py-1 border rounded bg-white disabled:opacity-50"
+        >
+          Next
+        </button>
       </div>
     </motion.div>
   );

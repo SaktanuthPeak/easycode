@@ -9,6 +9,22 @@ import { Plus, Edit, Search, Star, BookOpen } from "lucide-react";
 const Courses = () => {
   const [coursesData, setCoursesData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+  const totalPages = Math.ceil(coursesData?.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const displayedItems = coursesData?.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   const navigate = useNavigate();
 
   const fetchCourses = async () => {
@@ -69,7 +85,7 @@ const Courses = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ">
-          {filteredCourses.map((item, index) => (
+          {displayedItems.map((item, index) => (
             <motion.div
               key={item.documentId}
               initial={{ opacity: 0, y: 20 }}
@@ -145,6 +161,37 @@ const Courses = () => {
             </p>
           </div>
         )}
+        <div className="flex justify-end mt-4 space-x-2">
+          <button
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-3 py-1 border bg-white rounded disabled:opacity-50"
+          >
+            prev
+          </button>
+
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goToPage(i + 1)}
+              className={`px-3 py-1 border rounded ${
+                currentPage === i + 1
+                  ? "bg-blue-500 text-white"
+                  : "hover:bg-gray-200 bg-white"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 border bg-white rounded disabled:opacity-50"
+          >
+            next
+          </button>
+        </div>
       </div>
     </div>
   );
