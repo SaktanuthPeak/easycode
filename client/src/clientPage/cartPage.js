@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Trash2 } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ax from "../conf/ax";
 import conf from '../conf/main';
 import no_image_available from "./images/No_image_available.svg.jpg";

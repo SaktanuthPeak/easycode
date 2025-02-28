@@ -1,5 +1,4 @@
 import React, { createContext, useReducer, useContext } from 'react';
-import no_image_available from "../clientPage/images/No_image_available.svg.jpg";
 
 const CartContext = createContext(null);
 
@@ -25,9 +24,7 @@ export const CartProvider = ({ children }) => {
                 id: course.id,
                 name: course.Course_name,
                 price: course.price,
-                image: course.course_img?.length > 0
-                    ? `http://localhost:1337${course.course_img[0].url}`
-                    : no_image_available
+
             }
         });
     };

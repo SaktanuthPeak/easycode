@@ -5,7 +5,6 @@ import * as htmlToImage from "html-to-image";
 import download from "downloadjs";
 import ax from "../conf/ax";
 import conf from "../conf/main";
-import no_image_available from "./images/No_image_available.svg.jpg";
 import certificateImg from "./images/certificate.png";
 import ReviewModal from "../component/reviewModal";
 import { motion, AnimatePresence } from "framer-motion";
