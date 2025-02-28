@@ -358,7 +358,7 @@ function Support() {
   return (
     <div className="flex h-screen">
       {/* Left column */}
-      <div className="w-1/3 bg-gray-100 overflow-y-auto border-r">
+      <div className="w-1/3 bg-gray-100 overflow-y-auto border-r rounded-lg">
         <h2 className="text-2xl font-bold p-4 border-b">Chats</h2>
         <button
           className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mb-4"
