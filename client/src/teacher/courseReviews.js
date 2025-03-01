@@ -28,7 +28,7 @@ const CourseReviewsPage = () => {
         fetchInstructorData();
     }, []);
 
-    // Calculate the total number of reviews across all courses
+
     const getTotalReviewCount = () => {
         if (!instructorData) return 0;
         return instructorData.courses.reduce((total, course) => {
