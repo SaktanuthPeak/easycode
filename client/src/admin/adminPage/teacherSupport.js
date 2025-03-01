@@ -77,7 +77,18 @@ export default function TeacherSupport() {
         setUserData(response.data.data.users_permissions_user);
 
         await ax.put(`/users/${response.data.data.users_permissions_user.id}`, {
-          date: { role: 5 },
+          role: 5,
+        });
+        console.log("put role complete");
+      }
+      if (newStatus === "deny") {
+        const response = await ax.get(
+          `/instructors/${selectedTeacher.id}?populate=*`
+        );
+        setUserData(response.data.data.users_permissions_user);
+
+        await ax.put(`/users/${response.data.data.users_permissions_user.id}`, {
+          role: 1,
         });
         console.log("put role complete");
       }

@@ -157,6 +157,9 @@ function Teacher() {
 
   return (
     <Container className="mt-10">
+      <div className="container mx-auto mt-10 p-4">
+        <h1 className="text-3xl font-bold mb-6">Teacher management</h1>
+      </div>
       {/* 🔍 Search Bar */}
       <TextField
         label="ค้นหาครู (ชื่อ, นามสกุล, อีเมล)"
