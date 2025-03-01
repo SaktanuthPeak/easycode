@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import { AttachMoney as MoneyIcon } from "@mui/icons-material";
 import ax from "../../conf/ax";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 
 export default function TotalIncomeCard() {

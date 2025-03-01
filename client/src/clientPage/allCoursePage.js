@@ -6,8 +6,7 @@ import no_image_available from "./images/No_image_available.svg.jpg";
 import { motion } from "framer-motion";
 import CategorySidebar from "../component/categorySidebar";
 import { Search } from "lucide-react";
-import PriceRangeSlider from "../component/rangeSlider";
-import WebFooter from "../component/webFooter";
+
 
 const AllCoursePage = () => {
     const [courses, setCourses] = useState([]);

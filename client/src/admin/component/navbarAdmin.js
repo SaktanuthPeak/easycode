@@ -4,14 +4,12 @@ import {
   ChevronLeft,
   BookMinus,
   LaptopMinimal,
-  Home,
   Package,
   Tickets,
   CircleHelp,
   BadgeHelp,
-  User,
-  Settings,
   School,
+  LogOut,
 } from "lucide-react";
 import { Outlet, useNavigate } from "react-router-dom";
 
@@ -33,7 +31,7 @@ export default function NavbarAdmin() {
       <div
         className={`flex-1 transition-all duration-300 ${
           isOpen ? "ml-64" : "ml-20"
-        } p-6`}
+        } `}
       >
         <Outlet />
       </div>
@@ -93,7 +91,7 @@ function Sidebar({ isOpen, toggle, onLogout, navigate }) {
         />
         <NavItem
           icon={BadgeHelp}
-          label="Teacher Support"
+          label="Instructor confirmation"
           isOpen={isOpen}
           path="/teacher-support"
           navigate={navigate}
@@ -106,7 +104,7 @@ function Sidebar({ isOpen, toggle, onLogout, navigate }) {
           navigate={navigate}
         />
         <NavItem
-          icon={Settings}
+          icon={LogOut}
           label="Logout"
           isOpen={isOpen}
           onClick={onLogout}

@@ -198,7 +198,6 @@ const ClientHomePage = () => {
                 setCategories(fetchedCategories);
             } catch (error) {
                 console.error("Error fetching categories:", error);
-
             }
         };
 

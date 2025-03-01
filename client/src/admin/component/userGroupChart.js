@@ -10,7 +10,7 @@ import {
 } from "recharts";
 import ax from "../../conf/ax";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FFA500"];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#808080"];
 
 export default function UserGroupChart() {
   const [usersData, setUsersData] = useState([]);
@@ -29,7 +29,7 @@ export default function UserGroupChart() {
   }, []);
 
   const splitUserGroup = (usersData) => {
-    const splitData = [0, 0, 0, 0]; // Fixed size to match the indices used
+    const splitData = [0, 0, 0, 0];
     const groupIndices = {
       "high-school student": 0,
       "university/college student": 1,

@@ -5,7 +5,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ax from "../conf/ax";
 import conf from "../conf/main";
-import { Star, Globe, ShoppingCart, Trash2 } from "lucide-react";
+import { Star, Globe, ShoppingCart, Trash2, CheckCircle } from "lucide-react";
 import { useCart } from "../context/Cart.context";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,6 +19,7 @@ const CoursePage = () => {
   const [activeTab, setActiveTab] = useState("description");
   const { cart, addToCart, removeFromCart } = useCart();
   const [isLiked, setIsLiked] = useState(false);
+  const [isBought, setIsBought] = useState(false);
   const navigate = useNavigate();
 
   const checkUserLikeStatus = async () => {
@@ -40,7 +41,7 @@ const CoursePage = () => {
       alert("Failed to check like status. Please try again.");
     }
   };
-  checkUserLikeStatus();
+
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
@@ -54,7 +55,6 @@ const CoursePage = () => {
             ...response.data.data[0],
             id: response.data.data[0].documentId,
           });
-
         } else {
           setCourseDetails("Course not found eieieieiei");
         }
@@ -64,11 +64,30 @@ const CoursePage = () => {
       }
     };
 
+    const checkUserBuyStatus = async () => {
+      try {
+        const userResponse = await ax.get(`/users/me?populate=courses`);
 
+        if (!userResponse.data) {
+          throw new Error("User data not found");
+        }
+
+        const ownedCourses = userResponse.data?.courses || [];
+
+        const hasBought = ownedCourses.some(
+          (course) => course.documentId === courseId
+        );
+        setIsBought(hasBought);
+      } catch (error) {
+        console.error("Error checking buy status:", error);
+        toast.error("Failed to check purchase status");
+      }
+    };
 
     fetchCourseDetails();
-  }
-    , [courseId]);
+    checkUserLikeStatus();
+    checkUserBuyStatus();
+  }, [courseId]);
 
   if (!courseDetails || typeof courseDetails === "string") {
     return (
@@ -84,18 +103,17 @@ const CoursePage = () => {
       ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}`
       : img.url;
   };
+
   const handleLikeButtonClick = async () => {
     try {
       const userResponse = await ax.get(`/users/me`);
       const currentUserId = userResponse.data.documentId;
 
       if (isLiked) {
-
         await ax.put(`/courses/${courseId}`, {
           data: { liked_users: { disconnect: [currentUserId] } },
         });
       } else {
-
         await ax.put(`/courses/${courseId}`, {
           data: { liked_users: { connect: [currentUserId] } },
         });
@@ -112,7 +130,6 @@ const CoursePage = () => {
       alert("Failed to update like status. Please try again.");
     }
   };
-
 
   return (
     <div className="min-h-screen ">
@@ -289,11 +306,9 @@ const CoursePage = () => {
                   )}
                   {activeTab === "review" && (
                     <div className="bg-white p-6 rounded-lg shadow-sm">
-                      <h2 className="text-2xl font-semibold mb-4">
-                        Reviews from users
-                      </h2>
+                      <h2 className="text-2xl font-semibold mb-4">Reviews from users</h2>
                       {courseDetails.reviews && courseDetails.reviews.length > 0 ? (
-                        <div className="space-y-4">
+                        <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
                           {courseDetails.reviews.map((review, index) => (
                             <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 transition-all hover:shadow-md">
                               <div className="flex items-start">
@@ -371,33 +386,57 @@ const CoursePage = () => {
                     </span>
                   </div>
                   <div className="space-y-3">
-                    {!isInCart ? (
-                      <button
-                        onClick={() => {
-                          addToCart({
-                            ...courseDetails,
-                            courseId: courseId,
-                          });
-                          navigate("/client-home/cart", {
-                            state: { courseId: courseId },
-                          });
-                        }}
-                        className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
-                      >
-                        <ShoppingCart className="w-5 h-5" /> Add To Cart
-                      </button>
+                    {isBought ? (
+                      <div className="w-full bg-green-500 text-white py-2 px-4 rounded-lg flex items-center justify-center gap-2">
+                        <CheckCircle className="w-5 h-5" />
+                        You Already Own This Course
+                      </div>
                     ) : (
-                      <button
-                        onClick={() => removeFromCart(courseDetails.id)}
-                        className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
-                      >
-                        <Trash2 className="w-5 h-5" />
-                        Remove from Cart
-                      </button>
+                      <>
+                        {!isInCart ? (
+                          <button
+                            onClick={() => {
+                              addToCart({
+                                ...courseDetails,
+                                courseId: courseId,
+                              });
+                              navigate("/client-home/cart", {
+                                state: { courseId: courseId },
+                              });
+                            }}
+                            className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                            disabled={isBought}
+                          >
+                            <ShoppingCart className="w-5 h-5" /> Add To Cart
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => removeFromCart(courseDetails.id)}
+                            className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                            Remove from Cart
+                          </button>
+                        )}
+                        <button
+                          className={`w-full ${isBought
+                            ? "bg-green-500 text-white"
+                            : "border border-gray-300 hover:bg-gray-50"} py-2 px-4 rounded-lg transition-colors`}
+                          disabled={isBought}
+                        >
+                          {isBought ? "You Already Own This Course" : "Buy Now"}
+                        </button>
+                      </>
                     )}
-                    <button className="w-full border border-gray-300 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors">
-                      Buy Now
-                    </button>
+
+                    {isBought && (
+                      <Link
+                        to={`/client-home/my-learning/${courseId}`}
+                        className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 mt-2"
+                      >
+                        Start Learning
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
@@ -405,9 +444,9 @@ const CoursePage = () => {
           </div>
         </div>
       </div>
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
   );
 };
-
 
 export default CoursePage;

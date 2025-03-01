@@ -54,7 +54,7 @@ const MessageModal = ({ onClose }) => {
         };
 
         fetchUserData();
-    }, []); // ดึงข้อมูลเฉพาะตอนโมดัลเปิดครั้งแรก
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -69,7 +69,7 @@ const MessageModal = ({ onClose }) => {
                 }
             });
 
-            // Reset form and close modal on success
+
             setFormData({ username: userData?.username || '', context: '' });
             onClose();
 

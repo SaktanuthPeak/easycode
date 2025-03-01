@@ -4,8 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import ax from "../conf/ax"
-import { Star, Globe, ShoppingCart, Trash2 } from "lucide-react"
-import { useCart } from '../context/Cart.context'
+import { Star, Globe, ShoppingCart } from "lucide-react"
 import no_image_available from "./images/No_image_available.svg.jpg"
 import conf from "../conf/main"
 
@@ -14,9 +13,6 @@ const CoursePreviewPage = () => {
     const { categoryId } = useParams()
     const [courseDetails, setCourseDetails] = useState(null)
     const [activeTab, setActiveTab] = useState("description")
-    // const baseURL = "http://localhost:1337"
-    const baseURL = conf.apiUrlPrefix;
-    const { cart, addToCart, removeFromCart } = useCart()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -57,7 +53,6 @@ const CoursePreviewPage = () => {
         return <div className="p-8 text-center">{courseDetails || "Loading..."}</div>
     }
 
-    const isInCart = cart.some(item => item.id === courseDetails.id)
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -188,22 +183,15 @@ const CoursePreviewPage = () => {
                                         <span className="text-3xl font-bold">{courseDetails.price}฿</span>
                                     </div>
                                     <div className="space-y-3">
-                                        {!isInCart ? (
-                                            <button
-                                                onClick={handlePreviewCart}
-                                                className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
-                                            >
-                                                <ShoppingCart className="w-5 h-5" /> Add To Cart
-                                            </button>
-                                        ) : (
-                                            <button
-                                                onClick={() => removeFromCart(courseDetails.id)}
-                                                className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
-                                            >
-                                                <Trash2 className="w-5 h-5" />
-                                                Remove from Cart
-                                            </button>
-                                        )}
+
+                                        <button
+                                            onClick={handlePreviewCart}
+                                            className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                                        >
+                                            <ShoppingCart className="w-5 h-5" /> Add To Cart
+                                        </button>
+
+
                                         <button className="w-full border border-gray-300 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                                             Buy Now
                                         </button>

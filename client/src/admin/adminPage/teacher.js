@@ -157,6 +157,9 @@ function Teacher() {
 
   return (
     <Container className="mt-10">
+      <div className="container mx-auto mt-10 p-4">
+        <h1 className="text-3xl font-bold mb-6">Teacher management</h1>
+      </div>
       {/* 🔍 Search Bar */}
       <TextField
         label="ค้นหาครู (ชื่อ, นามสกุล, อีเมล)"
@@ -184,11 +187,13 @@ function Teacher() {
             {filteredTeachers.map((teacher, index) => (
               <TableRow key={teacher.id} hover style={{ cursor: "pointer" }}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{teacher.users_permissions_user.email}</TableCell>
+                <TableCell>{teacher?.users_permissions_user?.email}</TableCell>
                 <TableCell>
-                  {teacher.users_permissions_user.firstname}
+                  {teacher?.users_permissions_user?.firstname}
                 </TableCell>
-                <TableCell>{teacher.users_permissions_user.lastname}</TableCell>
+                <TableCell>
+                  {teacher?.users_permissions_user?.lastname}
+                </TableCell>
                 <TableCell>
                   {(teacher.courses || []).map((x) => x.Course_name).join(", ")}
                 </TableCell>

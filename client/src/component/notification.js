@@ -70,14 +70,14 @@ const Notification = ({ notifications, fetchNotifications, deleteNotification })
                                                             className="flex justify-between items-center px-4 py-2 hover:bg-gray-100"
                                                         >
                                                             <div>
-                                                                {contextMessage && (
-                                                                    <p className="text-sm text-gray-800">
-                                                                        💬 <span className="font-semibold">{contextMessage}</span>
-                                                                    </p>
-                                                                )}
                                                                 {adminContext && (
                                                                     <p className="text-sm text-gray-800">
-                                                                        Reply from admin 🛡️: <span className="font-semibold">{adminContext}</span>
+                                                                        🛡️: <span className="font-semibold">{adminContext}</span>
+                                                                    </p>
+                                                                )}
+                                                                {!adminContext && contextMessage && (
+                                                                    <p className="text-sm text-gray-800">
+                                                                        you : <span className="font-semibold">{contextMessage}</span>
                                                                     </p>
                                                                 )}
                                                                 {!contextMessage && !adminContext && (
