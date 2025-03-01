@@ -8,7 +8,7 @@ import { useCart } from '../context/Cart.context';
 import dayjs from 'dayjs';
 
 const CartPage = () => {
-    const { cart, removeFromCart } = useCart();
+    const { cart, removeFromCart, clearCart } = useCart();
     const [courses, setCourses] = useState([]);
     const navigate = useNavigate();
     const [couponCode, setCouponCode] = useState('');
@@ -16,7 +16,17 @@ const CartPage = () => {
     const [finalTotal, setFinalTotal] = useState(0);
     const [couponError, setCouponError] = useState('');
     const [originalTotal, setOriginalTotal] = useState(0);
-
+    const handleCheckout = () => {
+        navigate("/client-home/cart/payment", {
+            state: {
+                total: finalTotal,
+                course_name: cart.map(course => course.name).join(','),
+                document_ids: cart.map(course => course.id).join(','),
+                discount: discount
+            }
+        });
+        clearCart();
+    };
 
     useEffect(() => {
         const fetchCourseDetails = async () => {
@@ -85,13 +95,13 @@ const CartPage = () => {
                             setCouponError('This coupon code has expired.');
                             setDiscount(0);
                             setFinalTotal(originalTotal);
-                            return; // Stop applying coupon
+                            return;
                         }
                     }
                     let calculatedDiscount = 0;
                     const orderTotal = calculateOrderDetails().total;
 
-                    if (couponData.discount_percent) { // Use discount_percent from JSON
+                    if (couponData.discount_percent) {
                         calculatedDiscount = (orderTotal * couponData.discount_percent) / 100;
                     } else {
                         setCouponError('Coupon does not have a discount percentage.');
@@ -209,14 +219,7 @@ const CartPage = () => {
                             </div>
                         </div>
                         <button
-                            onClick={() => navigate("/client-home/cart/payment", {
-                                state: {
-                                    total: finalTotal,
-                                    course_name: courses.map(course => course.Course_name).join(','),
-                                    document_ids: courses.map(course => course.documentId).join(','),
-                                    discount: discount
-                                }
-                            })}
+                            onClick={handleCheckout}
                             disabled={courses.length === 0}
                             className={`w-full py-3 rounded-lg transition flex items-center justify-center
                             ${courses.length === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-black text-white hover:bg-gray-800"}`}

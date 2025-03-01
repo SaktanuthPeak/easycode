@@ -1,14 +1,15 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
 
-const CartContext = createContext(null);
+const CartContext = createContext();
 
 const cartReducer = (state, action) => {
     switch (action.type) {
         case 'ADD_TO_CART':
-            if (state.some(item => item.id === action.payload.id)) return state;
             return [...state, action.payload];
         case 'REMOVE_FROM_CART':
             return state.filter(item => item.id !== action.payload.id);
+        case 'CLEAR_CART':
+            return [];
         default:
             return state;
     }
@@ -24,7 +25,6 @@ export const CartProvider = ({ children }) => {
                 id: course.id,
                 name: course.Course_name,
                 price: course.price,
-
             }
         });
     };
@@ -33,8 +33,12 @@ export const CartProvider = ({ children }) => {
         dispatch({ type: 'REMOVE_FROM_CART', payload: { id: courseId } });
     };
 
+    const clearCart = () => {
+        dispatch({ type: 'CLEAR_CART' });
+    };
+
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
             {children}
         </CartContext.Provider>
     );
