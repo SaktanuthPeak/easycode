@@ -1,9 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import ax from "../../conf/ax";
 import { toast } from "react-toastify";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { Upload } from "lucide-react";
-import conf from "../../conf/main";
 
 export default function CreateAndEditCoupon({
   isOpen,
@@ -14,13 +11,14 @@ export default function CreateAndEditCoupon({
   const [code, setCode] = useState("");
   const [discount, setDiscount] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
-  const navigate = useNavigate();
+  const [startDate, setStartDate] = useState("");
 
   useEffect(() => {
     if (editCoupon) {
       setCode(editCoupon.coupon);
       setDiscount(editCoupon.discount_percent);
       setExpirationDate(editCoupon.expired_date);
+      setStartDate(editCoupon.start_date);
     }
   }, [editCoupon]);
 
@@ -31,6 +29,7 @@ export default function CreateAndEditCoupon({
         coupon: code,
         discount_percent: discount,
         expired_date: expirationDate,
+        start_date: startDate,
       },
     };
     try {
@@ -87,6 +86,22 @@ export default function CreateAndEditCoupon({
           required
           min="0"
           max="100"
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="expirationDate"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Start Date
+        </label>
+        <input
+          type="date"
+          id="startDate"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          required
         />
       </div>
       <div>

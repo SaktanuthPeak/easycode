@@ -2,7 +2,6 @@ import { Card, CardContent, Typography, Box } from "@mui/material";
 import { Book as BookIcon } from "@mui/icons-material";
 import ax from "../../conf/ax";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
 
 export default function TotalCourseCard() {
   const [totalCourse, setTotalCourse] = useState(0);

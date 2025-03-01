@@ -8,7 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -22,6 +22,9 @@
     "expired_date": {
       "type": "date",
       "required": true
+    },
+    "start_date": {
+      "type": "date"
     }
   }
 }

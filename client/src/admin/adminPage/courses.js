@@ -4,11 +4,31 @@ import { motion } from "framer-motion";
 import ax from "../../conf/ax";
 import conf from "../../conf/main";
 import no_image_available from "../../clientPage/images/No_image_available.svg.jpg";
-import { Plus, Edit, Search } from "lucide-react";
+import { Plus, Edit, Search, Star, BookOpen } from "lucide-react";
 
 const Courses = () => {
   const [coursesData, setCoursesData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const filteredCourses = coursesData.filter((course) =>
+    course.Course_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const itemsPerPage = 16;
+  const totalPages = Math.ceil(filteredCourses?.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const displayedItems = filteredCourses?.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   const navigate = useNavigate();
 
   const fetchCourses = async () => {
@@ -22,7 +42,7 @@ const Courses = () => {
 
   useEffect(() => {
     fetchCourses();
-  }, []); 
+  }, []);
 
   const getImageUrl = (img) => {
     if (!img || !img.url) return no_image_available;
@@ -31,18 +51,14 @@ const Courses = () => {
       : img.url;
   };
 
-  const filteredCourses = coursesData.filter((course) =>
-    course.Course_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
-    <div className=" min-h-screen py-8">
-      <div className="container mx-auto px-4">
+    <div className="bg-gray-50 min-h-screen py-8">
+      <div className="mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">
             Courses Management
           </h1>
-          <div className="flex items-center  space-x-4">
+          <div className="flex items-center space-x-4">
             <div className="relative">
               <input
                 type="text"
@@ -69,7 +85,7 @@ const Courses = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ">
-          {filteredCourses.map((item, index) => (
+          {displayedItems.map((item, index) => (
             <motion.div
               key={item.documentId}
               initial={{ opacity: 0, y: 20 }}
@@ -105,17 +121,28 @@ const Courses = () => {
                 <h3 className="font-bold text-xl mb-2 text-gray-800">
                   {item.Course_name}
                 </h3>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                  {item.course_description}
-                </p>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => navigate(`/courses/${item.documentId}`)}
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 w-full text-center"
-                >
-                  View Details
-                </motion.button>
+                <div className="">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() =>
+                      navigate(`/courses/${item.documentId}/reviews`)
+                    }
+                    className="flex items-center justify-center text-xs bg-amber-500 hover:bg-amber-500 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 w-full text-center mr-1"
+                  >
+                    <Star className="w-4 h-4 mr-2" />
+                    <p>View Reviews</p>
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => navigate(`/courses/${item.documentId}`)}
+                    className="flex items-center justify-center text-xs bg-blue-500 hover:bg-blue-600 text-white font-bold my-2 py-2 px-4 rounded-full transition-colors duration-300 w-full text-center"
+                  >
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    <p>View Chapter</p>
+                  </motion.button>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -131,6 +158,37 @@ const Courses = () => {
             </p>
           </div>
         )}
+        <div className="flex justify-end mt-4 space-x-2">
+          <button
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-3 py-1 border bg-white rounded disabled:opacity-50"
+          >
+            prev
+          </button>
+
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goToPage(i + 1)}
+              className={`px-3 py-1 border rounded ${
+                currentPage === i + 1
+                  ? "bg-blue-500 text-white"
+                  : "hover:bg-gray-200 bg-white"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 border bg-white rounded disabled:opacity-50"
+          >
+            next
+          </button>
+        </div>
       </div>
     </div>
   );

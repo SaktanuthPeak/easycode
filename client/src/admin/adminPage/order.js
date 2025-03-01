@@ -12,22 +12,36 @@ function Order() {
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(ordersData?.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const displayedItems = ordersData?.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   const dayjs = require("dayjs");
 
   const openModal = (order) => {
     setSelectedOrder(order);
     setIsModalOpen(true);
   };
+
   const closeModal = () => setIsModalOpen(false);
 
   const fetchOrder = async () => {
     try {
       const orders = await ax.get(`/admin-confirmations?populate=*`);
       const orderData = orders.data.data;
-      const statusOrder = { pending: 1, "not confirm": 2, confirm: 3 };
 
       const sortedData = orderData.sort(
-        (a, b) => statusOrder[a.order_status] - statusOrder[b.order_status]
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
 
       setOrdersData(sortedData);
@@ -38,7 +52,6 @@ function Order() {
   };
 
   const handleUpdateStatus = async (item) => {
-    console.log(item);
     if (!selectedStatus[item.documentId]) {
       toast.warn("Please select a status before submitting.");
       return;
@@ -50,15 +63,12 @@ function Order() {
 
     if (!confirmUpdate) return;
     try {
-      //edit status
       await ax.put(`/admin-confirmations/${item.documentId}`, {
         data: {
           order_status: selectedStatus[item.documentId],
         },
       });
 
-      //add course to relation
-      console.log(selectedStatus[item.documentId] === "confirm");
       if (selectedStatus[item.documentId] === "confirm") {
         const listBuyCourse = item.course_documentid
           .replace(/\[|\]/g, "")
@@ -80,8 +90,6 @@ function Order() {
                 users: totalUser,
               },
             });
-
-            console.log("add relation complete");
           } catch (error) {
             console.log("this is error", error);
           }
@@ -105,20 +113,22 @@ function Order() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="container mx-auto px-4 py-8"
+      className="min-h-screen bg-gray-50 container mx-auto px-4 py-8"
     >
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">
           Order Management
         </h1>
-        <p className="text-gray-600">
-          Efficiently manage and update order statuses
-        </p>
+        <div>
+          <p className="text-gray-600">
+            Efficiently manage and update order statuses
+          </p>
+        </div>
       </div>
 
       <div className="bg-white shadow-xl rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="min-w-auto w-full divide-y">
             <thead className="bg-gray-50">
               <tr>
                 {["Date", "Name", "Email", "Course", "Status", "Action"].map(
@@ -134,7 +144,7 @@ function Order() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {ordersData.map((item) => (
+              {displayedItems.map((item) => (
                 <motion.tr
                   key={item.id} // Changed key to item.id
                   initial={{ opacity: 0, y: 20 }}
@@ -148,26 +158,32 @@ function Order() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {item.Username}
                   </td>{" "}
-                  {/* Accessing nested attributes */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {item.Email}
                   </td>{" "}
-                  {/* Accessing nested attributes */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {item.Applied_course}
+                    {item.Applied_course.length > 70
+                      ? item.Applied_course.match(/.{1,70}/g).map(
+                          (chunk, i) => (
+                            <span key={i}>
+                              {chunk}
+                              <br />
+                            </span>
+                          )
+                        )
+                      : item.Applied_course}
                   </td>{" "}
-                  {/* Accessing nested attributes */}
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="relative">
                       <select
-                        id={`status_order_${item.documentId}`} // Changed id to item.id
+                        id={`status_order_${item.documentId}`}
                         value={
                           selectedStatus[item.documentId] || item.order_status
-                        } // Use existing status if available
+                        }
                         onChange={(e) =>
                           setSelectedStatus({
                             ...selectedStatus,
-                            [item.documentId]: e.target.value, // Changed key to item.id
+                            [item.documentId]: e.target.value,
                           })
                         }
                         className={`appearance-none w-full border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${
@@ -216,6 +232,37 @@ function Order() {
             </tbody>
           </table>
         </div>
+      </div>
+      <div className="flex justify-end mt-4 space-x-2">
+        <button
+          onClick={() => goToPage(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-3 py-1 border bg-white rounded disabled:opacity-50"
+        >
+          Prev
+        </button>
+
+        {[...Array(totalPages)].map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goToPage(i + 1)}
+            className={`px-3 py-1 border rounded ${
+              currentPage === i + 1
+                ? "bg-blue-500 text-white"
+                : "hover:bg-gray-200 bg-white"
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
+
+        <button
+          onClick={() => goToPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-3 py-1 border rounded bg-white disabled:opacity-50"
+        >
+          Next
+        </button>
       </div>
     </motion.div>
   );

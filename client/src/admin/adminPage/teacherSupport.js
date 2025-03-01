@@ -14,6 +14,12 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
 } from "@mui/material";
 
 export default function TeacherSupport() {
@@ -21,6 +27,9 @@ export default function TeacherSupport() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [newStatus, setNewStatus] = useState("");
 
   useEffect(() => {
     const fetchTeacherDetails = async () => {
@@ -28,12 +37,11 @@ export default function TeacherSupport() {
         const response = await ax.get("/instructors?populate=*");
         const data = response.data.data;
 
-        // แปลงข้อมูลให้เหมาะสม
         const transformedData = data.map((teacher) => ({
-          id: teacher.documentId,
-          name: `${teacher.name_teacher}`,
-          email: teacher.users_permissions_user.email,
-          status: teacher.statusT || "pending",
+          id: teacher?.documentId,
+          name: `${teacher?.name_teacher}`,
+          email: teacher?.users_permissions_user?.email,
+          status: teacher?.statusT || "pending",
         }));
 
         setTeachers(transformedData);
@@ -48,43 +56,42 @@ export default function TeacherSupport() {
     fetchTeacherDetails();
   }, []);
 
-  const handleStatusChange = async (teacherId, newStatus) => {
-    console.log("teacherId", teacherId);
-    console.log("newStatus", newStatus);
-    console.log();
+  const handleStatusChange = async () => {
+    if (!selectedTeacher) return;
     try {
-      // อัปเดตสถานะที่เซิร์ฟเวอร์
-      await ax.put(`/instructors/${teacherId}`, {
+      await ax.put(`/instructors/${selectedTeacher.id}`, {
         data: { statusT: newStatus },
       });
-
-      // อัปเดตสถานะใน State
       setTeachers(
         teachers.map((teacher) =>
-          teacher.id === teacherId ? { ...teacher, status: newStatus } : teacher
+          teacher.id === selectedTeacher.id
+            ? { ...teacher, status: newStatus }
+            : teacher
         )
       );
 
       if (newStatus === "confirm") {
-        ///role id:5 = Teacher
-        const response = await ax.get(`/instructors/${teacherId}?populate=*`);
+        const response = await ax.get(
+          `/instructors/${selectedTeacher.id}?populate=*`
+        );
         setUserData(response.data.data.users_permissions_user);
 
-        const putData = await ax.put(
-          `/users/${response.data.data.users_permissions_user.id}`,
-          {
-            date: {
-              role: 5,
-            },
-          }
-        );
-        console.log(putData);
+        await ax.put(`/users/${response.data.data.users_permissions_user.id}`, {
+          date: { role: 5 },
+        });
         console.log("put role complete");
       }
     } catch (error) {
       console.error("Failed to update instructor status", error);
       setError("Failed to update instructor status");
     }
+    setOpen(false);
+  };
+
+  const handleOpenModal = (teacher, status) => {
+    setSelectedTeacher(teacher);
+    setNewStatus(status);
+    setOpen(true);
   };
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
@@ -114,9 +121,7 @@ export default function TeacherSupport() {
                     <InputLabel shrink>Status</InputLabel>
                     <Select
                       value={teacher.status}
-                      onChange={(e) =>
-                        handleStatusChange(teacher.id, e.target.value)
-                      }
+                      onChange={(e) => handleOpenModal(teacher, e.target.value)}
                       label="Status"
                     >
                       <MenuItem value="pending">Pending</MenuItem>
@@ -130,6 +135,24 @@ export default function TeacherSupport() {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Confirm Status Change</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to change the status to "{newStatus}" for{" "}
+            {selectedTeacher?.name}?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleStatusChange} color="primary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

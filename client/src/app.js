@@ -51,6 +51,8 @@ import Coupons from "./admin/adminPage/coupons";
 import CreateAndEditCoupon from "./admin/component/createAndEditCoupon";
 import TeacherDetailPage from "./admin/adminPage/teacherDetail";
 import TeacherStudent from "./admin/adminPage/teacherStudent";
+import Reviews from "./admin/adminPage/reviews";
+
 // Import components
 import NavbarLogin from "./component/navbarLogin";
 import NavbarPreview from "./component/navbarPreview";
@@ -118,6 +120,8 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
               element={<CreateAndEditCoupon />}
             />
             <Route path="/coupons/create" element={<CreateAndEditCoupon />} />
+            <Route path="/courses/:courseId/reviews" element={<Reviews />} />
+            <Route path="/coupons/create" element={<CreateAndEditCoupon />} />
           </Route>
           {/*Coupon */}
         </Routes>
@@ -162,7 +166,6 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
         />
 
 
-
       </Routes>
     );
   }
@@ -196,7 +199,6 @@ const App = () => {
           setUserRole(role);
 
           setHomePath(role === "admin" ? "/dashboard" : "/client-home");
-
         } catch (error) {
           console.error("Error fetching role:", error);
           setUserRole(null);
@@ -205,16 +207,15 @@ const App = () => {
         }
       };
       const fetchInstructor = async () => {
-        const result = await ax.get(`/users/me?populate=instructor`)
-        console.log("fetch================", result.data.instructor)
-        const teacherStatus = result.data.instructor?.statusT
+        const result = await ax.get(`/users/me?populate=instructor`);
+        console.log("fetch================", result.data.instructor);
+        const teacherStatus = result.data.instructor?.statusT;
         if (teacherStatus === "confirm") {
-          setUserNavBar(<TeacherNavBar handleLogout={handleLogout} />)
+          setUserNavBar(<TeacherNavBar handleLogout={handleLogout} />);
         } else {
-          setUserNavBar(<NavbarLogin handleLogout={handleLogout} />)
+          setUserNavBar(<NavbarLogin handleLogout={handleLogout} />);
         }
-
-      }
+      };
 
       fetchInstructor();
       fetchRole();

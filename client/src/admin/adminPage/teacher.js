@@ -184,11 +184,13 @@ function Teacher() {
             {filteredTeachers.map((teacher, index) => (
               <TableRow key={teacher.id} hover style={{ cursor: "pointer" }}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{teacher.users_permissions_user.email}</TableCell>
+                <TableCell>{teacher?.users_permissions_user?.email}</TableCell>
                 <TableCell>
-                  {teacher.users_permissions_user.firstname}
+                  {teacher?.users_permissions_user?.firstname}
                 </TableCell>
-                <TableCell>{teacher.users_permissions_user.lastname}</TableCell>
+                <TableCell>
+                  {teacher?.users_permissions_user?.lastname}
+                </TableCell>
                 <TableCell>
                   {(teacher.courses || []).map((x) => x.Course_name).join(", ")}
                 </TableCell>

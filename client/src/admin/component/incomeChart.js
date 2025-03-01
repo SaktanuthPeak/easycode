@@ -30,11 +30,11 @@ export default function IncomeChart() {
   }, []);
 
   const splitDataByMonth = (incomeData) => {
-    const groupedData = new Array(12).fill(0); // Initialize an array with 12 zeros
+    const groupedData = new Array(12).fill(0);
 
     incomeData.forEach((item) => {
-      const month = new Date(item.createdAt).getMonth(); // Get month (0–11)
-      groupedData[month] += item.amount; // Add the amount to the corresponding month
+      const month = new Date(item.createdAt).getMonth();
+      groupedData[month] += item.amount;
     });
 
     return groupedData;
