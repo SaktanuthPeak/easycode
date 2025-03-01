@@ -91,7 +91,7 @@ function Sidebar({ isOpen, toggle, onLogout, navigate }) {
         />
         <NavItem
           icon={BadgeHelp}
-          label="Teacher Support"
+          label="Instructor confirmation"
           isOpen={isOpen}
           path="/teacher-support"
           navigate={navigate}
