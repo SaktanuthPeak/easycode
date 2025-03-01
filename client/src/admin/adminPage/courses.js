@@ -9,12 +9,16 @@ import { Plus, Edit, Search, Star, BookOpen } from "lucide-react";
 const Courses = () => {
   const [coursesData, setCoursesData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
-  const totalPages = Math.ceil(coursesData?.length / itemsPerPage);
+
+  const filteredCourses = coursesData.filter((course) =>
+    course.Course_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const itemsPerPage = 16;
+  const totalPages = Math.ceil(filteredCourses?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const displayedItems = coursesData?.slice(
+  const displayedItems = filteredCourses?.slice(
     startIndex,
     startIndex + itemsPerPage
   );
@@ -46,10 +50,6 @@ const Courses = () => {
       ? `${conf.apiUrlPrefix.replace("/api", "")}${img.url}`
       : img.url;
   };
-
-  const filteredCourses = coursesData.filter((course) =>
-    course.Course_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <div className="bg-gray-50 min-h-screen py-8">
@@ -121,10 +121,7 @@ const Courses = () => {
                 <h3 className="font-bold text-xl mb-2 text-gray-800">
                   {item.Course_name}
                 </h3>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                  {item.course_description}
-                </p>
-                <div className="flex">
+                <div className="">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -140,7 +137,7 @@ const Courses = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => navigate(`/courses/${item.documentId}`)}
-                    className="flex items-center justify-center text-xs bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 w-full text-center"
+                    className="flex items-center justify-center text-xs bg-blue-500 hover:bg-blue-600 text-white font-bold my-2 py-2 px-4 rounded-full transition-colors duration-300 w-full text-center"
                   >
                     <BookOpen className="w-4 h-4 mr-2" />
                     <p>View Chapter</p>

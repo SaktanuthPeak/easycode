@@ -29,7 +29,7 @@ export default function UserGroupChart() {
   }, []);
 
   const splitUserGroup = (usersData) => {
-    const splitData = [0, 0, 0, 0]; // Fixed size to match the indices used
+    const splitData = [0, 0, 0, 0];
     const groupIndices = {
       "high-school student": 0,
       "university/college student": 1,

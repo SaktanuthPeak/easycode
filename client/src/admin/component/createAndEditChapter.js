@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import ax from "../../conf/ax";
 import { toast } from "react-toastify";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { Upload } from "lucide-react";
 import conf from "../../conf/main";
 
 export default function CreateChapterPage() {
@@ -46,7 +45,6 @@ export default function CreateChapterPage() {
       formData.append("files", file);
 
       try {
-        // Upload the image to Strapi
         const fileUploadResponse = await ax.post("/upload", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
@@ -57,7 +55,6 @@ export default function CreateChapterPage() {
           setError("File upload failed");
         }
 
-        // Update the state with the uploaded image
         setChapterVideo(uploadedFileId);
       } catch (error) {
         console.error("Error uploading image:", error);
@@ -80,12 +77,12 @@ export default function CreateChapterPage() {
         course: courseId,
       };
       if (selectedChapter) {
-        const response = await ax.put(`/course-chapters/${chapterId}`, {
+        await ax.put(`/course-chapters/${chapterId}`, {
           data: chapterData,
         });
         toast.success("Update chapter successfully!");
       } else {
-        const response = await ax.post("/course-chapters", {
+        await ax.post("/course-chapters", {
           data: chapterData,
         });
         toast.success("Create chapter successfully!");

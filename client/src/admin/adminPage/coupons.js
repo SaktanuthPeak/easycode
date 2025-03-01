@@ -9,6 +9,23 @@ export default function Coupons() {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingCoupon, setEditingCoupon] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const filteredCoupons = coupons.filter((coupon) =>
+    coupon.coupon.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  const itemsPerPage = 20;
+  const totalPages = Math.ceil(filteredCoupons?.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const displayedItems = filteredCoupons?.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -67,10 +84,6 @@ export default function Coupons() {
     }
   };
 
-  const filteredCoupons = coupons.filter((coupon) =>
-    coupon.coupon.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   useEffect(() => {
     fetchCoupon();
   }, []);
@@ -111,7 +124,7 @@ export default function Coupons() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCoupons.map((coupon) => (
+        {displayedItems.map((coupon) => (
           <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-semibold text-gray-800">
@@ -139,6 +152,37 @@ export default function Coupons() {
             <p className="text-gray-600">Expires: {coupon.expired_date}</p>
           </div>
         ))}
+      </div>
+      <div className="flex justify-end mt-4 space-x-2">
+        <button
+          onClick={() => goToPage(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-3 py-1 border bg-white rounded disabled:opacity-50"
+        >
+          prev
+        </button>
+
+        {[...Array(totalPages)]?.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goToPage(i + 1)}
+            className={`px-3 py-1 border rounded ${
+              currentPage === i + 1
+                ? "bg-blue-500 text-white"
+                : "hover:bg-gray-200 bg-white"
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
+
+        <button
+          onClick={() => goToPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-3 py-1 border bg-white rounded disabled:opacity-50"
+        >
+          next
+        </button>
       </div>
     </div>
   );

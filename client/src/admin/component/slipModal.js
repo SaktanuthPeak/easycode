@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { X, Calendar, Hash, DollarSign, Barcode } from "lucide-react";
+import React from "react";
+import { X, Calendar, DollarSign } from "lucide-react";
 import dayjs from "dayjs";
 import conf from "../../conf/main";
 import no_image_available from "../../clientPage/images/No_image_available.svg.jpg";
@@ -25,9 +25,7 @@ const SlipModal = ({ onClose, selectedOrder }) => {
           >
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
-                <h2 id="modal-title" className="text-xl font-semibold">
-                  {/* {title} */}
-                </h2>
+                <h2 id="modal-title" className="text-xl font-semibold"></h2>
                 <button
                   onClick={onClose}
                   className="text-gray-400 hover:text-gray-600 transition duration-300"

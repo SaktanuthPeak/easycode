@@ -4,13 +4,10 @@ import {
   ChevronLeft,
   BookMinus,
   LaptopMinimal,
-  Home,
   Package,
   Tickets,
   CircleHelp,
   BadgeHelp,
-  User,
-  Settings,
   School,
   LogOut,
 } from "lucide-react";

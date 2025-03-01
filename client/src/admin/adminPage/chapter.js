@@ -1,27 +1,26 @@
-import React, { use, useEffect, useState } from "react";
-import ax from "../../conf/ax";
-import { useNavigate, useParams, Link, useLocation } from "react-router-dom";
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import conf from "../../conf/main";
-import no_image_available from "../../clientPage/images/No_image_available.svg.jpg";
-import { motion } from "framer-motion";
-import { Edit, Plus, Search, Eye } from "lucide-react";
-
+import { ArrowLeft } from "lucide-react";
 export default function Chapter() {
-  const [chapterData, setChapterData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const { chapterId } = useParams();
-  const navigate = useNavigate();
-
   const location = useLocation();
   const selectedChapter = location.state?.selectedChapter;
+  const navigate = useNavigate();
 
   const fullVideoUrl = `${conf.apiUrlPrefix.replace("/api", "")}${
     selectedChapter.video[0].url
   }`;
 
   return (
-    <div className="container mx-auto px-6 py-8 flex gap-8">
-      {/* Main Content */}
+    <div className="container mx-auto px-6 py-8 gap-8">
+      <button
+        onClick={() => navigate(-1)}
+        variant="ghost"
+        className="flex items-center gap-2 mb-5 px-2 hover:bg-slate-100"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        <span>Back to Chapters Management</span>
+      </button>
       <div className="flex-1">
         {selectedChapter && (
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">

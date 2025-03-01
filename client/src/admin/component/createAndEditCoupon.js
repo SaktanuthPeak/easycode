@@ -1,9 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import ax from "../../conf/ax";
 import { toast } from "react-toastify";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { Upload } from "lucide-react";
-import conf from "../../conf/main";
 
 export default function CreateAndEditCoupon({
   isOpen,
@@ -15,7 +12,6 @@ export default function CreateAndEditCoupon({
   const [discount, setDiscount] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [startDate, setStartDate] = useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (editCoupon) {

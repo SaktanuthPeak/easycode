@@ -158,11 +158,9 @@ function Order() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {item.Username}
                   </td>{" "}
-                  {/* Accessing nested attributes */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {item.Email}
                   </td>{" "}
-                  {/* Accessing nested attributes */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {item.Applied_course.length > 70
                       ? item.Applied_course.match(/.{1,70}/g).map(
@@ -175,14 +173,13 @@ function Order() {
                         )
                       : item.Applied_course}
                   </td>{" "}
-                  {/* Accessing nested attributes */}
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="relative">
                       <select
-                        id={`status_order_${item.documentId}`} // Changed id to item.id
+                        id={`status_order_${item.documentId}`}
                         value={
                           selectedStatus[item.documentId] || item.order_status
-                        } // Use existing status if available
+                        }
                         onChange={(e) =>
                           setSelectedStatus({
                             ...selectedStatus,
