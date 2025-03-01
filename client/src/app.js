@@ -32,6 +32,8 @@ import CourseDashboard from "./teacher/courseDashboard";
 import ProfilePage from "./clientPage/profilePage";
 import InstructorSignup from "./clientPage/instructorSignup";
 import LikedPage from "./clientPage/likedPage";
+import NotificationPage from "./clientPage/notificationPage";
+import CourseReviewsPage from "./teacher/courseReviews";
 
 //Import admin pages
 import Dashboard from "./admin/adminPage/dashboard";
@@ -128,10 +130,7 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
         <Route path="/client-home" element={<ClientHomePage />} />
         <Route path="/client-home/profile-page" element={<ProfilePage />} />
         <Route path="/client-home/:categoryId" element={<CategoryPage />} />
-        <Route
-          path="/client-home/:categoryId/:courseId"
-          element={<CoursePage />}
-        />
+        <Route path="/client-home/:categoryId/:courseId" element={<CoursePage />} />
         <Route path="/client-home/cart" element={<CartPage />} />
         <Route path="/client-home/cart/payment" element={<PaymentQRPage />} />
         <Route path="/client-home/my-learning" element={<MyLearningPage />} />
@@ -153,6 +152,15 @@ const RouteAfterLogin = ({ homePath, userRole }) => {
           path="/client-home/liked-page"
           element={<LikedPage />}
         />
+        <Route
+          path="/client-home/notifications"
+          element={<NotificationPage />}
+        />
+        <Route
+          path="client-home/all-reviews"
+          element={<CourseReviewsPage />}
+        />
+
 
 
       </Routes>
